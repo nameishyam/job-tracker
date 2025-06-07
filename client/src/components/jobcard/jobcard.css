@@ -1,0 +1,130 @@
+/* Job Card Styles */
+.job-card {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+  transition: all 0.2s ease-in-out;
+  position: relative;
+  cursor: pointer;
+}
+
+.job-card:hover {
+  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.5);
+  transform: translateY(-2px);
+  border-color: #444;
+}
+
+.job-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.job-card p {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+.job-card p:last-child {
+  margin-bottom: 0;
+}
+
+.job-card strong {
+  color: #d1d5db;
+  font-weight: 600;
+  display: inline-block;
+  min-width: 85px;
+}
+
+/* Delete button styling */
+.job-card button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.job-card button:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* Modal styles */
+.job-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.job-modal-content {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  border: 1px solid #333;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.job-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.job-modal-close:hover {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}

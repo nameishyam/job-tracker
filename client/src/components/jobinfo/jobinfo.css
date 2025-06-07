@@ -1,0 +1,334 @@
+.job-info-container {
+  padding: 2rem;
+  width: 100%;
+  color: #e2e8f0;
+}
+
+.job-info-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.75rem;
+}
+
+.job-info-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.job-info-row {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #333;
+  font-size: 1rem;
+  color: #d1d5db;
+  display: flex;
+  align-items: center;
+}
+
+.job-info-row strong {
+  color: #e2e8f0;
+  font-weight: 600;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.job-info-section {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background-color: #262626;
+  border-radius: 0.75rem;
+  border: 1px solid #333;
+}
+
+.job-info-section strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.job-info-rounds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 0.625rem;
+}
+
+.job-round {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.job-round:hover {
+  background-color: #3a4a61;
+}
+
+.job-description {
+  margin: 0;
+  line-height: 1.6;
+  color: #9ca3af;
+  font-size: 0.95rem;
+}
+
+.job-description .markdown-content {
+  color: #d1d5db;
+}
+
+.job-description p {
+  margin-bottom: 1rem;
+  color: #d1d5db;
+  line-height: 1.7;
+}
+
+.job-description h1,
+.job-description h2,
+.job-description h3,
+.job-description h4,
+.job-description h5,
+.job-description h6 {
+  color: #e2e8f0;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.job-description h1 {
+  font-size: 1.75rem;
+}
+.job-description h2 {
+  font-size: 1.5rem;
+}
+.job-description h3 {
+  font-size: 1.25rem;
+}
+.job-description h4 {
+  font-size: 1.125rem;
+}
+.job-description h5 {
+  font-size: 1rem;
+}
+.job-description h6 {
+  font-size: 0.875rem;
+}
+
+.job-description ul,
+.job-description ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.job-description li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.job-description a {
+  color: #60a5fa;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.job-description a:hover {
+  color: #93c5fd;
+}
+
+.job-description strong {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.job-description em {
+  color: #d1d5db;
+  font-style: italic;
+}
+
+.job-description code {
+  background-color: #374151;
+  color: #f3f4f6;
+  border-radius: 4px;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.job-description pre {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.job-description pre code {
+  background: transparent;
+  padding: 0;
+  color: #f3f4f6;
+}
+
+.job-description blockquote {
+  border-left: 4px solid #6b7280;
+  background-color: rgba(107, 114, 128, 0.1);
+  color: #d1d5db;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  font-style: italic;
+}
+
+.job-description table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  border: 1px solid #374151;
+}
+
+.job-description table th,
+.job-description table td {
+  border: 1px solid #374151;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.job-description table th {
+  background-color: #374151;
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.job-description table tr:nth-child(even) {
+  background-color: rgba(55, 65, 81, 0.3);
+}
+
+.job-description hr {
+  border: none;
+  border-top: 1px solid #4b5563;
+  margin: 2rem 0;
+}
+
+.markdown-content {
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  color: #e2e8f0;
+}
+
+.markdown-content p {
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.markdown-content a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.markdown-content a:hover {
+  text-decoration: underline;
+}
+
+.markdown-content code {
+  background-color: #2d3748;
+  color: #e2e8f0;
+  border-radius: 3px;
+  font-family: "Courier New", Courier, monospace;
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 0.875em;
+}
+
+.markdown-content pre {
+  background-color: #1a202c;
+  color: #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  overflow: auto;
+  margin-bottom: 1rem;
+  border: 1px solid #333;
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.markdown-content blockquote {
+  border-left: 4px solid #4b5563;
+  color: #9ca3af;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 1rem;
+  font-style: italic;
+  background-color: rgba(75, 85, 99, 0.1);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.markdown-content table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-bottom: 1rem;
+  border: 1px solid #374151;
+}
+
+.markdown-content table th,
+.markdown-content table td {
+  border: 1px solid #374151;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.markdown-content table th {
+  background-color: #374151;
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.markdown-content table tr:nth-child(2n) {
+  background-color: rgba(55, 65, 81, 0.3);
+}
+
+.markdown-content strong {
+  color: #f9fafb;
+  font-weight: 600;
+}
+
+.markdown-content em {
+  color: #d1d5db;
+  font-style: italic;
+}
+
+.markdown-content hr {
+  border: none;
+  border-top: 1px solid #374151;
+  margin: 2rem 0;
+}

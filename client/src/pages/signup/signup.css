@@ -1,0 +1,236 @@
+/* Signup Page Styles */
+
+.signup-container {
+  min-height: 100vh;
+  background: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .signup-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .signup-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.signup-wrapper {
+  max-width: 80rem;
+  width: 100%;
+}
+
+.signup-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .signup-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.signup-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .signup-content {
+    text-align: left;
+  }
+}
+
+.signup-heading-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signup-heading {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  line-height: 1.25;
+}
+
+@media (min-width: 640px) {
+  .signup-heading {
+    font-size: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .signup-heading {
+    font-size: 3.75rem;
+  }
+}
+
+.signup-heading-accent {
+  color: #60a5fa;
+  display: block;
+}
+
+.signup-subtitle {
+  font-size: 1.125rem;
+  color: #9ca3af;
+  max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.625;
+}
+
+@media (min-width: 640px) {
+  .signup-subtitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .signup-subtitle {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+.signup-form-container {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 1024px) {
+  .signup-form-container {
+    justify-content: flex-end;
+  }
+}
+
+.signup-form-wrapper {
+  width: 100%;
+  max-width: 28rem;
+}
+
+.signup-form-card {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  border: 1px solid #333;
+}
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.signup-name-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .signup-name-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.signup-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #d1d5db;
+  margin-bottom: 0.25rem;
+}
+
+.signup-input {
+  width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+  outline: none;
+  background-color: #2d2d2d;
+  color: #e2e8f0;
+}
+
+.signup-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.signup-button {
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(0);
+  transition-property: all;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+  border: none;
+  cursor: pointer;
+}
+
+.signup-button:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-0.125rem);
+}
+
+.signup-footer {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.signup-footer-text {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+.signup-footer-link {
+  color: #60a5fa;
+  font-weight: 600;
+  transition-property: color;
+  transition-duration: 200ms;
+  text-decoration: none;
+}
+
+.signup-footer-link:hover {
+  color: #3b82f6;
+}
+
+.signup-error {
+  color: #f87171;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}

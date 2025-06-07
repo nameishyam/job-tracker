@@ -1,0 +1,100 @@
+/* Dashboard Page Styles */
+.dashboard-container {
+  min-height: 100vh;
+  background: #121212;
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .dashboard-container {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dashboard-container {
+    padding: 2rem;
+  }
+}
+
+.dashboard-wrapper {
+  max-width: 80rem;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.dashboard-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  line-height: 1.25;
+  margin-bottom: 1rem;
+}
+
+@media (min-width: 640px) {
+  .dashboard-title {
+    font-size: 3rem;
+  }
+}
+
+.dashboard-title-accent {
+  color: #60a5fa;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+}
+
+.dashboard-form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dashboard-jobs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.jobs-placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.no-jobs-message {
+  background-color: #1e1e1e;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  padding: 2rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 1.125rem;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
