@@ -1,5 +1,6 @@
 .login-container {
   min-height: 100vh;
+<<<<<<< HEAD
   background: radial-gradient(
       circle at 20% 80%,
       rgba(59, 130, 246, 0.15) 0%,
@@ -10,6 +11,11 @@
       rgba(147, 51, 234, 0.15) 0%,
       transparent 50%
     ),
+=======
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
     #0a0a0a;
   display: flex;
   align-items: center;
@@ -20,18 +26,27 @@
 }
 
 .login-container::before {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+<<<<<<< HEAD
   background: linear-gradient(
     45deg,
     transparent 30%,
     rgba(59, 130, 246, 0.03) 50%,
     transparent 70%
   );
+=======
+  background: 
+    linear-gradient(45deg, transparent 30%, rgba(59, 130, 246, 0.03) 50%, transparent 70%);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   animation: shimmer 8s ease-in-out infinite alternate;
 }
 
@@ -107,7 +122,11 @@
 }
 
 .login-heading-accent::after {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   bottom: -8px;
   left: 0;
@@ -164,11 +183,21 @@
   padding: 2.5rem;
   position: relative;
   overflow: hidden;
+<<<<<<< HEAD
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 100px rgba(59, 130, 246, 0.1);
 }
 
 .login-form-card::before {
   content: "";
+=======
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.3),
+    0 0 100px rgba(59, 130, 246, 0.1);
+}
+
+.login-form-card::before {
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: 0;
@@ -217,7 +246,12 @@
 .login-input:focus {
   border-color: #3b82f6;
   background: rgba(59, 130, 246, 0.05);
+<<<<<<< HEAD
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2),
+=======
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.2),
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
     0 8px 25px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
 }
@@ -235,23 +269,37 @@
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+<<<<<<< HEAD
   box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3), 0 4px 10px rgba(0, 0, 0, 0.2);
+=======
+  box-shadow: 
+    0 10px 25px rgba(59, 130, 246, 0.3),
+    0 4px 10px rgba(0, 0, 0, 0.2);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   margin-top: 0.5rem;
 }
 
 .login-button::before {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.2),
     transparent
   );
+=======
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   transition: left 0.6s;
 }
 
@@ -261,7 +309,13 @@
 
 .login-button:hover {
   transform: translateY(-3px);
+<<<<<<< HEAD
   box-shadow: 0 20px 40px rgba(59, 130, 246, 0.4), 0 8px 16px rgba(0, 0, 0, 0.3);
+=======
+  box-shadow: 
+    0 20px 40px rgba(59, 130, 246, 0.4),
+    0 8px 16px rgba(0, 0, 0, 0.3);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
 }
 
 .login-button:active {
@@ -288,7 +342,11 @@
 }
 
 .login-footer-link::after {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -316,6 +374,7 @@
   border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 0.5rem;
   backdrop-filter: blur(10px);
+<<<<<<< HEAD
 }
 
 @media (max-width: 768px) {
@@ -339,6 +398,35 @@
     padding: 0.875rem 1rem;
   }
 
+  .login-button {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+=======
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    padding: 1rem;
+  }
+  
+  .login-heading {
+    font-size: 2.5rem;
+  }
+  
+  .login-subtitle {
+    font-size: 1.125rem;
+  }
+  
+  .login-form-card {
+    padding: 2rem;
+  }
+  
+  .login-input {
+    padding: 0.875rem 1rem;
+  }
+  
   .login-button {
     padding: 1rem 1.5rem;
     font-size: 1rem;
