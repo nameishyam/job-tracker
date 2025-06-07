@@ -127,6 +127,7 @@ app.post(`/users/jobs`, authenticateToken, async (req, res) => {
     description,
     date,
     rounds,
+    review,
   } = req.body;
   try {
     const createdJob = await Job.create({
@@ -139,11 +140,28 @@ app.post(`/users/jobs`, authenticateToken, async (req, res) => {
       description,
       date,
       rounds,
+      review,
     });
     return res
       .status(201)
       .json({ message: "Job created successfully", job: createdJob });
   } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.post(`/users/jobs/review`, async (req, res) => {
+  const { jobId, review } = req.body;
+  try {
+    const job = await Job.findOne({ where: { id: jobId } });
+    if (!job) {
+      return res.status(404).json({ message: "Job Not Found" });
+    }
+    job.review = review;
+    await job.save();
+    return res.status(200).json({ message: "Review added successfully", job });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 });

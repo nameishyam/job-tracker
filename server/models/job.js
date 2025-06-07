@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.TEXT,
       date: DataTypes.DATEONLY,
       rounds: DataTypes.ARRAY(DataTypes.STRING),
+      review: DataTypes.TEXT,
     },
     {
       sequelize,

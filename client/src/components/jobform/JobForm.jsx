@@ -2,13 +2,11 @@ import { useState, useEffect } from "react";
 import "./jobform.css";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
-import model from "../../utils/gemini.js";
 
 const JobForm = ({ email, onJobAdded }) => {
   const [userId, setUserId] = useState(null);
   const { token } = useAuth();
   const [roundInput, setRoundInput] = useState("");
-  const [showMarkdownPreview, setShowMarkdownPreview] = useState(false);
 
   const [formData, setFormData] = useState({
     userId: null,
@@ -62,23 +60,6 @@ const JobForm = ({ email, onJobAdded }) => {
       ...prev,
       rounds: updated,
     }));
-  };
-
-  const descriptionWithAi = async (text) => {
-    try {
-      const prompt = `Generate a detailed job description such that the user can be able to understand the status of his job using the content provided by him: ${text}. Make sure to give the response in a markdown format and using first person as if the user were you. Just generate the description, not any other content, just give the description only. Remove the 'markdown\`\`\`' and '\`\`\`' at the start and end of the response.`;
-      const result = await model.generateContent(prompt);
-      const aiResponse = result.response;
-      const generatedText = aiResponse.text();
-      console.log(`Generated description: ${generatedText}`);
-      setFormData((prev) => ({
-        ...prev,
-        description: generatedText,
-      }));
-    } catch (error) {
-      console.log(`error: ${error}`);
-      alert("Failed to generate description with AI. Please try again.");
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -188,25 +169,6 @@ const JobForm = ({ email, onJobAdded }) => {
           />
         </div>{" "}
         <div className="form-group">
-          <label className="job-form-label">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="job-form-textarea"
-            placeholder="Enter the job description as you wish"
-            required
-          ></textarea>
-          <button
-            type="button"
-            onClick={() => descriptionWithAi(formData.description)}
-            className="ai-rewrite-button"
-            disabled={!formData.description.trim()}
-          >
-            ✨ Rewrite with AI
-          </button>
-        </div>
-        <div className="form-group">
           <label className="job-form-label">Rounds</label>
           <div className="rounds-input-wrapper">
             <input
@@ -252,6 +214,17 @@ const JobForm = ({ email, onJobAdded }) => {
             className="job-form-input"
             required
           />
+        </div>
+        <div className="form-group">
+          <label className="job-form-label">Description</label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            className="job-form-textarea"
+            placeholder="Enter the job description here..."
+            required
+          ></textarea>
         </div>
         <button type="submit" className="job-form-button">
           Add Job

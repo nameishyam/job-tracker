@@ -216,6 +216,20 @@
   margin: 2rem 0;
 }
 
+/* Review Display Styles */
+.job-review-display {
+  margin: 0;
+  line-height: 1.6;
+  color: #d1d5db;
+  font-size: 0.95rem;
+  background-color: #1a1a1a;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #333;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
 .markdown-content {
   line-height: 1.6;
   word-wrap: break-word;
@@ -331,4 +345,207 @@
   border: none;
   border-top: 1px solid #374151;
   margin: 2rem 0;
+}
+
+/* Review Section Styles */
+.job-review-textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 0.5rem;
+  color: #e2e8f0;
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.job-review-textarea:focus {
+  outline: none;
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.job-review-textarea::placeholder {
+  color: #9ca3af;
+}
+
+.job-review-buttons {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.job-review-submit,
+.ai-analyze-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+}
+
+.job-review-submit {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.job-review-submit:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.ai-analyze-button {
+  background-color: #8b5cf6;
+  color: white;
+}
+
+.ai-analyze-button:hover:not(:disabled) {
+  background-color: #7c3aed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+.ai-analyze-button:disabled {
+  background-color: #4b5563;
+  color: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* AI Loading State */
+.ai-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  color: #d1d5db;
+}
+
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #374151;
+  border-top: 2px solid #8b5cf6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* AI Response Section */
+.ai-response-section {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background-color: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 0.75rem;
+  border-left: 4px solid #8b5cf6;
+}
+
+.ai-response-section strong {
+  display: block;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.ai-response-content {
+  color: #d1d5db;
+  line-height: 1.6;
+}
+
+.ai-response-content h1,
+.ai-response-content h2,
+.ai-response-content h3,
+.ai-response-content h4,
+.ai-response-content h5,
+.ai-response-content h6 {
+  color: #e2e8f0;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.ai-response-content h1 {
+  font-size: 1.5rem;
+}
+.ai-response-content h2 {
+  font-size: 1.25rem;
+}
+.ai-response-content h3 {
+  font-size: 1.125rem;
+}
+
+.ai-response-content p {
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.ai-response-content ul,
+.ai-response-content ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  color: #d1d5db;
+}
+
+.ai-response-content li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.ai-response-content strong {
+  color: #f9fafb;
+  font-weight: 600;
+  display: inline;
+  margin: 0;
+  font-size: inherit;
+}
+
+.ai-response-content code {
+  background-color: #374151;
+  color: #f3f4f6;
+  border-radius: 4px;
+  font-family: "Monaco", "Menlo", "Ubuntu Mono", monospace;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.ai-response-content pre {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.ai-response-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #f3f4f6;
 }
