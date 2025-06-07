@@ -42,7 +42,7 @@ const JobInfo = ({ job }) => {
         currentJob,
         null,
         2
-      )}. Give your response in a markdown format only. just give the response no need to address me at the start or any other things at the start or end. remove "markdown\`\`\`" and "\`\`\`" from the start and end of the response.`;
+      )}. at the end of your response congratulate the user if he or she has successfully achieved the job, else if they lost at any stage, provide motivation to go furthur in an emotional way. Give your response in a markdown format only. just give the response no need to address me at the start or any other things at the start or end. remove "markdown\`\`\`" and "\`\`\`" from the start and end of the response.`;
       const result = await model.generateContent(prompt);
       const aiResponse = result.response;
       const generatedText = aiResponse.text();
