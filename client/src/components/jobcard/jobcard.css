@@ -1,36 +1,84 @@
-/* Job Card Styles */
 .job-card {
-  background-color: #1e1e1e;
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
-  padding: 1.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #333;
-  transition: all 0.2s ease-in-out;
-  position: relative;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.2),
+    0 0 100px rgba(59, 130, 246, 0.05);
+}
+
+.job-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+  opacity: 0.6;
+}
+
+.job-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.03), transparent);
+  transition: left 0.6s;
+}
+
+.job-card:hover::after {
+  left: 100%;
 }
 
 .job-card:hover {
-  box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.5);
-  transform: translateY(-2px);
-  border-color: #444;
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 
+    0 35px 70px rgba(0, 0, 0, 0.3),
+    0 0 150px rgba(59, 130, 246, 0.15);
 }
 
 .job-title {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #e2e8f0;
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #333;
-  padding-bottom: 0.5rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+  padding-bottom: 0.75rem;
+  position: relative;
+}
+
+.job-title::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #60a5fa, #a855f7);
+  transition: width 0.3s ease;
+}
+
+.job-card:hover .job-title::after {
+  width: 100%;
 }
 
 .job-card p {
-  margin-bottom: 0.75rem;
-  font-size: 0.875rem;
-  color: #9ca3af;
-  line-height: 1.5;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #d1d5db;
+  line-height: 1.6;
+  transition: all 0.3s ease;
 }
 
 .job-card p:last-child {
@@ -38,93 +86,163 @@
 }
 
 .job-card strong {
-  color: #d1d5db;
+  color: #e5e7eb;
   font-weight: 600;
   display: inline-block;
-  min-width: 85px;
+  min-width: 100px;
+  margin-right: 0.5rem;
 }
 
-/* Delete button styling */
 .job-card button {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
-  color: #9ca3af;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(239, 68, 68, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #f87171;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.5rem;
   border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 10;
 }
 
 .job-card button:hover {
-  color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
 }
 
-/* Modal styles */
 .job-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  padding: 1rem;
+  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .job-modal-content {
-  background-color: #1e1e1e;
-  border-radius: 1rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-  width: 90%;
-  max-width: 800px;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  border: 1px solid #333;
-  animation: modalFadeIn 0.3s ease-out;
+  box-shadow: 
+    0 25px 50px rgba(0, 0, 0, 0.5),
+    0 0 100px rgba(59, 130, 246, 0.1);
+  animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes modalFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.job-modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  opacity: 0.6;
 }
 
 .job-modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: none;
-  border: none;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: #9ca3af;
   font-size: 1.5rem;
   cursor: pointer;
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: 10;
 }
 
 .job-modal-close:hover {
-  color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
+  color: #ffffff;
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+}
+
+/* Custom Scrollbar for Modal */
+.job-modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.job-modal-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+.job-modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
+  border-radius: 3px;
+}
+
+.job-modal-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #60a5fa, #3b82f6);
+}
+
+@media (max-width: 768px) {
+  .job-card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .job-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+  
+  .job-card p {
+    font-size: 0.875rem;
+  }
+  
+  .job-card button {
+    top: 1rem;
+    right: 1rem;
+    width: 2rem;
+    height: 2rem;
+    padding: 0.375rem;
+  }
+  
+  .job-modal-overlay {
+    padding: 0.5rem;
+  }
+  
+  .job-modal-close {
+    top: 1rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+  }
 }
