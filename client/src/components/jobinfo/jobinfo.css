@@ -16,7 +16,11 @@
 }
 
 .job-info-title::after {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -70,18 +74,26 @@
 }
 
 .job-info-section::before {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
+<<<<<<< HEAD
   background: linear-gradient(
     90deg,
     transparent,
     rgba(59, 130, 246, 0.5),
     transparent
   );
+=======
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   opacity: 0.6;
 }
 
@@ -122,18 +134,26 @@
 }
 
 .job-round::before {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: linear-gradient(
     90deg,
     transparent,
     rgba(59, 130, 246, 0.2),
     transparent
   );
+=======
+  background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.2), transparent);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   transition: left 0.5s;
 }
 
@@ -177,6 +197,7 @@
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .job-description h1 {
   font-size: 2rem;
 }
@@ -195,6 +216,14 @@
 .job-description h6 {
   font-size: 1rem;
 }
+=======
+.job-description h1 { font-size: 2rem; }
+.job-description h2 { font-size: 1.75rem; }
+.job-description h3 { font-size: 1.5rem; }
+.job-description h4 { font-size: 1.25rem; }
+.job-description h5 { font-size: 1.125rem; }
+.job-description h6 { font-size: 1rem; }
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
 
 .job-description ul,
 .job-description ol {
@@ -216,7 +245,11 @@
 }
 
 .job-description a::after {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   bottom: -2px;
   left: 0;
@@ -356,7 +389,12 @@
 .job-review-textarea:focus {
   border-color: #3b82f6;
   background: rgba(59, 130, 246, 0.05);
+<<<<<<< HEAD
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2),
+=======
+  box-shadow: 
+    0 0 0 3px rgba(59, 130, 246, 0.2),
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
     0 8px 25px rgba(59, 130, 246, 0.1);
   transform: translateY(-2px);
 }
@@ -391,22 +429,36 @@
 .job-review-submit {
   background: linear-gradient(135deg, #3b82f6, #1d4ed8);
   color: white;
+<<<<<<< HEAD
   box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3), 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .job-review-submit::before {
   content: "";
+=======
+  box-shadow: 
+    0 8px 20px rgba(59, 130, 246, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.job-review-submit::before {
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.2),
     transparent
   );
+=======
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   transition: left 0.5s;
 }
 
@@ -416,28 +468,48 @@
 
 .job-review-submit:hover:not(:disabled) {
   transform: translateY(-3px);
+<<<<<<< HEAD
   box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4), 0 5px 12px rgba(0, 0, 0, 0.3);
+=======
+  box-shadow: 
+    0 12px 30px rgba(59, 130, 246, 0.4),
+    0 5px 12px rgba(0, 0, 0, 0.3);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
 }
 
 .ai-analyze-button {
   background: linear-gradient(135deg, #8b5cf6, #6366f1);
   color: white;
+<<<<<<< HEAD
   box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3), 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
 .ai-analyze-button::before {
   content: "";
+=======
+  box-shadow: 
+    0 8px 20px rgba(139, 92, 246, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.ai-analyze-button::before {
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
+<<<<<<< HEAD
   background: linear-gradient(
     90deg,
     transparent,
     rgba(255, 255, 255, 0.2),
     transparent
   );
+=======
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   transition: left 0.5s;
 }
 
@@ -447,7 +519,13 @@
 
 .ai-analyze-button:hover:not(:disabled) {
   transform: translateY(-3px);
+<<<<<<< HEAD
   box-shadow: 0 12px 30px rgba(139, 92, 246, 0.4), 0 5px 12px rgba(0, 0, 0, 0.3);
+=======
+  box-shadow: 
+    0 12px 30px rgba(139, 92, 246, 0.4),
+    0 5px 12px rgba(0, 0, 0, 0.3);
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
 }
 
 .ai-analyze-button:disabled {
@@ -481,12 +559,8 @@
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .ai-response-section {
@@ -502,7 +576,11 @@
 }
 
 .ai-response-section::before {
+<<<<<<< HEAD
   content: "";
+=======
+  content: '';
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
   position: absolute;
   top: 0;
   left: 0;
@@ -537,6 +615,7 @@
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .ai-response-content h1 {
   font-size: 1.75rem;
 }
@@ -546,6 +625,11 @@
 .ai-response-content h3 {
   font-size: 1.25rem;
 }
+=======
+.ai-response-content h1 { font-size: 1.75rem; }
+.ai-response-content h2 { font-size: 1.5rem; }
+.ai-response-content h3 { font-size: 1.25rem; }
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
 
 .ai-response-content p {
   margin-bottom: 1.25rem;
@@ -596,6 +680,7 @@
   border: none;
   padding: 0;
   color: #e5e7eb;
+<<<<<<< HEAD
 }
 
 @media (max-width: 768px) {
@@ -632,6 +717,47 @@
     padding: 1.5rem;
   }
 
+  .ai-response-section {
+    padding: 1.5rem;
+  }
+=======
+>>>>>>> e262ac12be0052b40ebcfc19f101f6aceb45488a
+}
+
+@media (max-width: 768px) {
+  .job-info-container {
+    padding: 1.5rem;
+  }
+  
+  .job-info-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .job-info-section {
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .job-review-textarea {
+    min-height: 120px;
+    padding: 1rem;
+  }
+  
+  .job-review-buttons {
+    flex-direction: column;
+  }
+  
+  .job-review-submit,
+  .ai-analyze-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.95rem;
+  }
+  
+  .ai-loading {
+    padding: 1.5rem;
+  }
+  
   .ai-response-section {
     padding: 1.5rem;
   }
