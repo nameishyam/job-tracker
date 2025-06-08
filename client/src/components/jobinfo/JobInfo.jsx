@@ -104,7 +104,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
 
   return (
     <div className="p-6 space-y-6">
-      {/* Header */}
       <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
         <div className="flex items-center space-x-3 mb-3">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -125,7 +124,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </p>
       </div>
 
-      {/* Job Details Grid */}
       <div className="grid md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
@@ -181,7 +179,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </div>
       </div>
 
-      {/* Description */}
       {job.description && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
@@ -195,7 +192,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </div>
       )}
 
-      {/* Existing Review */}
       {currentJob.review && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
@@ -209,7 +205,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </div>
       )}
 
-      {/* Review Form */}
       <div>
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
           Add Review
@@ -254,7 +249,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </form>
       </div>
 
-      {/* AI Loading */}
       {isGenerating && (
         <div className="flex items-center justify-center py-8">
           <div className="flex items-center space-x-3">
@@ -266,7 +260,6 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
         </div>
       )}
 
-      {/* AI Response */}
       {aiResponse && !isGenerating && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
