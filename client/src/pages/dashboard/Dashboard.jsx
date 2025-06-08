@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
+import { useNavigate } from "react-router-dom";
 import JobCard from "../../components/jobcard/JobCard";
 import JobForm from "../../components/jobform/JobForm";
 import "./dashboard.css";
@@ -8,6 +10,8 @@ import "./dashboard.css";
 const Dashboard = () => {
   const [jobs, setJobs] = useState([]);
   const { user, token, logout } = useAuth();
+  const { showDeleteModal, closeDeleteModal } = useModal();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token || !user) return;
@@ -39,6 +43,37 @@ const Dashboard = () => {
     setJobs((prevJobs) => [...prevJobs, newJob]);
   };
 
+  const confirmDeleteAccount = async () => {
+    closeDeleteModal();
+    await axios
+      .delete(`${import.meta.env.VITE_API_URL}/users`, {
+        data: {
+          userId: user.id,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("User deleted successfully");
+          logout();
+          navigate("/");
+        }
+        if (response.status === 404) {
+          console.error("User not found");
+        }
+      })
+      .catch((error) => {
+        console.error("Error deleting account:", error);
+        alert("Error deleting account. Please try again later.");
+      });
+  };
+
+  const cancelDeleteAccount = () => {
+    closeDeleteModal();
+  };
+
   return (
     <div className="dashboard-container">
       <div className="dashboard-wrapper">
@@ -67,10 +102,37 @@ const Dashboard = () => {
                   <JobCard key={job.id} job={job} token={token} />
                 ))
               )}
-            </div>
+            </div>{" "}
           </div>
         </div>
       </div>
+
+      {/* Delete Account Confirmation Modal */}
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirm Account Deletion</h3>
+            <p>
+              Are you sure you want to delete your account? This action cannot
+              be undone.
+            </p>
+            <div className="modal-buttons">
+              <button
+                onClick={confirmDeleteAccount}
+                className="modal-button modal-button-confirm"
+              >
+                Yes, Delete Account
+              </button>
+              <button
+                onClick={cancelDeleteAccount}
+                className="modal-button modal-button-cancel"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

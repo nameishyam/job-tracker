@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
 import { useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useState, useEffect } from "react";
@@ -7,12 +8,17 @@ import "./navbar.css";
 
 const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuth();
+  const { openDeleteModal } = useModal();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate("/");
+  };
+
+  const handleDeleteAccount = () => {
+    openDeleteModal();
   };
 
   const toggleDropdown = () => {
@@ -91,6 +97,12 @@ const Navbar = () => {
                       >
                         Logout
                       </button>
+                      <button
+                        onClick={handleDeleteAccount}
+                        className="dropdown-logout-button"
+                      >
+                        Delete Account
+                      </button>
                     </div>
                   )}
                 </div>
@@ -104,8 +116,8 @@ const Navbar = () => {
                   Sign Up
                 </Link>
               </>
-            )}
-          </div>
+            )}{" "}
+          </div>{" "}
         </div>
       </div>
     </nav>
