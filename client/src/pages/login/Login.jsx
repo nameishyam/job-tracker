@@ -48,87 +48,101 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
   return (
-    <div className="auth-page">
-      <div className="auth-container">
-        <motion.div
-          className="auth-card"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="auth-header">
-            <h1 className="auth-title">Welcome Back</h1>
-            <p className="auth-subtitle">Sign in to your account to continue</p>
+    <div className="login-container">
+      <div className="login-wrapper">
+        <div className="login-grid">
+          <div className="login-content">
+            <div className="login-heading-wrapper">
+              <h1 className="login-heading">
+                Welcome to{" "}
+                <span className="login-heading-accent">JobTracker</span>
+              </h1>
+              <p className="login-subtitle">
+                Take control of your job search journey. Track applications,
+                manage interviews, and land your dream job with our
+                comprehensive platform.
+              </p>
+            </div>
           </div>
 
-          {error && (
-            <motion.div
-              className="error-message"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.2 }}
-            >
-              {error}
-            </motion.div>
-          )}
+          <div className="login-form-container">
+            <div className="login-form-wrapper">
+              <motion.div
+                className="login-form-card"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                {error && (
+                  <motion.div
+                    className="login-error"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {error}
+                  </motion.div>
+                )}
 
-          <form className="auth-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label className="form-label">Email Address</label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="Enter your email"
-                required
-                autoComplete="email"
-              />
+                <form className="login-form" onSubmit={handleSubmit}>
+                  <div className="login-field">
+                    <label className="login-label">Email Address</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="login-input"
+                      placeholder="Enter your email"
+                      required
+                      autoComplete="email"
+                    />
+                  </div>
+
+                  <div className="login-field">
+                    <label className="login-label">Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
+                      className="login-input"
+                      placeholder="Enter your password"
+                      required
+                      autoComplete="current-password"
+                    />
+                  </div>
+
+                  <motion.button
+                    type="submit"
+                    className="login-button"
+                    disabled={isLoading}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    {isLoading ? (
+                      <>
+                        <div className="loading-spinner small"></div>
+                        Signing in...
+                      </>
+                    ) : (
+                      "Sign In"
+                    )}
+                  </motion.button>
+                </form>
+
+                <div className="login-footer">
+                  <p className="login-footer-text">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="login-footer-link">
+                      Sign up
+                    </Link>
+                  </p>
+                </div>
+              </motion.div>
             </div>
-
-            <div className="form-group">
-              <label className="form-label">Password</label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="form-input"
-                placeholder="Enter your password"
-                required
-                autoComplete="current-password"
-              />
-            </div>
-
-            <motion.button
-              type="submit"
-              className="btn btn-primary auth-submit"
-              disabled={isLoading}
-              whileTap={{ scale: 0.98 }}
-            >
-              {isLoading ? (
-                <>
-                  <div className="loading-spinner small"></div>
-                  Signing in...
-                </>
-              ) : (
-                "Sign In"
-              )}
-            </motion.button>
-          </form>
-
-          <div className="auth-footer">
-            <p>
-              Don't have an account?{" "}
-              <Link to="/signup" className="auth-link">
-                Sign up
-              </Link>
-            </p>
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
