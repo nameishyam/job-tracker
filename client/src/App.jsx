@@ -6,24 +6,27 @@ import Layout from "./components/Layout";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import { ModalProvider } from "./context/ModalContext";
 
 import "./index.css";
 
 const App = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Landing />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-            <Route element={<ProtectedRoute />}>
-              <Route path="dashboard" element={<Dashboard />} />
+      <ModalProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Landing />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="dashboard" element={<Dashboard />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
     </AuthProvider>
   );
 };

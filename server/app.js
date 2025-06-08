@@ -184,6 +184,20 @@ app.get(`/users/jobs`, authenticateToken, async (req, res) => {
   }
 });
 
+app.delete(`/users`, authenticateToken, async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) return res.status(404).json({ message: "user not found" });
+    await Job.destroy({ where: { userId } });
+    await user.destroy();
+    return res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 app.delete(`/users/jobs`, authenticateToken, async (req, res) => {
   const { jobId } = req.body;
   try {
