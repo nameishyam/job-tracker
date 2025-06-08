@@ -2,8 +2,6 @@
 
 A comprehensive application to help software developers, students, and job seekers track and manage their job applications throughout the hiring process.
 
-![Job Tracker Dashboard](client/public/header.svg)
-
 ## Overview
 
 Job Tracker is a full-stack web application designed to help users organize their job search process. It allows users to keep track of job applications, interview rounds, salaries, and personal notes about each opportunity. The application also features AI-powered insights to help users improve their application strategy.
