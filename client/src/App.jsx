@@ -14,22 +14,24 @@ import "./index.css";
 const App = () => {
   return (
     <ThemeProvider>
-      <AuthProvider>
-        <ModalProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Layout />}>
-                <Route index element={<Landing />} />
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<Signup />} />
-                <Route element={<ProtectedRoute />}>
-                  <Route path="dashboard" element={<Dashboard />} />
+      <div className="app-container transition-theme">
+        <AuthProvider>
+          <ModalProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Layout />}>
+                  <Route index element={<Landing />} />
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                  <Route element={<ProtectedRoute />}>
+                    <Route path="dashboard" element={<Dashboard />} />
+                  </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </ModalProvider>
-      </AuthProvider>
+              </Routes>
+            </BrowserRouter>
+          </ModalProvider>
+        </AuthProvider>
+      </div>
     </ThemeProvider>
   );
 };

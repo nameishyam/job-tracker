@@ -32,10 +32,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-theme">
+    <div className="items-center justify-center content-center min-h-[calc(100vh-3.5rem)] bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-theme">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -58,7 +57,7 @@ const Landing = () => {
                 to="/signup"
                 className="px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors text-center"
               >
-                Get Started Free
+                Get Started
               </Link>
               <Link
                 to="/login"
@@ -69,7 +68,6 @@ const Landing = () => {
             </div>
           </motion.div>
 
-          {/* Features Grid */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -95,39 +93,6 @@ const Landing = () => {
             ))}
           </motion.div>
         </div>
-
-        {/* Stats Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 grid grid-cols-3 gap-6 text-center"
-        >
-          <div>
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              500+
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
-              Applications Tracked
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              95%
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
-              Success Rate
-            </div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-              24/7
-            </div>
-            <div className="text-sm text-gray-600 dark:text-gray-300">
-              Access
-            </div>
-          </div>
-        </motion.div>
       </div>
     </div>
   );
