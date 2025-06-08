@@ -1,151 +1,286 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import axios from "axios";
-import "./jobinfo.css";
 import { useAuth } from "../../context/AuthContext";
+import { SparklesIcon } from "@heroicons/react/24/outline";
 import model from "../../utils/gemini.js";
 
 const JobInfo = ({ job }) => {
   const [review, setReview] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentJob, setCurrentJob] = useState(job);
   const { token } = useAuth();
 
   const handleReviewChange = (e) => {
     setReview(e.target.value);
   };
+
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
+    if (!review.trim()) return;
+
+    setIsSubmitting(true);
     const payload = {
       jobId: job.id,
       review: review,
     };
-    await axios
-      .post(`${import.meta.env.VITE_API_URL}/users/jobs/review`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.status === 200) {
-          setCurrentJob({ ...currentJob, review: review });
-          setReview("");
+
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/users/jobs/review`,
+        payload,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      })
-      .catch((error) => {
-        console.error("Error submitting review:", error);
-      });
+      );
+
+      if (response.status === 200) {
+        setCurrentJob({ ...currentJob, review: review });
+        setReview("");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
-  const AiReview = async (text) => {
+
+  const AiReview = async () => {
+    if (!review.trim()) return;
+
     try {
       setIsGenerating(true);
       setAiResponse("");
-      const prompt = `Generate a detailed furthur steps and things that i have to do from now on based on the review: ${review} and the job description: ${
+
+      const prompt = `Generate a detailed analysis and next steps based on this job application review: "${review}" and job description: "${
         job.description
-      }. And these are the job details for your reference: ${JSON.stringify(
-        currentJob,
-        null,
-        2
-      )}. at the end of your response congratulate the user if he or she has successfully achieved the job, else if they lost at any stage, provide motivation to go furthur in an emotional way. Give your response in a markdown format only. just give the response no need to address me at the start or any other things at the start or end. remove "markdown\`\`\`" and "\`\`\`" from the start and end of the response.`;
+      }". 
+
+Job details for reference:
+- Position: ${job.jobtitle}
+- Company: ${job.company}
+- Location: ${job.location}
+- Type: ${job.jobtype}
+- Salary: ${job.salary}
+- Interview Rounds: ${job.rounds?.join(", ") || "None specified"}
+
+Provide actionable advice, next steps, and if applicable, congratulations or motivation. Format your response in markdown.`;
+
       const result = await model.generateContent(prompt);
       const aiResponse = result.response;
       const generatedText = aiResponse.text();
       setAiResponse(generatedText);
     } catch (error) {
-      console.log(`error: ${error}`);
+      console.error("AI analysis error:", error);
+      setAiResponse(
+        "Sorry, I couldn't analyze your review at the moment. Please try again later."
+      );
     } finally {
       setIsGenerating(false);
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "Not specified";
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  const getJobTypeColor = (type) => {
+    switch (type) {
+      case "full-time":
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200";
+      case "part-time":
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200";
+      case "intern":
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200";
+      default:
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200";
+    }
+  };
+
   return (
-    <div className="job-info-container">
-      <h2 className="job-info-title">{job.jobtitle}</h2>
-      <div className="job-info-details">
-        <div className="job-info-row">
-          <strong>Company:</strong> {job.company}
+    <div className="p-6 space-y-6">
+      {/* Header */}
+      <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
+        <div className="flex items-center space-x-3 mb-3">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {job.jobtitle}
+          </h1>
+          {job.jobtype && (
+            <span
+              className={`px-3 py-1 text-sm font-medium rounded-full ${getJobTypeColor(
+                job.jobtype
+              )}`}
+            >
+              {job.jobtype.replace("-", " ")}
+            </span>
+          )}
         </div>
-        <div className="job-info-row">
-          <strong>Location:</strong> {job.location || "Not specified"}
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          {job.company}
+        </p>
+      </div>
+
+      {/* Job Details Grid */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Location
+            </h3>
+            <p className="mt-1 text-gray-900 dark:text-white">
+              {job.location || "Not specified"}
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Date Applied
+            </h3>
+            <p className="mt-1 text-gray-900 dark:text-white">
+              {formatDate(job.date)}
+            </p>
+          </div>
         </div>
-        <div className="job-info-row">
-          <strong>Date Applied:</strong> {job.date || "Not specified"}
-        </div>
-        <div className="job-info-row">
-          <strong>Job Type:</strong> {job.jobtype || "Not specified"}
-        </div>
-        <div className="job-info-row">
-          <strong>Salary:</strong> {job.salary || "Not specified"}
-        </div>
-        <div className="job-info-section">
-          <strong>Rounds:</strong>
-          <div className="job-info-rounds">
-            {job.rounds && job.rounds.length > 0 ? (
-              job.rounds.map((round, index) => (
-                <span key={index} className="job-round">
-                  {round}
+
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Salary
+            </h3>
+            <p className="mt-1 text-gray-900 dark:text-white">
+              {job.salary || "Not specified"}
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Interview Rounds
+            </h3>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {job.rounds && job.rounds.length > 0 ? (
+                job.rounds.map((round, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm rounded"
+                  >
+                    {round}
+                  </span>
+                ))
+              ) : (
+                <span className="text-gray-500 dark:text-gray-400">
+                  None specified
                 </span>
-              ))
-            ) : (
-              <span className="job-round">Not specified</span>
-            )}
-          </div>
-        </div>{" "}
-        {job.description && (
-          <div className="job-info-section">
-            <strong>Description:</strong>
-            <div className="job-description">{job.description}</div>
-          </div>
-        )}{" "}
-        {currentJob.review && (
-          <div className="job-info-section">
-            <strong>Your Review:</strong>
-            <div className="job-review-display">{currentJob.review}</div>
-          </div>
-        )}
-        <div className="job-info-section">
-          <form onSubmit={handleReviewSubmit}>
-            <textarea
-              className="job-review-textarea"
-              placeholder="Write your review here..."
-              value={review}
-              onChange={handleReviewChange}
-              rows="4"
-            ></textarea>
-            <div className="job-review-buttons">
-              <button type="submit" className="job-review-submit">
-                Submit Review
-              </button>
-              <button
-                type="button"
-                className="ai-analyze-button"
-                onClick={() => AiReview(review)}
-                disabled={isGenerating || !review.trim()}
-              >
-                {isGenerating ? "Analyzing..." : "Analyze with AI"}
-              </button>
+              )}
             </div>
-          </form>
-          {isGenerating && (
-            <div className="ai-loading">
-              <div className="loading-spinner"></div>
-              <span>AI is analyzing your review...</span>
-            </div>
-          )}
-          {aiResponse && !isGenerating && (
-            <div className="ai-response-section">
-              <strong>AI Analysis & Next Steps:</strong>
-              <div className="ai-response-content">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {aiResponse}
-                </ReactMarkdown>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
+
+      {/* Description */}
+      {job.description && (
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            Job Description
+          </h3>
+          <div className="prose prose-sm dark:prose-invert max-w-none bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <div className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {job.description}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Existing Review */}
+      {currentJob.review && (
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            Your Review
+          </h3>
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {currentJob.review}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Review Form */}
+      <div>
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+          Add Review
+        </h3>
+        <form onSubmit={handleReviewSubmit} className="space-y-4">
+          <textarea
+            value={review}
+            onChange={handleReviewChange}
+            rows={4}
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none"
+            placeholder="Share your experience with this application..."
+          />
+
+          <div className="flex space-x-3">
+            <motion.button
+              type="submit"
+              disabled={isSubmitting || !review.trim()}
+              whileTap={{ scale: 0.98 }}
+              className="px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+            >
+              {isSubmitting ? (
+                <>
+                  <div className="loading-spinner mr-2"></div>
+                  Submitting...
+                </>
+              ) : (
+                "Submit Review"
+              )}
+            </motion.button>
+
+            <motion.button
+              type="button"
+              onClick={AiReview}
+              disabled={isGenerating || !review.trim()}
+              whileTap={{ scale: 0.98 }}
+              className="px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+            >
+              <SparklesIcon className="w-4 h-4 mr-2" />
+              {isGenerating ? "Analyzing..." : "AI Analysis"}
+            </motion.button>
+          </div>
+        </form>
+      </div>
+
+      {/* AI Loading */}
+      {isGenerating && (
+        <div className="flex items-center justify-center py-8">
+          <div className="flex items-center space-x-3">
+            <div className="loading-spinner w-6 h-6"></div>
+            <span className="text-gray-600 dark:text-gray-300">
+              AI is analyzing your review...
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* AI Response */}
+      {aiResponse && !isGenerating && (
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
+            AI Analysis & Next Steps
+          </h3>
+          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {aiResponse}
+              </ReactMarkdown>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

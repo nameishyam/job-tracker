@@ -666,43 +666,60 @@
   color: #e5e7eb;
 }
 
-@media (max-width: 768px) {
-  .job-info-container {
-    padding: 1.5rem;
-  }
+/* Job Type Badge */
+.job-type-badge {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+  margin-left: 1rem;
+}
 
-  .job-info-title {
-    font-size: 1.75rem;
-    margin-bottom: 1.5rem;
-  }
+.job-type-full-time {
+  background-color: #dcfce7;
+  color: #166534;
+}
 
-  .job-info-section {
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-  }
+.dark .job-type-full-time {
+  background-color: rgba(34, 197, 94, 0.3);
+  color: #bbf7d0;
+}
 
-  .job-review-textarea {
-    min-height: 120px;
-    padding: 1rem;
-  }
+.job-type-part-time {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
 
-  .job-review-buttons {
-    flex-direction: column;
-  }
+.dark .job-type-part-time {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: #bfdbfe;
+}
 
-  .job-review-submit,
-  .ai-analyze-button {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.95rem;
-  }
+.job-type-intern {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
 
-  .ai-loading {
-    padding: 1.5rem;
-  }
+.dark .job-type-intern {
+  background-color: rgba(147, 51, 234, 0.3);
+  color: #d8b4fe;
+}
 
-  .ai-response-section {
-    padding: 1.5rem;
-  }
+.job-type-default {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.dark .job-type-default {
+  background-color: rgba(107, 114, 128, 0.3);
+  color: #d1d5db;
+}
+
+/* Icon Styles */
+.icon {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
 }
 
 @media (max-width: 768px) {
