@@ -16,6 +16,12 @@ const startServer = async () => {
     await runMigrations(sequelize);
     console.log("✅ Migrations completed.");
 
+    app.get("/", (req, res) => {
+      res.send(
+        "<h1>Job Tracker Server</h1><p>Server is running successfully!</p>"
+      );
+    });
+
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
