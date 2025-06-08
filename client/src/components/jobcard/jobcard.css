@@ -1,322 +1,234 @@
+/* Job Card Styles */
 .job-card {
-  background: rgba(20, 20, 20, 0.8);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  margin-bottom: 1.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  padding: 1rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.15s ease;
   position: relative;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 100px rgba(59, 130, 246, 0.05);
-}
-
-.job-card::before {
-  content: "";
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 0 100px rgba(59, 130, 246, 0.05);
-}
-
-.job-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(59, 130, 246, 0.5),
-    transparent
-  );
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(59, 130, 246, 0.5),
-    transparent
-  );
-  opacity: 0.6;
-}
-
-.job-card::after {
-  content: "";
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), transparent);
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.03),
-    transparent
-  );
-}
-.job-card:hover::after {
-  left: 100%;
 }
 
 .job-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: rgba(59, 130, 246, 0.3);
-  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3), 0 0 150px rgba(59, 130, 246, 0.15);
-  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.3), 0 0 150px rgba(59, 130, 246, 0.15);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-blue);
+}
+
+/* Card Header */
+.job-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.job-basic-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .job-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
-  padding-bottom: 0.75rem;
-  position: relative;
-}
-
-.job-title::after {
-  content: "";
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #60a5fa, #a855f7);
-  transition: width 0.3s ease;
-}
-
-.job-card:hover .job-title::after {
-  width: 100%;
-}
-
-.job-card p {
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
-  color: #d1d5db;
-  line-height: 1.6;
-  transition: all 0.3s ease;
-}
-
-.job-card p:last-child {
-  margin-bottom: 0;
-}
-
-.job-card strong {
-  color: #e5e7eb;
+  font-size: 1rem;
   font-weight: 600;
-  display: inline-block;
-  min-width: 100px;
-  margin-right: 0.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+  word-wrap: break-word;
 }
 
-.job-card button {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba(239, 68, 68, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #f87171;
+.job-company {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin: 0;
+}
+
+.delete-button {
+  background: none;
+  border: none;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  width: 2.5rem;
-  height: 2.5rem;
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
+  min-width: 1.5rem;
+  height: 1.5rem;
 }
 
-.job-card button:hover {
-  color: #ffffff;
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.4);
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.3);
+.delete-button:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--accent-red);
 }
 
+.delete-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Card Body */
+.job-card-body {
+  margin-bottom: 0.75rem;
+}
+
+.job-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.job-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.detail-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Salary */
+.job-salary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background-color: var(--bg-tertiary);
+  border-radius: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.salary-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  font-weight: 500;
+}
+
+.salary-value {
+  font-size: 0.875rem;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+/* Rounds */
+.job-rounds {
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(59, 130, 246, 0.1);
+  border-radius: 9999px;
+  display: inline-block;
+}
+
+.rounds-label {
+  font-size: 0.75rem;
+  color: var(--accent-blue);
+  font-weight: 500;
+}
+
+/* Card Footer */
+.job-card-footer {
+  text-align: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.view-details {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Modal Styles */
 .job-modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(8px);
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 100;
   padding: 1rem;
-  animation: fadeInUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .job-modal-content {
-  background: rgba(15, 15, 15, 0.95);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  max-width: 600px;
   width: 100%;
-  max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(59, 130, 246, 0.1);
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(59, 130, 246, 0.1);
-  animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.job-modal-content::before {
-  content: "";
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, #3b82f6, transparent);
-  opacity: 0.6;
+  box-shadow: var(--shadow-md);
 }
 
 .job-modal-close {
   position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #9ca3af;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
   font-size: 1.5rem;
+  color: var(--text-muted);
   cursor: pointer;
-  width: 3rem;
-  height: 3rem;
+  width: 2rem;
+  height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 10;
+  border-radius: 0.25rem;
+  transition: all 0.15s ease;
+  z-index: 1;
 }
 
 .job-modal-close:hover {
-  color: #ffffff;
-  background: rgba(239, 68, 68, 0.1);
-  border-color: rgba(239, 68, 68, 0.3);
-  transform: scale(1.1);
-  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.2);
+  background-color: var(--hover-bg);
+  color: var(--text-primary);
 }
 
-/* Custom Scrollbar for Modal */
-.job-modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.job-modal-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.job-modal-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
-  border-radius: 3px;
-}
-
-.job-modal-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #60a5fa, #3b82f6);
-}
-
-@media (max-width: 768px) {
+/* Mobile Responsiveness */
+@media (max-width: 640px) {
   .job-card {
-    padding: 1.5rem;
-    margin-bottom: 1rem;
+    padding: 0.75rem;
   }
 
-  .job-title {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
+  .job-details {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
   }
 
-  .job-card p {
-    font-size: 0.875rem;
+  .job-detail {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
 
-  .job-card button {
-    top: 1rem;
-    right: 1rem;
-    width: 2rem;
-    height: 2rem;
-    padding: 0.375rem;
-  }
-
-  .job-modal-overlay {
-    padding: 0.5rem;
+  .job-modal-content {
+    margin: 0.5rem;
+    max-height: calc(100vh - 1rem);
   }
 
   .job-modal-close {
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.25rem;
-  }
-}
-
-/* Custom Scrollbar for Modal */
-.job-modal-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.job-modal-content::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 3px;
-}
-
-.job-modal-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #3b82f6, #1d4ed8);
-  border-radius: 3px;
-}
-
-.job-modal-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #60a5fa, #3b82f6);
-}
-
-@media (max-width: 768px) {
-  .job-card {
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .job-title {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-  }
-
-  .job-card p {
-    font-size: 0.875rem;
-  }
-
-  .job-card button {
-    top: 1rem;
-    right: 1rem;
-    width: 2rem;
-    height: 2rem;
-    padding: 0.375rem;
-  }
-
-  .job-modal-overlay {
-    padding: 0.5rem;
-  }
-
-  .job-modal-close {
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-size: 1.25rem;
+    top: 0.75rem;
+    right: 0.75rem;
   }
 }
