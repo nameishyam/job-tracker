@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
-import "./signup.css";
+import axios from "axios";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -12,148 +12,205 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
   const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError("");
+  const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
-      setError("Password and confirm password do not match");
-      return;
+      setError("Passwords do not match.");
+      return false;
     }
-    const { confirmPassword, ...dataToSend } = formData;
-    axios
-      .post(`${import.meta.env.VITE_API_URL}/users/signup`, dataToSend)
-      .then((response) => {
-        if (response.status === 201) {
-          login(response.data.user, response.data.token);
+    if (formData.password.length < 6) {
+      setError("Password must be at least 6 characters long.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const { confirmPassword, ...signupData } = formData;
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/signup`,
+        signupData,
+      );
+
+      if (response.status === 201) {
+        // Auto-login after successful signup
+        const loginResponse = await axios.post(
+          `${import.meta.env.VITE_API_URL}/login`,
+          {
+            email: formData.email,
+            password: formData.password,
+          },
+        );
+
+        if (loginResponse.status === 200) {
+          login(loginResponse.data.token, loginResponse.data.user);
           navigate("/dashboard");
         }
-      })
-      .catch((error) => {
-        console.error("Error creating user:", error);
-        if (error.response?.status === 400) {
-          setError("User already exists");
-        } else {
-          setError(
-            "An error occurred while creating the user. Please try again."
-          );
-        }
-      });
+      }
+    } catch (error) {
+      console.error("Signup error:", error);
+      if (error.response?.status === 409) {
+        setError("An account with this email already exists.");
+      } else if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("An error occurred. Please try again later.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-wrapper">
-        <div className="signup-grid">
-          <div className="signup-content">
-            <div className="signup-heading-wrapper">
-              <h1 className="signup-heading">
-                New to the
-                <span className="signup-heading-accent">Application?</span>
-              </h1>
-              <p className="signup-subtitle">
-                Sign up now to get started and organize all of your jobs in one
-                place with our intuitive dashboard.
-              </p>
-            </div>
+    <div className="auth-page">
+      <div className="auth-container">
+        <motion.div
+          className="auth-card"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="auth-header">
+            <h1 className="auth-title">Create Account</h1>
+            <p className="auth-subtitle">
+              Join us to start tracking your job applications
+            </p>
           </div>
 
-          <div className="signup-form-container">
-            <div className="signup-form-wrapper">
-              <div className="signup-form-card">
-                <form className="signup-form" onSubmit={handleSubmit}>
-                  <div className="signup-name-grid">
-                    <div>
-                      <label className="signup-label">First Name</label>
-                      <input
-                        type="text"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        name="firstName"
-                        required
-                        className="signup-input"
-                      />
-                    </div>
-                    <div>
-                      <label className="signup-label">Last Name</label>
-                      <input
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        required
-                        className="signup-input"
-                      />
-                    </div>
-                  </div>
+          {error && (
+            <motion.div
+              className="error-message"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.2 }}
+            >
+              {error}
+            </motion.div>
+          )}
 
-                  <div>
-                    <label className="signup-label">Email Address</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      required
-                      className="signup-input"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="signup-label">Password</label>
-                    <input
-                      type="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      required
-                      className="signup-input"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="signup-label">Confirm Password</label>
-                    <input
-                      type="password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      required
-                      className="signup-input"
-                    />
-                  </div>
-
-                  {error && <div className="signup-error">{error}</div>}
-
-                  <button type="submit" className="signup-button">
-                    Sign Up
-                  </button>
-                </form>
-
-                <div className="signup-footer">
-                  <p className="signup-footer-text">
-                    Already have an account?{" "}
-                    <Link to="/login" className="signup-footer-link">
-                      Login here
-                    </Link>
-                  </p>
-                </div>
+          <form className="auth-form" onSubmit={handleSubmit}>
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="First name"
+                  required
+                  autoComplete="given-name"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="form-input"
+                  placeholder="Last name"
+                  required
+                  autoComplete="family-name"
+                />
               </div>
             </div>
+
+            <div className="form-group">
+              <label className="form-label">Email Address</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="Enter your email"
+                required
+                autoComplete="email"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="Enter your password"
+                required
+                autoComplete="new-password"
+                minLength="6"
+              />
+            </div>
+
+            <div className="form-group">
+              <label className="form-label">Confirm Password</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                className="form-input"
+                placeholder="Confirm your password"
+                required
+                autoComplete="new-password"
+                minLength="6"
+              />
+            </div>
+
+            <motion.button
+              type="submit"
+              className="btn btn-primary auth-submit"
+              disabled={isLoading}
+              whileTap={{ scale: 0.98 }}
+            >
+              {isLoading ? (
+                <>
+                  <div className="loading-spinner small"></div>
+                  Creating account...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </motion.button>
+          </form>
+
+          <div className="auth-footer">
+            <p>
+              Already have an account?{" "}
+              <Link to="/login" className="auth-link">
+                Sign in
+              </Link>
+            </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
