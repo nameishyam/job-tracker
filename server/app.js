@@ -150,7 +150,7 @@ app.post(`/users/jobs`, authenticateToken, async (req, res) => {
   }
 });
 
-app.post(`/users/jobs/review`, async (req, res) => {
+app.post(`/users/jobs/review`, authenticateToken, async (req, res) => {
   const { jobId, review } = req.body;
   try {
     const job = await Job.findOne({ where: { id: jobId } });

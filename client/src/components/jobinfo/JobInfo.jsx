@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import { useState } from "react";
 import axios from "axios";
 import "./jobinfo.css";
+import { useAuth } from "../../context/AuthContext";
 import model from "../../utils/gemini.js";
 
 const JobInfo = ({ job }) => {
@@ -10,6 +11,7 @@ const JobInfo = ({ job }) => {
   const [aiResponse, setAiResponse] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentJob, setCurrentJob] = useState(job);
+  const { token } = useAuth();
 
   const handleReviewChange = (e) => {
     setReview(e.target.value);
@@ -21,7 +23,11 @@ const JobInfo = ({ job }) => {
       review: review,
     };
     await axios
-      .post(`${import.meta.env.VITE_API_URL}/users/jobs/review`, payload)
+      .post(`${import.meta.env.VITE_API_URL}/users/jobs/review`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response) => {
         if (response.status === 200) {
           setCurrentJob({ ...currentJob, review: review });
