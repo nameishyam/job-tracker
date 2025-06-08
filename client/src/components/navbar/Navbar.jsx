@@ -45,9 +45,8 @@ const Navbar = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
   return (
-    <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-theme">
+    <nav className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-theme">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           <Link
@@ -58,17 +57,20 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-3">
-            <motion.button
+            {/* <motion.button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               whileTap={{ scale: 0.95 }}
+              aria-label={
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+              }
             >
               {isDark ? (
                 <SunIcon className="w-4 h-4" />
               ) : (
                 <MoonIcon className="w-4 h-4" />
               )}
-            </motion.button>
+            </motion.button> */}
 
             {isAuthenticated() ? (
               <div className="relative user-menu">

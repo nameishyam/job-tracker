@@ -25,7 +25,47 @@ body {
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
     sans-serif;
   overflow-x: hidden;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Apply transitions to common elements */
+button,
+a,
+input,
+textarea,
+select,
+.card,
+.modal,
+.form-element,
+.transition-theme,
+.bg-white,
+.bg-gray-50,
+.bg-gray-100,
+.bg-gray-200,
+.bg-gray-700,
+.bg-gray-800,
+.bg-gray-900,
+.text-gray-50,
+.text-gray-100,
+.text-gray-200,
+.text-gray-300,
+.text-gray-400,
+.text-gray-500,
+.text-gray-600,
+.text-gray-700,
+.text-gray-800,
+.text-gray-900 {
+  transition: all 0.3s ease !important;
+}
+
+/* Apply dark mode to the root */
+:root {
+  color-scheme: light dark;
+}
+
+.app-container {
+  min-height: 100vh;
+  width: 100%;
 }
 
 /* Dark theme */
@@ -34,10 +74,25 @@ body {
   color: #ffffff;
 }
 
+.dark body {
+  background-color: #0a0a0a;
+  color: #ffffff;
+}
+
 /* Light theme */
+html:not(.dark) {
+  background-color: #fafafa;
+  color: #1a1a1a;
+}
+
 body:not(.dark) {
   background-color: #fafafa;
   color: #1a1a1a;
+}
+
+html.dark {
+  background-color: #0a0a0a;
+  color: #ffffff;
 }
 
 /* Focus States */
