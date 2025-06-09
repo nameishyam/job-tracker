@@ -57,7 +57,7 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-3">
-            <motion.button
+            {/* <motion.button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
               whileTap={{ scale: 0.95 }}
@@ -70,7 +70,7 @@ const Navbar = () => {
               ) : (
                 <MoonIcon className="w-4 h-4" />
               )}
-            </motion.button>
+            </motion.button> */}
 
             {isAuthenticated() ? (
               <div className="relative user-menu">
