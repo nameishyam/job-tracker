@@ -232,6 +232,7 @@ Job details for reference:
 Provide actionable advice, next steps, and if applicable, congratulations or motivation. Format your response in markdown.`;
     const result = await model.generateContent(prompt);
     const response = result.response.text().trim();
+    console.log(response);
     return res
       .status(200)
       .json({ message: "AI analysis generated successfully", response });
