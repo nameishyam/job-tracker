@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { SparklesIcon } from "@heroicons/react/24/outline";
-import model from "../../utils/gemini.js";
 
 const JobInfo = ({ job }) => {
   const [review, setReview] = useState("");
@@ -56,25 +55,21 @@ const JobInfo = ({ job }) => {
       setIsGenerating(true);
       setAiResponse("");
 
-      const prompt = `Generate a detailed analysis and next steps based on this job application review: "${review}" and job description: "${
-        job.description
-      }". 
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/gemini/ask`,
+        {
+          job: currentJob,
+          review,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
-Job details for reference:
-- Position: ${job.jobtitle}
-- Company: ${job.company}
-- Location: ${job.location}
-- Type: ${job.jobtype}
-- Salary: ${job.salary}
-- Interview Rounds: ${job.rounds?.join(", ") || "None specified"}
-
-Provide actionable advice, next steps, and if applicable, congratulations or motivation. Format your response in markdown.`;
-
-      const result = await model.generateContent(prompt);
-      const aiResponse = result.response;
-      const generatedText = aiResponse.text().trim();
-      console.log(generatedText);
-      setAiResponse(generatedText);
+      if (response.status === 200) {
+        const generatedText = response.data.response;
+        setAiResponse(generatedText);
+      }
     } catch (error) {
       console.error("AI analysis error:", error);
       setAiResponse(
