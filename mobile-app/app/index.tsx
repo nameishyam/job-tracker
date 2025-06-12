@@ -1,81 +1,265 @@
-import { Link } from "expo-router";
-import { View, Text, Pressable, ScrollView } from "react-native";
+import React from "react";
 import {
-  BellIcon,
-  ChartBarIcon,
-  ClipboardDocumentListIcon,
-  CheckCircleIcon,
-} from "react-native-heroicons/outline";
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { Link } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import Animated, {
+  FadeInLeft,
+  FadeInRight,
+  FadeInUp,
+} from "react-native-reanimated";
 
-const features = [
-  {
-    Icon: ClipboardDocumentListIcon,
-    title: "Track Applications",
-    description: "Keep all your job applications organized in one place",
-  },
-  {
-    Icon: ChartBarIcon,
-    title: "Monitor Progress",
-    description: "Track interview rounds and application status",
-  },
-  {
-    Icon: BellIcon,
-    title: "Stay Updated",
-    description: "Never miss important deadlines or follow-ups",
-  },
-  {
-    Icon: CheckCircleIcon,
-    title: "Achieve Goals",
-    description: "Land your dream job with better organization",
-  },
-];
+const AnimatedView = Animated.createAnimatedComponent(View);
+const { width } = Dimensions.get("window");
 
-export default function Landing() {
+const Landing = () => {
+  const features = [
+    {
+      icon: "clipboard-outline",
+      title: "Track Applications",
+      description: "Keep all your job applications organized in one place",
+    },
+    {
+      icon: "bar-chart-outline",
+      title: "Monitor Progress",
+      description: "Track interview rounds and application status",
+    },
+    {
+      icon: "notifications-outline",
+      title: "Stay Updated",
+      description: "Never miss important deadlines or follow-ups",
+    },
+    {
+      icon: "checkmark-circle-outline",
+      title: "Achieve Goals",
+      description: "Land your dream job with better organization",
+    },
+  ];
+
   return (
-    <ScrollView className="flex-1 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 px-6 py-10">
-      <View className="mb-10">
-        <Text className="text-4xl font-bold text-gray-900 dark:text-white leading-tight">
-          Track Every Job
-        </Text>
-        <Text className="text-4xl font-bold text-green-600">Application</Text>
-        <Text className="text-base text-gray-600 dark:text-gray-300 mt-4">
-          Organize your job search with our intuitive tracker. Monitor
-          applications, track interview rounds, and stay on top of your career
-          journey.
-        </Text>
-      </View>
-
-      <View className="flex flex-row space-x-4 mb-8">
-        <Link href="/signup" asChild>
-          <Pressable className="flex-1 px-5 py-3 bg-green-600 rounded-lg items-center">
-            <Text className="text-white font-medium">Get Started</Text>
-          </Pressable>
-        </Link>
-        <Link href="/login" asChild>
-          <Pressable className="flex-1 px-5 py-3 border border-gray-300 dark:border-gray-600 rounded-lg items-center">
-            <Text className="text-gray-700 dark:text-gray-200 font-medium">
-              Sign In
-            </Text>
-          </Pressable>
-        </Link>
-      </View>
-
-      <View className="grid grid-cols-2 gap-4">
-        {features.map(({ Icon, title, description }) => (
-          <View
-            key={title}
-            className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700"
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+      <View style={styles.content}>
+        <View style={styles.mainGrid}>
+          {/* Left Column - Hero Content */}
+          <AnimatedView
+            entering={FadeInLeft.duration(600)}
+            style={styles.leftColumn}
           >
-            <Icon size={24} color="#22c55e" className="mb-2" />
-            <Text className="font-semibold text-gray-900 dark:text-white text-sm mb-1">
-              {title}
-            </Text>
-            <Text className="text-xs text-gray-600 dark:text-gray-300">
-              {description}
-            </Text>
-          </View>
-        ))}
+            <View style={styles.heroSection}>
+              <Text style={styles.mainTitle}>
+                Track Every Job{"\n"}
+                <Text style={styles.gradientText}>Application</Text>
+              </Text>
+            </View>
+
+            <View style={styles.descriptionSection}>
+              <Text style={styles.description}>
+                Organize your job search with our intuitive tracker. Monitor
+                applications, track interview rounds, and stay on top of your
+                career journey.
+              </Text>
+            </View>
+
+            <View style={styles.buttonContainer}>
+              <Link href="/signup" asChild>
+                <TouchableOpacity style={styles.primaryButton}>
+                  <Text style={styles.primaryButtonText}>Get Started</Text>
+                </TouchableOpacity>
+              </Link>
+
+              <Link href="/login" asChild>
+                <TouchableOpacity style={styles.secondaryButton}>
+                  <Text style={styles.secondaryButtonText}>Sign In</Text>
+                </TouchableOpacity>
+              </Link>
+            </View>
+          </AnimatedView>
+
+          {/* Right Column - Features Grid */}
+          <AnimatedView
+            entering={FadeInRight.duration(600).delay(200)}
+            style={styles.rightColumn}
+          >
+            <View style={styles.featuresContainer}>
+              {/* First Row - Track Applications & Monitor Progress */}
+              <View style={styles.featuresRow}>
+                {features.slice(0, 2).map((feature, index) => (
+                  <AnimatedView
+                    key={feature.title}
+                    entering={FadeInUp.duration(400).delay(300 + index * 100)}
+                    style={styles.featureCardWrapper}
+                  >
+                    <View style={styles.featureCard}>
+                      <Ionicons
+                        name={feature.icon as any}
+                        size={24}
+                        color="#16a34a"
+                        style={styles.featureIcon}
+                      />
+                      <Text style={styles.featureTitle}>{feature.title}</Text>
+                      <Text style={styles.featureDescription}>
+                        {feature.description}
+                      </Text>
+                    </View>
+                  </AnimatedView>
+                ))}
+              </View>
+
+              {/* Second Row - Stay Updated & Achieve Goals */}
+              <View style={styles.featuresRow}>
+                {features.slice(2, 4).map((feature, index) => (
+                  <AnimatedView
+                    key={feature.title}
+                    entering={FadeInUp.duration(400).delay(500 + index * 100)}
+                    style={styles.featureCardWrapper}
+                  >
+                    <View style={styles.featureCard}>
+                      <Ionicons
+                        name={feature.icon as any}
+                        size={24}
+                        color="#16a34a"
+                        style={styles.featureIcon}
+                      />
+                      <Text style={styles.featureTitle}>{feature.title}</Text>
+                      <Text style={styles.featureDescription}>
+                        {feature.description}
+                      </Text>
+                    </View>
+                  </AnimatedView>
+                ))}
+              </View>
+            </View>
+          </AnimatedView>
+        </View>
       </View>
     </ScrollView>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#f9fafb",
+  },
+  content: {
+    maxWidth: 1280,
+    alignSelf: "center",
+    width: "100%",
+    paddingHorizontal: 16,
+    paddingVertical: 48,
+  },
+  mainGrid: {
+    flexDirection: width > 768 ? "row" : "column",
+    alignItems: "center",
+    gap: width > 768 ? 48 : 32,
+  },
+  leftColumn: {
+    flex: 1,
+    width: "100%",
+  },
+  rightColumn: {
+    flex: 1,
+    width: "100%",
+  },
+  heroSection: {
+    marginBottom: 24,
+  },
+  mainTitle: {
+    fontSize: width > 768 ? 40 : 32,
+    fontWeight: "bold",
+    color: "#111827",
+    lineHeight: width > 768 ? 48 : 40,
+  },
+  gradientText: {
+    color: "#16a34a",
+  },
+  descriptionSection: {
+    marginBottom: 24,
+  },
+  description: {
+    fontSize: 18,
+    color: "#6b7280",
+    lineHeight: 28,
+  },
+  buttonContainer: {
+    flexDirection: "column",
+    gap: 12,
+  },
+  primaryButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: "#16a34a",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  primaryButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  secondaryButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderWidth: 1,
+    borderColor: "#d1d5db",
+    borderRadius: 8,
+    alignItems: "center",
+    backgroundColor: "transparent",
+  },
+  secondaryButtonText: {
+    color: "#374151",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  // Updated styles for 2x2 grid layout
+  featuresContainer: {
+    gap: 16,
+  },
+  featuresRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  featureCardWrapper: {
+    flex: 1,
+    maxWidth: "48%",
+  },
+  featureCard: {
+    padding: 16,
+    backgroundColor: "white",
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: "#e5e7eb",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+    minHeight: 120, // Ensures consistent card height
+  },
+  featureIcon: {
+    marginBottom: 8,
+  },
+  featureTitle: {
+    fontWeight: "600",
+    color: "#111827",
+    fontSize: 14,
+    marginBottom: 4,
+  },
+  featureDescription: {
+    fontSize: 12,
+    color: "#6b7280",
+    lineHeight: 16,
+  },
+});
+
+export default Landing;
