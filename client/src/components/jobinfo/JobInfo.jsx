@@ -72,7 +72,8 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
 
       const result = await model.generateContent(prompt);
       const aiResponse = result.response;
-      const generatedText = aiResponse.text();
+      const generatedText = aiResponse.text().trim();
+      console.log(generatedText);
       setAiResponse(generatedText);
     } catch (error) {
       console.error("AI analysis error:", error);
