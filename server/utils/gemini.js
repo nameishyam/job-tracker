@@ -1,8 +1,10 @@
-import {
+const {
   GoogleGenerativeAI,
   HarmBlockThreshold,
   HarmCategory,
-} from "@google/generative-ai";
+} = require("@google/generative-ai");
+
+require("dotenv").config();
 
 const safetySettings = [
   {
@@ -15,10 +17,11 @@ const safetySettings = [
   },
 ];
 
-const genAI = new GoogleGenerativeAI(import.meta.env.VITE_GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
+
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
   safetySettings,
 });
 
-export default model;
+module.exports = model; // ✅ CommonJS export

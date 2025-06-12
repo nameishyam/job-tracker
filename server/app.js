@@ -3,6 +3,7 @@ const { User, Job } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const model = require("./utils/gemini");
 require("dotenv").config();
 
 const app = express();
@@ -209,6 +210,33 @@ app.delete(`/users/jobs`, authenticateToken, async (req, res) => {
     return res.status(200).json({ message: "Job deleted successfully" });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.post("/gemini/ask", authenticateToken, async (req, res) => {
+  const { job, review } = req.body;
+  try {
+    const prompt = `Generate a detailed analysis and next steps based on this job application review: "${review}" and job description: "${
+      job.description
+    }". 
+
+Job details for reference:
+- Position: ${job.jobtitle}
+- Company: ${job.company}
+- Location: ${job.location}
+- Type: ${job.jobtype}
+- Salary: ${job.salary}
+- Interview Rounds: ${job.rounds?.join(", ") || "None specified"}
+
+Provide actionable advice, next steps, and if applicable, congratulations or motivation. Format your response in markdown.`;
+    const result = await model.generateContent(prompt);
+    const response = result.response.text().trim();
+    return res
+      .status(200)
+      .json({ message: "AI analysis generated successfully", response });
+  } catch (error) {
+    console.log("error", error);
     return res.status(500).json({ message: error.message });
   }
 });
