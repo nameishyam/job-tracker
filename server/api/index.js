@@ -3,7 +3,6 @@ require("pg");
 const app = require("../app");
 const { sequelize } = require("../models");
 
-// Database connection state
 let dbConnected = false;
 
 const connectDatabase = async () => {
@@ -19,12 +18,10 @@ const connectDatabase = async () => {
   }
 };
 
-// Add the root route to your app
 app.get("/", (req, res) => {
   res.send("<h1>Job Tracker Server</h1><p>Server is running successfully!</p>");
 });
 
-// Export the app for Vercel (this is the key fix)
 module.exports = async (req, res) => {
   try {
     await connectDatabase();
