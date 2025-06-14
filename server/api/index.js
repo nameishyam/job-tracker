@@ -1,4 +1,5 @@
 require("dotenv").config();
+require("pg");
 const app = require("../app");
 const { sequelize } = require("../models");
 
