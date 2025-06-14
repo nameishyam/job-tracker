@@ -1,8 +1,8 @@
 require("dotenv").config();
-const app = require("./app");
-const { sequelize } = require("./models");
-const ensureDatabaseExists = require("./utils/ensureDatabase");
-const runMigrations = require("./utils/runMigrations");
+import app from "../app";
+import { sequelize } from "../models";
+import ensureDatabaseExists from "../utils/ensureDatabase";
+import runMigrations from "../utils/runMigrations";
 
 const PORT = process.env.PORT || 3000;
 
@@ -16,7 +16,7 @@ const startServer = async () => {
     await runMigrations(sequelize);
     console.log("✅ Migrations completed.");
 
-    app.get("/", (req, res) => {
+    app.get("/", (req: any, res: { send: (arg0: string) => void }) => {
       res.send(
         "<h1>Job Tracker Server</h1><p>Server is running successfully!</p>"
       );
