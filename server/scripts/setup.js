@@ -4,19 +4,21 @@ const ensureDatabaseExists = require("../utils/ensureDatabase");
 const runMigrations = require("../utils/runMigrations");
 
 const setupDatabase = async () => {
-  try {
-    await ensureDatabaseExists();
-    await sequelize.authenticate();
-    console.log("✅ Connected to database.");
+  await ensureDatabaseExists();
+  await sequelize.authenticate();
+  console.log("✅ Connected to database.");
 
-    await runMigrations(sequelize);
-    console.log("✅ Migrations completed.");
-
-    process.exit(0);
-  } catch (error) {
-    console.error("❌ Setup error:", error);
-    process.exit(1);
-  }
+  await runMigrations(sequelize);
+  console.log("✅ Migrations completed.");
 };
 
-setupDatabase();
+module.exports = setupDatabase;
+
+if (require.main === module) {
+  setupDatabase()
+    .then(() => process.exit(0))
+    .catch((err) => {
+      console.error("❌ Setup error:", err);
+      process.exit(1);
+    });
+}

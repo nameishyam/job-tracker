@@ -63,20 +63,21 @@ const JobCard = ({ job, onJobDeleted }) => {
 
   return (
     <>
+      {" "}
       <motion.div
         onClick={handleCardClick}
         whileHover={{ y: -2 }}
-        className="p-4 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 relative"
+        className="p-3 sm:p-4 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 relative"
       >
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center space-x-2 mb-2">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-2">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white line-clamp-2 sm:truncate">
                 {job.jobtitle}
               </h3>
               {job.jobtype && (
                 <span
-                  className={`px-2 py-1 text-xs font-medium rounded-full ${getJobTypeColor(
+                  className={`px-2 py-1 text-xs font-medium rounded-full self-start ${getJobTypeColor(
                     job.jobtype
                   )}`}
                 >
@@ -123,35 +124,33 @@ const JobCard = ({ job, onJobDeleted }) => {
                 </div>
               </div>
             )}
-          </div>
-
-          <div className="flex items-center space-x-2 ml-4">
+          </div>{" "}
+          <div className="flex items-center space-x-2 sm:ml-4">
             <motion.button
               onClick={handleCardClick}
               whileTap={{ scale: 0.95 }}
-              className="p-2 text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              className="p-2 text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
               title="View details"
             >
-              <EyeIcon className="w-4 h-4" />
+              <EyeIcon className="w-5 h-5" />
             </motion.button>
 
             <motion.button
               onClick={handleDelete}
               disabled={isDeleting}
               whileTap={{ scale: 0.95 }}
-              className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors disabled:opacity-50"
+              className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors disabled:opacity-50 min-h-[44px] min-w-[44px] flex items-center justify-center"
               title="Delete job"
             >
               {isDeleting ? (
-                <div className="loading-spinner w-4 h-4"></div>
+                <div className="loading-spinner w-5 h-5"></div>
               ) : (
-                <TrashIcon className="w-4 h-4" />
+                <TrashIcon className="w-5 h-5" />
               )}
             </motion.button>
           </div>
         </div>
       </motion.div>
-
       {isExpanded && (
         <motion.div
           initial={{ opacity: 0 }}
