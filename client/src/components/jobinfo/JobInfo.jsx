@@ -99,15 +99,15 @@ const JobInfo = ({ job }) => {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="border-b border-gray-200 dark:border-gray-700 pb-4">
-        <div className="flex items-center space-x-3 mb-3">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <div className="border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-2 sm:mb-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
             {job.jobtitle}
           </h1>
           {job.jobtype && (
             <span
-              className={`px-3 py-1 text-sm font-medium rounded-full ${getJobTypeColor(
+              className={`px-3 py-1 text-sm font-medium rounded-full self-start ${getJobTypeColor(
                 job.jobtype
               )}`}
             >
@@ -115,13 +115,12 @@ const JobInfo = ({ job }) => {
             </span>
           )}
         </div>
-        <p className="text-lg text-gray-600 dark:text-gray-300">
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
           {job.company}
         </p>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-4">
+      </div>{" "}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="space-y-3 sm:space-y-4">
           <div>
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Location
@@ -141,7 +140,7 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div>
             <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Salary
@@ -174,7 +173,6 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
       </div>
-
       {job.description && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
@@ -187,7 +185,6 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
       )}
-
       {currentJob.review && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
@@ -200,7 +197,6 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
       )}
-
       <div>
         <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
           Add Review
@@ -212,14 +208,13 @@ const JobInfo = ({ job }) => {
             rows={4}
             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none"
             placeholder="Share your experience with this application..."
-          />
-
-          <div className="flex space-x-3">
+          />{" "}
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <motion.button
               type="submit"
               disabled={isSubmitting || !review.trim()}
               whileTap={{ scale: 0.98 }}
-              className="px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+              className="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
@@ -236,7 +231,7 @@ const JobInfo = ({ job }) => {
               onClick={AiReview}
               disabled={isGenerating || !review.trim()}
               whileTap={{ scale: 0.98 }}
-              className="px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center"
+              className="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
               <SparklesIcon className="w-4 h-4 mr-2" />
               {isGenerating ? "Analyzing..." : "AI Analysis"}
@@ -244,7 +239,6 @@ const JobInfo = ({ job }) => {
           </div>
         </form>
       </div>
-
       {isGenerating && (
         <div className="flex items-center justify-center py-8">
           <div className="flex items-center space-x-3">
@@ -255,7 +249,6 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
       )}
-
       {aiResponse && !isGenerating && (
         <div>
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
