@@ -81,8 +81,7 @@ const Dashboard = () => {
             <PlusIcon className="w-4 h-4 mr-2" />
             Add Job
           </motion.button>
-        </div>
-
+        </div>{" "}
         <div className="grid lg:grid-cols-3 gap-6">
           {showForm && (
             <motion.div
@@ -110,10 +109,9 @@ const Dashboard = () => {
                 />
               </div>
             </motion.div>
-          )}
-
+          )}{" "}
           <div className={`${showForm ? "lg:col-span-2" : "lg:col-span-3"}`}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <div className="lg:sticky lg:top-20 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
               <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center">
                   <BriefcaseIcon className="w-5 h-5 text-gray-400 mr-2" />
