@@ -229,7 +229,7 @@ Job details for reference:
 - Salary: ${job.salary}
 - Interview Rounds: ${job.rounds?.join(", ") || "None specified"}
 
-Provide actionable advice, next steps, and if applicable, congratulations or motivation. Format your response in markdown.`;
+Provide actionable advice, next steps, and if applicable, congratulations or motivation. And remember to address the user in "you" or "you have done this, you have done that", "these are my responses to you, these are my advices to you" instead of any third person addressing like "the candidate". Format your response in markdown.`;
     const result = await model.generateContent(prompt);
     const response = result.response.text().trim();
     console.log(response);
