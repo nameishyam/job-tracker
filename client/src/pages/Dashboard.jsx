@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import JobCard from "../../components/jobcard/JobCard";
-import JobForm from "../../components/jobform/JobForm";
+import JobCard from "../components/JobCard";
+import JobForm from "../components/JobForm";
 import { PlusIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
 
 const Dashboard = () => {

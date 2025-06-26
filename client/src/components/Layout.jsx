@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
-import Navbar from "./navbar/Navbar";
+import Navbar from "./Navbar";
 import { useTheme } from "../context/ThemeContext";
 import { useModal } from "../context/ModalContext";
 import { useAuth } from "../context/AuthContext";

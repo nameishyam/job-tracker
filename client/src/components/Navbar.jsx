@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
-import { useModal } from "../../context/ModalContext";
-import { useTheme } from "../../context/ThemeContext";
+import { useAuth } from "../context/AuthContext";
+import { useModal } from "../context/ModalContext";
+import { useTheme } from "../context/ThemeContext";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {

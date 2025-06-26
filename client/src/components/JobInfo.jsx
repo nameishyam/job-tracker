@@ -3,7 +3,7 @@ import remarkGfm from "remark-gfm";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { SparklesIcon } from "@heroicons/react/24/outline";
 
 const JobInfo = ({ job }) => {

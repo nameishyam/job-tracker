@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const JobForm = ({ email, onJobAdded }) => {

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import JobInfo from "../jobinfo/JobInfo";
+import JobInfo from "./JobInfo";
 import axios from "axios";
 import { TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 
 const JobCard = ({ job, onJobDeleted }) => {
   const [isExpanded, setIsExpanded] = useState(false);
