@@ -43,7 +43,6 @@ app.post(`/users/signup`, async (req, res) => {
   const hashedPwd = await bcrypt.hash(password, saltRounds);
   try {
     const existingUser = await User.findUser({ email });
-    console.log("Existing user check:", existingUser);
     if (existingUser) return res.status(400).send("User already Exists");
     const user = await User.createUser({
       firstName,
