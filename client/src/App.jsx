@@ -3,6 +3,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Layout from "./components/Layout";
+import Profile from "./pages/Profile";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -25,6 +26,7 @@ const App = () => {
                   <Route path="signup" element={<Signup />} />
                   <Route element={<ProtectedRoute />}>
                     <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="profile" element={<Profile />} />
                   </Route>
                 </Route>
               </Routes>
