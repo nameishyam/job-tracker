@@ -8,13 +8,26 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(express.json());
+const allowedOrigins = [
+  "https://career-dock.vercel.app",
+  "http://localhost:3000"
+];
+
 app.use(
   cors({
-    origin: "*",
-    credentials: false,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
 
