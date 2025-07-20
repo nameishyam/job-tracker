@@ -1,13 +1,10 @@
-const pgtools = require("pgtools");
 require("dotenv").config();
 const { URL } = require("url");
-const db = require("../models");
-const config = require("../config/config").production;
 
-const dbUrl = process.env.DATABASE_URL || config.use_env_variable;
+const dbUrl = process.env.DATABASE_URL;
 
 if (!dbUrl) {
-  console.error("DATABASE_URL environment variable not defined.");
+  console.error("❌ DATABASE_URL environment variable not defined.");
   process.exit(1);
 }
 
@@ -21,7 +18,15 @@ const dbConfig = {
   database: parsed.pathname.replace("/", ""),
 };
 
+// Skip db creation for production environments
 const ensureDatabaseExists = async () => {
+  if (process.env.NODE_ENV === "production") {
+    console.log("ℹ️ Skipping database creation in production.");
+    return;
+  }
+
+  const pgtools = require("pgtools");
+
   try {
     await pgtools.createdb(
       {
@@ -32,12 +37,12 @@ const ensureDatabaseExists = async () => {
       },
       dbConfig.database
     );
-    console.log(`Database "${dbConfig.database}" created successfully.`);
+    console.log(`✅ Database "${dbConfig.database}" created successfully.`);
   } catch (err) {
     if (err.name === "duplicate_database") {
-      console.log(`Database "${dbConfig.database}" already exists.`);
+      console.log(`ℹ️ Database "${dbConfig.database}" already exists.`);
     } else {
-      console.error("Error creating database:", err);
+      console.error("❌ Error creating database:", err);
       process.exit(1);
     }
   }
