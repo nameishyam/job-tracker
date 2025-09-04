@@ -10,7 +10,8 @@ const app = express();
 
 const allowedOrigins = [
   "https://career-dock.vercel.app",
-  "http://localhost:3000"
+  "http://localhost:3000",
+  "http://localhost:5173",
 ];
 
 app.use(
@@ -27,7 +28,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
 
