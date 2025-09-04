@@ -29,6 +29,9 @@ app.use(
   })
 );
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
 
 const saltRounds = 10;
