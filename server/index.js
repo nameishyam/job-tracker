@@ -9,12 +9,12 @@ const PORT = process.env.PORT || 3000;
   try {
     await setupDatabase();
     app.get("/", (_, res) =>
-      res.send("<h1>Job Tracker Server</h1><p>Server is running locally!</p>")
+      res.send("<h1>Job Tracker Server</h1><p>Server is running locally!</p>")
     );
 
-    app.listen(PORT, () => console.log(`🚀 Local server up at port: ${PORT}`));
+    app.listen(PORT, () => console.log(`Local server up at port: ${PORT}`));
   } catch (err) {
-    console.error("❌ Failed to launch local server:", err);
+    console.error("Failed to launch local server:", err);
     process.exit(1);
   }
 })();

@@ -6,18 +6,33 @@ const Sequelize = require("sequelize");
 const process = require("process");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.js")[env];
+const configModule = require(__dirname + "/../config/config.js");
+const config = configModule[env] || configModule;
+
 const db = {};
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+const buildOptions = (cfg) => {
+  const opts = Object.assign({}, cfg);
+  delete opts.use_env_variable;
+  delete opts.url;
+  return opts;
+};
+
+if (config.use_env_variable && process.env[config.use_env_variable]) {
+  const connectionString = process.env[config.use_env_variable];
+  const options = buildOptions(config);
+  sequelize = new Sequelize(connectionString, options);
+} else if (config.url) {
+  const connectionString = config.url;
+  const options = buildOptions(config);
+  sequelize = new Sequelize(connectionString, options);
 } else {
   sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
-    config
+    buildOptions(config)
   );
 }
 

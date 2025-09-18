@@ -9,10 +9,10 @@ const connectDatabase = async () => {
   if (!dbConnected) {
     try {
       await sequelize.authenticate();
-      console.log("✅ Connected to database.");
+      console.log("Connected to database.");
       dbConnected = true;
     } catch (error) {
-      console.error("❌ Database connection failed:", error);
+      console.error("Database connection failed:", error);
       throw error;
     }
   }
@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
     await connectDatabase();
     return app(req, res);
   } catch (error) {
-    console.error("❌ Request handling error:", error);
+    console.error("Request handling error:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
