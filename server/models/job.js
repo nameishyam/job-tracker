@@ -24,7 +24,11 @@ module.exports = (sequelize, DataTypes) => {
       salary: DataTypes.STRING,
       description: DataTypes.TEXT,
       date: DataTypes.DATEONLY,
-      rounds: DataTypes.ARRAY(DataTypes.STRING),
+      roundStatus: {
+        type: DataTypes.JSONB,
+        allowNull: false,
+        defaultValue: {},
+      },
       review: DataTypes.TEXT,
     },
     {
