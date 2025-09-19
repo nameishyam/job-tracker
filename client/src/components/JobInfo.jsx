@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { SparklesIcon } from "@heroicons/react/24/outline";
+import { useEffect } from "react";
 
 const JobInfo = ({ job }) => {
   const [review, setReview] = useState("");
@@ -12,7 +13,7 @@ const JobInfo = ({ job }) => {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentJob, setCurrentJob] = useState(job);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   const handleReviewChange = (e) => {
     setReview(e.target.value);
@@ -54,7 +55,6 @@ const JobInfo = ({ job }) => {
     try {
       setIsGenerating(true);
       setAiResponse("");
-
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/gemini/ask`,
         {
@@ -84,6 +84,61 @@ const JobInfo = ({ job }) => {
     if (!dateString) return "Not specified";
     return new Date(dateString).toLocaleDateString();
   };
+
+  const handleCheckboxChange = async (round, checked) => {
+    try {
+      const payload = {
+        jobId: job.id,
+        round,
+        status: checked ? 1 : 0,
+      };
+
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/jobs`,
+        payload,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status === 200) {
+        if (response.data?.job) {
+          setCurrentJob(response.data.job);
+        } else {
+          setCurrentJob((prevJob) => ({
+            ...prevJob,
+            roundStatus: {
+              ...prevJob.roundStatus,
+              [round]: checked ? 1 : 0,
+            },
+          }));
+        }
+      } else {
+        console.error("Error updating round status:", response);
+      }
+    } catch (err) {
+      console.error("Failed to update round status:", err);
+    }
+  };
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_API_URL}/users/jobs`,
+          {
+            params: { email: user.email },
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (response.status === 200 && response.data.jobs) {
+          const updatedJob = response.data.jobs.find((j) => j.id === job.id);
+          if (updatedJob) setCurrentJob(updatedJob);
+        }
+      } catch (error) {
+        console.error("Failed to fetch job:", error);
+      }
+    };
+    fetchJob();
+  }, [user.email, job.id, token]);
 
   const getJobTypeColor = (type) => {
     switch (type) {
@@ -155,14 +210,32 @@ const JobInfo = ({ job }) => {
               Interview Rounds
             </h3>
             <div className="mt-2 flex flex-wrap gap-2">
-              {job.rounds && job.rounds.length > 0 ? (
-                job.rounds.map((round, index) => (
-                  <span
-                    key={index}
-                    className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-sm rounded"
+              {currentJob.roundStatus &&
+              Object.keys(currentJob.roundStatus).length > 0 ? (
+                Object.keys(currentJob.roundStatus).map((round) => (
+                  <label
+                    key={round}
+                    className="flex items-center space-x-2 cursor-pointer"
                   >
-                    {round}
-                  </span>
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+                      checked={!!currentJob.roundStatus?.[round]}
+                      onChange={(e) =>
+                        handleCheckboxChange(round, e.target.checked)
+                      }
+                    />
+
+                    <span
+                      className={`px-3 py-1 text-sm font-medium rounded-full ${
+                        currentJob.roundStatus[round] === 1
+                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+                      }`}
+                    >
+                      {round}
+                    </span>
+                  </label>
                 ))
               ) : (
                 <span className="text-gray-500 dark:text-gray-400">

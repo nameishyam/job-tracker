@@ -24,7 +24,7 @@ app.use(
       }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -146,6 +146,10 @@ app.post(`/users/jobs`, authenticateToken, async (req, res) => {
     review,
   } = req.body;
   try {
+    const roundStatus = rounds.reduce((acc, round) => {
+      acc[round] = "0";
+      return acc;
+    }, {});
     const createdJob = await Job.create({
       userId,
       jobtitle,
@@ -155,12 +159,33 @@ app.post(`/users/jobs`, authenticateToken, async (req, res) => {
       salary,
       description,
       date,
-      rounds,
       review,
+      roundStatus,
     });
     return res
       .status(201)
       .json({ message: "Job created successfully", job: createdJob });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.patch(`/users/jobs`, authenticateToken, async (req, res) => {
+  const { jobId, round, status } = req.body;
+  try {
+    const job = await Job.findOne({ where: { id: jobId } });
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+    let roundStatus = job.roundStatus || {};
+    roundStatus = {
+      ...roundStatus,
+      [round]: status === "1" || status === 1 ? 1 : 0,
+    };
+    job.roundStatus = roundStatus;
+    await job.save();
+    console.log(job);
+    return res.status(200).json({ message: "Job updated successfully", job });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
