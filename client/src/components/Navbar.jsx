@@ -66,12 +66,12 @@ const Navbar = () => {
             >
               JobTracker
             </Link>
-            <Link
+            {/* <Link
               to="/blog"
               className="text-sm font-medium text-gray-200 drop-shadow-sm hover:text-white transition-colors hidden sm:block"
             >
               Blog
-            </Link>
+            </Link> */}
           </div>
 
           <div className="flex items-center space-x-3">
