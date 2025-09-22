@@ -50,8 +50,6 @@ const JobInfo = ({ job }) => {
   };
 
   const AiReview = async () => {
-    if (!review.trim()) return;
-
     try {
       setIsGenerating(true);
       setAiResponse("");
@@ -302,7 +300,7 @@ const JobInfo = ({ job }) => {
             <motion.button
               type="button"
               onClick={AiReview}
-              disabled={isGenerating || !review.trim()}
+              disabled={isGenerating}
               whileTap={{ scale: 0.98 }}
               className="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
