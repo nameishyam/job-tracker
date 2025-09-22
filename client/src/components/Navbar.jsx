@@ -51,40 +51,42 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <nav className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 transition-theme">
+    <nav
+      // Background, blur, and border classes have been removed.
+      // Height is increased slightly to give elements more space.
+      className="sticky top-0 z-50 transition-colors duration-300"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14">
-          <Link
-            to="/"
-            className="text-lg font-bold text-gray-900 dark:text-white hover:text-green-600 dark:hover:text-green-400 transition-colors"
-          >
-            JobTracker
-          </Link>
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center space-x-8">
+            <Link
+              to="/"
+              // Text is now white with a drop shadow for readability
+              className="text-xl font-bold text-white drop-shadow-sm hover:text-cyan-300 transition-colors"
+            >
+              JobTracker
+            </Link>
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-gray-200 drop-shadow-sm hover:text-white transition-colors hidden sm:block"
+            >
+              Blog
+            </Link>
+          </div>
 
           <div className="flex items-center space-x-3">
-            {/* <motion.button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              whileTap={{ scale: 0.95 }}
-              aria-label={
-                isDark ? "Switch to light mode" : "Switch to dark mode"
-              }
-            >
-              {isDark ? (
-                <SunIcon className="w-4 h-4" />
-              ) : (
-                <MoonIcon className="w-4 h-4" />
-              )}
-            </motion.button> */}
+            {/* Theme toggle can be added here later */}
 
             {isAuthenticated() ? (
               <div className="relative user-menu">
                 <motion.button
                   onClick={toggleDropdown}
-                  className="flex items-center space-x-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  className="flex items-center space-x-2 p-2 rounded-full transition-colors duration-300
+                         border border-transparent hover:border-gray-300/50 dark:hover:border-white/20
+                         hover:bg-white/20 dark:hover:bg-black/20"
                   whileTap={{ scale: 0.95 }}
                 >
-                  <UserCircleIcon className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+                  <UserCircleIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
                   <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">
                     {user?.firstName}
                   </span>
@@ -95,52 +97,56 @@ const Navbar = () => {
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1"
+                    className="absolute right-0 mt-2 w-56 rounded-2xl shadow-lg overflow-hidden
+                           border border-white/20
+                           backdrop-blur-xl bg-white/70 dark:bg-gray-900/70"
                   >
-                    <Link to="/profile" onClick={handleUserChange}>
-                      <div className="px-3 py-2 border-b border-gray-200 dark:border-gray-700">
-                        <p className="text-sm font-medium text-gray-900 dark:text-white">
+                    {/* User Info Header */}
+                    <Link to="/profile" onClick={() => setDropdownOpen(false)}>
+                      <div className="px-4 py-3 border-b border-gray-200/80 dark:border-gray-700/80 hover:bg-black/5 dark:hover:bg-white/5">
+                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
                           {user?.firstName} {user?.lastName}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                           {user?.email}
                         </p>
                       </div>
                     </Link>
 
-                    <Link
-                      to="/"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <HomeIcon className="w-4 h-4 mr-2" />
-                      Home
-                    </Link>
+                    {/* Menu Items */}
+                    <div className="py-1">
+                      <Link
+                        to="/"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      >
+                        <HomeIcon className="w-4 h-4 mr-3" /> Home
+                      </Link>
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setDropdownOpen(false)}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      >
+                        <ChartBarIcon className="w-4 h-4 mr-3" /> Dashboard
+                      </Link>
+                    </div>
 
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setDropdownOpen(false)}
-                      className="flex items-center px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <ChartBarIcon className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Link>
-
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center w-full px-3 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      <ArrowRightOnRectangleIcon className="w-4 h-4 mr-2" />
-                      Logout
-                    </button>
-
-                    <button
-                      onClick={handleDeleteAccount}
-                      className="flex items-center w-full px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
-                    >
-                      <TrashIcon className="w-4 h-4 mr-2" />
-                      Delete Account
-                    </button>
+                    {/* Action Items */}
+                    <div className="py-1 border-t border-gray-200/80 dark:border-gray-700/80">
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
+                      >
+                        <ArrowRightOnRectangleIcon className="w-4 h-4 mr-3" />{" "}
+                        Logout
+                      </button>
+                      <button
+                        onClick={handleDeleteAccount}
+                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-500/10"
+                      >
+                        <TrashIcon className="w-4 h-4 mr-3" /> Delete Account
+                      </button>
+                    </div>
                   </motion.div>
                 )}
               </div>
@@ -148,13 +154,18 @@ const Navbar = () => {
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-gray-200 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-semibold
+                         transition-all duration-300 backdrop-blur-lg
+                         border bg-white/10 border-white/20 text-white hover:bg-white/20"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="px-3 py-1.5 text-sm font-medium bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-semibold 
+                         text-white transition-all duration-300 backdrop-blur-lg
+                         bg-cyan-500/20 hover:bg-cyan-500/30
+                         border border-cyan-400/50 hover:border-cyan-400/70"
                 >
                   Sign Up
                 </Link>
