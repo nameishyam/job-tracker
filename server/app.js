@@ -1,5 +1,5 @@
 const express = require("express");
-const { User, Job } = require("./models");
+const { User, Job, Blogs } = require("./models");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -277,6 +277,36 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
       .json({ message: "AI analysis generated successfully", response });
   } catch (error) {
     console.log("error", error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.post(`/blogs`, authenticateToken, async (req, res) => {
+  const { userId, company, review, rating, salary, rounds, role } = req.body;
+  try {
+    const blog = await Blogs.create({
+      userId,
+      company,
+      review,
+      rating,
+      salary,
+      rounds,
+      role,
+    });
+    console.log(blog);
+    return res.status(201).json({ message: "Blog created successfully", blog });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.get(`/blogs`, async (req, res) => {
+  try {
+    const blogs = await Blogs.findAll();
+    return res.status(200).json({ blogs });
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: error.message });
   }
 });

@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       rounds: {
-        type: Sequelize.STRING,
+        type: Sequelize.ARRAY(Sequelize.STRING),
       },
       role: {
         type: Sequelize.STRING,

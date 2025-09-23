@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       review: DataTypes.TEXT,
       rating: DataTypes.INTEGER,
       salary: DataTypes.STRING,
-      rounds: DataTypes.STRING,
+      rounds: DataTypes.ARRAY(DataTypes.STRING),
       role: DataTypes.STRING,
     },
     {
