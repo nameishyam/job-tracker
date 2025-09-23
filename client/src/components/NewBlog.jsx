@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { motion } from "framer-motion";
 
 const NewBlog = ({ onSuccess, onCancel }) => {
   const { user, token } = useAuth();
@@ -81,7 +82,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
         }
       );
       console.log("Blog submitted:", response.data);
-      onSuccess(); // Signal success to the parent component
+      onSuccess();
     } catch (error) {
       console.log(error);
       setError("Failed to submit blog. Please try again.");
@@ -91,13 +92,13 @@ const NewBlog = ({ onSuccess, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <h2 className="text-2xl font-bold text-white mb-6">
         Share Your Experience
       </h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-white/90 mb-2">
           Company Name
         </label>
         <input
@@ -106,12 +107,13 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           value={formData.company}
           onChange={handleChange}
           required
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300"
+          placeholder="e.g. Google"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-white/90 mb-2">
           Role
         </label>
         <input
@@ -119,12 +121,13 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           name="role"
           value={formData.role}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300"
+          placeholder="e.g. Software Engineer"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-white/90 mb-2">
           Review
         </label>
         <textarea
@@ -132,13 +135,14 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           value={formData.review}
           onChange={handleChange}
           rows={4}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm resize-none"
+          className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300 resize-none"
+          placeholder="Share your interview experience..."
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Rating (1-5)
           </label>
           <input
@@ -148,11 +152,11 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             placeholder="e.g. 4"
             value={formData.rating ?? ""}
             onChange={handleRatingChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+            className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+          <label className="block text-sm font-medium text-white/90 mb-2">
             Salary
           </label>
           <input
@@ -160,44 +164,45 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             name="salary"
             value={formData.salary}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+            className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300"
+            placeholder="e.g. $120,000"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+        <label className="block text-sm font-medium text-white/90 mb-3">
           Interview Rounds
         </label>
         {formData.rounds.length === 0 && (
-          <div className="flex items-center gap-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+          <div className="flex items-center gap-3 mb-3">
+            <p className="text-sm text-white/60">
               No rounds added yet.
             </p>
             <button
               type="button"
               onClick={addRoundEnd}
-              className="ml-2 inline-flex items-center px-3 py-1.5 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+              className="glass-button px-4 py-2 text-sm font-medium text-white hover:scale-105 transition-all duration-300"
             >
               Add round
             </button>
           </div>
         )}
-        <div className="space-y-2 mt-2">
+        <div className="space-y-3">
           {formData.rounds.map((r, i) => (
-            <div key={i} className="flex gap-2 items-center">
+            <div key={i} className="flex gap-3 items-center">
               <input
                 type="text"
                 placeholder={`Round ${i + 1} (e.g. HR, Technical)`}
                 value={r}
                 onChange={(e) => handleRoundChange(i, e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+                className="flex-1 px-4 py-3 glass-input focus:scale-105 transition-all duration-300"
               />
               <button
                 type="button"
                 onClick={() => addRoundAt(i)}
                 title="Add a round after this one"
-                className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                className="glass-button px-4 py-3 font-bold text-white hover:scale-110 transition-all duration-300"
               >
                 +
               </button>
@@ -205,7 +210,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
                 type="button"
                 onClick={() => removeRound(i)}
                 title="Remove this round"
-                className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                className="glass-button px-4 py-3 font-bold text-red-300 hover:text-red-200 hover:scale-110 transition-all duration-300"
               >
                 –
               </button>
@@ -213,11 +218,11 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           ))}
         </div>
         {formData.rounds.length > 0 && (
-          <div className="mt-2">
+          <div className="mt-3">
             <button
               type="button"
               onClick={addRoundEnd}
-              className="inline-flex items-center px-3 py-1.5 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+              className="glass-button px-4 py-2 text-sm font-medium text-white hover:scale-105 transition-all duration-300"
             >
               Add another round
             </button>
@@ -226,21 +231,27 @@ const NewBlog = ({ onSuccess, onCancel }) => {
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-4 glass-effect-strong rounded-lg border border-red-400/30 text-red-200 text-sm"
+        >
+          {error}
+        </motion.div>
       )}
 
-      <div className="flex justify-end gap-3 pt-4">
+      <div className="flex justify-end gap-4 pt-6">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+          className="glass-button px-6 py-3 font-semibold text-white/80 hover:text-white hover:scale-105 transition-all duration-300"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="glass-button px-6 py-3 font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-300"
         >
           {isSubmitting ? "Submitting..." : "Submit"}
         </button>
