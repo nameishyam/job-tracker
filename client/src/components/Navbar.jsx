@@ -51,32 +51,19 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <nav
-      // Background, blur, and border classes have been removed.
-      // Height is increased slightly to give elements more space.
-      className="sticky top-0 z-50 transition-colors duration-300"
-    >
+    <nav className="sticky top-0 z-50 duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <Link
               to="/"
-              // Text is now white with a drop shadow for readability
               className="text-xl font-bold text-white drop-shadow-sm hover:text-cyan-300 transition-colors"
             >
               JobTracker
             </Link>
-            {/* <Link
-              to="/blog"
-              className="text-sm font-medium text-gray-200 drop-shadow-sm hover:text-white transition-colors hidden sm:block"
-            >
-              Blog
-            </Link> */}
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Theme toggle can be added here later */}
-
             {isAuthenticated() ? (
               <div className="relative user-menu">
                 <motion.button
@@ -101,7 +88,6 @@ const Navbar = () => {
                            border border-white/20
                            backdrop-blur-xl bg-white/70 dark:bg-gray-900/70"
                   >
-                    {/* User Info Header */}
                     <Link to="/profile" onClick={() => setDropdownOpen(false)}>
                       <div className="px-4 py-3 border-b border-gray-200/80 dark:border-gray-700/80 hover:bg-black/5 dark:hover:bg-white/5">
                         <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
@@ -113,7 +99,6 @@ const Navbar = () => {
                       </div>
                     </Link>
 
-                    {/* Menu Items */}
                     <div className="py-1">
                       <Link
                         to="/"
@@ -131,7 +116,6 @@ const Navbar = () => {
                       </Link>
                     </div>
 
-                    {/* Action Items */}
                     <div className="py-1 border-t border-gray-200/80 dark:border-gray-700/80">
                       <button
                         onClick={handleLogout}

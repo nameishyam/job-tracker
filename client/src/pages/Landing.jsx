@@ -37,10 +37,9 @@ const Landing = () => {
       aria-labelledby="hero-heading"
       className="relative w-full overflow-hidden"
     >
-      {/* Subtly enhanced background overlay for better depth */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-[600px] relative">
-          <div style={{ width: "100%", height: "600px", position: "relative" }}>
+          <div style={{ width: "100%", height: "100%", position: "relative" }}>
             <Prism
               animationType="hover"
               timeScale={0.5}
@@ -83,7 +82,6 @@ const Landing = () => {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                {/* Primary CTA Button - More vibrant */}
                 <Link
                   to="/signup"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full 
@@ -95,7 +93,6 @@ const Landing = () => {
                   Get Started
                 </Link>
 
-                {/* Secondary Button - Fixed light mode and refined styles */}
                 <Link
                   to="/login"
                   className="inline-flex items-center justify-center px-6 py-3 rounded-full 
@@ -126,7 +123,6 @@ const Landing = () => {
                       duration: 0.4,
                       delay: 0.3 + index * 0.08,
                     }}
-                    // Enhanced feature cards
                     className="p-6 rounded-3xl backdrop-blur-xl shadow-lg
                            transition-all duration-300 hover:shadow-2xl hover:-translate-y-1
                            border border-white/20 hover:border-white/40
