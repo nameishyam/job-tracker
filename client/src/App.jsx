@@ -11,7 +11,7 @@ import { ModalProvider } from "./context/ModalContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import "./index.css";
-// import Blogpage from "./pages/Blogpage";
+import Blogpage from "./pages/Blogpage";
 
 const App = () => {
   return (
@@ -25,7 +25,7 @@ const App = () => {
                   <Route index element={<Landing />} />
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
-                  {/* <Route path="blog" element={<Blogpage />} /> */}
+                  <Route path="blog" element={<Blogpage />} />
                   <Route element={<ProtectedRoute />}>
                     <Route path="dashboard" element={<Dashboard />} />
                     <Route path="profile" element={<Profile />} />

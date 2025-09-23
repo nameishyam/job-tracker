@@ -61,6 +61,12 @@ const Navbar = () => {
             >
               JobTracker
             </Link>
+            <Link
+              to="/blog"
+              className="text-sm font-medium text-gray-200 hover:text-white transition-colors"
+            >
+              Blogs
+            </Link>
           </div>
 
           <div className="flex items-center space-x-3">
