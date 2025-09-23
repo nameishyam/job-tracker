@@ -6,7 +6,7 @@ const Blog = ({ data }) => {
       <p>Rating: {data.rating}</p>
       <p>Salary: {data.salary}</p>
       <p>Role: {data.role}</p>
-      <p>Date: {new Date(data.date).toLocaleDateString()}</p>
+      <p>Rounds: {data.rounds.join(", ")}</p>
       <hr className="my-4" />
     </div>
   );
