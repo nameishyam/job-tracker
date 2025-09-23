@@ -141,96 +141,102 @@ const JobInfo = ({ job }) => {
   const getJobTypeColor = (type) => {
     switch (type) {
       case "full-time":
-        return "glass-badge text-green-200 border-green-400/30";
+        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200";
       case "part-time":
-        return "glass-badge text-blue-200 border-blue-400/30";
+        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200";
       case "intern":
-        return "glass-badge text-purple-200 border-purple-400/30";
+        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200";
       default:
-        return "glass-badge text-white/80 border-white/20";
+        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200";
     }
   };
 
   return (
-    <div className="p-6 space-y-8">
-      <div className="border-b border-white/10 pb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center space-y-3 sm:space-y-0 sm:space-x-4 mb-4">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
+    <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
+      <div className="border-b border-gray-200 dark:border-gray-700 pb-3 sm:pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 mb-2 sm:mb-3">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
             {job.jobtitle}
           </h1>
           {job.jobtype && (
-            <span className={`px-4 py-2 text-sm font-medium rounded-full self-start ${getJobTypeColor(job.jobtype)}`}>
+            <span
+              className={`px-3 py-1 text-sm font-medium rounded-full self-start ${getJobTypeColor(
+                job.jobtype
+              )}`}
+            >
               {job.jobtype.replace("-", " ")}
             </span>
           )}
         </div>
-        <p className="text-lg text-white/80">
+        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300">
           {job.company}
         </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          <div className="glass-effect-subtle p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-2">
+      </div>{" "}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+        <div className="space-y-3 sm:space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Location
             </h3>
-            <p className="text-white">
+            <p className="mt-1 text-gray-900 dark:text-white">
               {job.location || "Not specified"}
             </p>
           </div>
 
-          <div className="glass-effect-subtle p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-2">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Date Applied
             </h3>
-            <p className="text-white">
+            <p className="mt-1 text-gray-900 dark:text-white">
               {formatDate(job.date)}
             </p>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="glass-effect-subtle p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-2">
+        <div className="space-y-3 sm:space-y-4">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Salary
             </h3>
-            <p className="text-white">
+            <p className="mt-1 text-gray-900 dark:text-white">
               {job.salary || "Not specified"}
             </p>
           </div>
 
-          <div className="glass-effect-subtle p-4 rounded-lg">
-            <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-2">
+          <div>
+            <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
               Interview Rounds
             </h3>
-            <div className="mt-3 flex flex-wrap gap-3">
+            <div className="mt-2 flex flex-wrap gap-2">
               {currentJob.roundStatus &&
               Object.keys(currentJob.roundStatus).length > 0 ? (
                 Object.keys(currentJob.roundStatus).map((round) => (
                   <label
                     key={round}
-                    className="flex items-center space-x-3 cursor-pointer glass-effect-subtle p-3 rounded-lg hover:bg-white/10 transition-all duration-300"
+                    className="flex items-center space-x-2 cursor-pointer"
                   >
                     <input
                       type="checkbox"
-                      className="h-4 w-4 rounded border-white/30 text-green-400 focus:ring-green-400 bg-transparent"
+                      className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
                       checked={!!currentJob.roundStatus?.[round]}
                       onChange={(e) =>
                         handleCheckboxChange(round, e.target.checked)
                       }
                     />
-                    <span className={`text-sm font-medium ${
-                      currentJob.roundStatus[round] === 1
-                        ? "text-green-200"
-                        : "text-white/70"
-                    }`}>
+
+                    <span
+                      className={`px-3 py-1 text-sm font-medium rounded-full ${
+                        currentJob.roundStatus[round] === 1
+                          ? "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200"
+                          : "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-200"
+                      }`}
+                    >
                       {round}
                     </span>
                   </label>
                 ))
               ) : (
-                <span className="text-white/60">
+                <span className="text-gray-500 dark:text-gray-400">
                   None specified
                 </span>
               )}
@@ -238,48 +244,48 @@ const JobInfo = ({ job }) => {
           </div>
         </div>
       </div>
-
       {job.description && (
-        <div className="glass-effect-subtle p-6 rounded-lg">
-          <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-4">
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
             Job Description
           </h3>
-          <div className="text-white/80 whitespace-pre-wrap">
-            {job.description}
+          <div className="prose prose-sm dark:prose-invert max-w-none bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <div className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {job.description}
+            </div>
           </div>
         </div>
       )}
-
       {currentJob.review && (
-        <div className="glass-effect-strong p-6 rounded-lg border border-green-400/30">
-          <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-4">
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
             Your Review
           </h3>
-          <p className="text-white whitespace-pre-wrap">
-            {currentJob.review}
-          </p>
+          <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+            <p className="text-gray-700 dark:text-gray-200 whitespace-pre-wrap">
+              {currentJob.review}
+            </p>
+          </div>
         </div>
       )}
-
-      <div className="glass-effect-subtle p-6 rounded-lg">
-        <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-4">
+      <div>
+        <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
           Add Review
         </h3>
-        <form onSubmit={handleReviewSubmit} className="space-y-6">
+        <form onSubmit={handleReviewSubmit} className="space-y-4">
           <textarea
             value={review}
             onChange={handleReviewChange}
             rows={4}
-            className="w-full px-4 py-3 glass-input focus:scale-105 transition-all duration-300 resize-none"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors resize-none"
             placeholder="Share your experience with this application..."
-          />
-
-          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+          />{" "}
+          <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3">
             <motion.button
               type="submit"
               disabled={isSubmitting || !review.trim()}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 sm:flex-none glass-button px-6 py-3 font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-300 flex items-center justify-center"
+              className="flex-1 sm:flex-none px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
               {isSubmitting ? (
                 <>
@@ -296,35 +302,35 @@ const JobInfo = ({ job }) => {
               onClick={AiReview}
               disabled={isGenerating}
               whileTap={{ scale: 0.98 }}
-              className="flex-1 sm:flex-none glass-button px-6 py-3 font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-300 flex items-center justify-center"
+              className="flex-1 sm:flex-none px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
             >
-              <SparklesIcon className="w-5 h-5 mr-2" />
+              <SparklesIcon className="w-4 h-4 mr-2" />
               {isGenerating ? "Analyzing..." : "AI Analysis"}
             </motion.button>
           </div>
         </form>
       </div>
-
       {isGenerating && (
-        <div className="flex items-center justify-center py-12">
-          <div className="glass-effect-subtle p-6 rounded-lg flex items-center space-x-4">
+        <div className="flex items-center justify-center py-8">
+          <div className="flex items-center space-x-3">
             <div className="loading-spinner w-6 h-6"></div>
-            <span className="text-white">
+            <span className="text-gray-600 dark:text-gray-300">
               AI is analyzing your review...
             </span>
           </div>
         </div>
       )}
-
       {aiResponse && !isGenerating && (
-        <div className="glass-effect-strong p-6 rounded-lg border border-purple-400/30">
-          <h3 className="text-sm font-medium text-white/60 uppercase tracking-wide mb-4">
+        <div>
+          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-3">
             AI Analysis & Next Steps
           </h3>
-          <div className="prose prose-sm prose-invert max-w-none">
-            <ReactMarkdown remarkPlugins={[remarkGfm]} className="text-white/90">
-              {aiResponse}
-            </ReactMarkdown>
+          <div className="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+            <div className="prose prose-sm dark:prose-invert max-w-none">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {aiResponse}
+              </ReactMarkdown>
+            </div>
           </div>
         </div>
       )}

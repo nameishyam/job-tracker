@@ -32,7 +32,11 @@ const Layout = () => {
   };
 
   return (
-    <div className={`min-h-screen ${isDark ? "dark" : ""} transition-theme`}>
+    <div
+      className={`min-h-screen ${
+        isDark ? "dark bg-gray-900" : "bg-gray-50"
+      } transition-theme`}
+    >
       <Navbar />
       <Outlet />
 
@@ -47,25 +51,25 @@ const Layout = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="glass-modal p-8 w-full max-w-md"
+            className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 p-6 w-full max-w-md"
           >
-            <h3 className="text-xl font-semibold text-white mb-3">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
               Delete Account
             </h3>
-            <p className="text-white/80 mb-8">
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
               Are you sure you want to delete your account? This action cannot
               be undone and will remove all your data.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-3">
               <button
                 onClick={confirmDeleteAccount}
-                className="flex-1 glass-button py-3 font-semibold text-red-300 hover:text-red-200 hover:scale-105 transition-all duration-300"
+                className="flex-1 py-2 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
               >
                 Delete Account
               </button>
               <button
                 onClick={cancelDeleteAccount}
-                className="flex-1 glass-button py-3 font-semibold text-white hover:scale-105 transition-all duration-300"
+                className="flex-1 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
                 Cancel
               </button>
