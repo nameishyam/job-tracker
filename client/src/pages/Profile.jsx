@@ -9,7 +9,6 @@ import {
   PencilIcon,
   MapPinIcon,
 } from "@heroicons/react/24/outline";
-import Prism from "../styles/Prism";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -27,35 +26,18 @@ const Profile = () => {
   });
 
   return (
-    <div className="min-h-screen pt-16 relative overflow-hidden">
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="w-full h-full relative prism-container">
-          <Prism
-            animationType="hover"
-            timeScale={0.4}
-            height={3.2}
-            baseWidth={5.2}
-            scale={3.2}
-            hueShift={120}
-            colorFrequency={0.9}
-            noise={0.05}
-            glow={0.6}
-          />
-          <div className="absolute inset-0 glass-overlay" />
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+    <div className="min-h-[calc(100vh-3.5rem)] bg-gray-50 dark:bg-gray-900 transition-theme">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="glass-card p-6 mb-8 border border-yellow-400/30"
+          className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-4 mb-6 rounded-lg"
         >
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <svg
-                className="w-6 h-6 text-yellow-300"
+                className="w-5 h-5 text-yellow-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
               >
@@ -66,11 +48,11 @@ const Profile = () => {
                 />
               </svg>
             </div>
-            <div className="ml-4">
-              <h1 className="text-sm font-medium text-yellow-200">
+            <div className="ml-3">
+              <h1 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
                 Development Notice
               </h1>
-              <p className="text-sm text-yellow-100/80 mt-1">
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
                 This profile page is currently under testing and development.
                 Features may be incomplete or subject to change.
               </p>
@@ -78,52 +60,52 @@ const Profile = () => {
           </div>
         </motion.div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid lg:grid-cols-5 gap-6">
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="glass-card p-8 sticky top-24"
+              className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-6"
             >
-              <div className="text-center mb-8">
-                <div className="w-24 h-24 glass-effect-strong rounded-full flex items-center justify-center mx-auto mb-6">
-                  <UserCircleIcon className="w-12 h-12 text-white" />
+              <div className="text-center mb-6">
+                <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <UserCircleIcon className="w-10 h-10 text-white" />
                 </div>
-                <h1 className="text-2xl font-bold text-white mb-4">
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                   {profileData.name}
                 </h1>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="glass-button px-6 py-3 font-semibold text-white hover:scale-105 transition-all duration-300 flex items-center gap-2 mx-auto"
+                  className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 font-medium transition-colors mx-auto text-sm"
                 >
-                  <PencilIcon className="w-4 h-4" />
+                  <PencilIcon className="w-3 h-3" />
                   Edit Profile
                 </motion.button>
               </div>
 
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-white/80">
-                  <EnvelopeIcon className="w-5 h-5 text-cyan-300" />
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
+                  <EnvelopeIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
                   <span>{profileData.email}</span>
                 </div>
-                <div className="flex items-center gap-4 text-white/80">
-                  <MapPinIcon className="w-5 h-5 text-cyan-300" />
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
+                  <MapPinIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
                   <span>{profileData.location}</span>
                 </div>
-                <div className="flex items-center gap-4 text-white/80">
-                  <CalendarDaysIcon className="w-5 h-5 text-cyan-300" />
+                <div className="flex items-center gap-3 text-gray-600 dark:text-gray-300 text-sm">
+                  <CalendarDaysIcon className="w-4 h-4 text-green-600 dark:text-green-400" />
                   <span>Member since {profileData.joinDate}</span>
                 </div>
               </div>
 
-              <div className="mt-8 pt-8 border-t border-white/10">
-                <h3 className="text-sm font-semibold text-white/90 mb-4">
+              <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
                   About Me
                 </h3>
-                <div className="glass-effect-subtle p-4 rounded-lg border-l-4 border-cyan-400">
-                  <p className="text-white/80 leading-relaxed">
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border-l-4 border-green-600">
+                  <p className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
                     {profileData.bio}
                   </p>
                 </div>
@@ -132,63 +114,61 @@ const Profile = () => {
           </div>
 
           <div className="lg:col-span-3">
-            <div className="space-y-8">
+            <div className="space-y-6">
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="glass-card p-8"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6"
               >
-                <h2 className="text-xl font-semibold text-white mb-6 pb-3 border-b border-white/10">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
                   Job Search Statistics
                 </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <motion.div
-                    whileHover={{ y: -2, scale: 1.02 }}
-                    className="glass-effect-subtle p-6 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-all duration-300"
+                    whileHover={{ y: -2 }}
+                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center gap-3 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="w-12 h-12 glass-effect-strong rounded-full flex items-center justify-center flex-shrink-0">
-                      <BriefcaseIcon className="w-6 h-6 text-green-300" />
+                    <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <BriefcaseIcon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                         {profileData.totalApplications}
                       </h3>
-                      <p className="text-white/70 text-xs uppercase tracking-wide">
+                      <p className="text-gray-600 dark:text-gray-300 text-xs uppercase tracking-wide">
                         Total Applications
                       </p>
                     </div>
                   </motion.div>
-
                   <motion.div
-                    whileHover={{ y: -2, scale: 1.02 }}
-                    className="glass-effect-subtle p-6 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-all duration-300"
+                    whileHover={{ y: -2 }}
+                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center gap-3 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="w-12 h-12 glass-effect-strong rounded-full flex items-center justify-center flex-shrink-0">
-                      <CalendarDaysIcon className="w-6 h-6 text-yellow-300" />
+                    <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <CalendarDaysIcon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                         {profileData.pendingApplications}
                       </h3>
-                      <p className="text-white/70 text-xs uppercase tracking-wide">
+                      <p className="text-gray-600 dark:text-gray-300 text-xs uppercase tracking-wide">
                         Pending Applications
                       </p>
                     </div>
                   </motion.div>
-
                   <motion.div
-                    whileHover={{ y: -2, scale: 1.02 }}
-                    className="glass-effect-subtle p-6 rounded-lg flex items-center gap-4 hover:bg-white/10 transition-all duration-300"
+                    whileHover={{ y: -2 }}
+                    className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 flex items-center gap-3 border border-gray-200 dark:border-gray-600 hover:shadow-md transition-all duration-300"
                   >
-                    <div className="w-12 h-12 glass-effect-strong rounded-full flex items-center justify-center flex-shrink-0">
-                      <UserCircleIcon className="w-6 h-6 text-blue-300" />
+                    <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                      <UserCircleIcon className="w-5 h-5 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                         {profileData.interviewsScheduled}
                       </h3>
-                      <p className="text-white/70 text-xs uppercase tracking-wide">
+                      <p className="text-gray-600 dark:text-gray-300 text-xs uppercase tracking-wide">
                         Interviews Scheduled
                       </p>
                     </div>
@@ -200,21 +180,21 @@ const Profile = () => {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="glass-card p-8"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 p-6"
               >
-                <h2 className="text-xl font-semibold text-white mb-6 pb-3 border-b border-white/10">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">
                   Recent Activity
                 </h2>
-                <div className="glass-effect-subtle p-6 rounded-lg">
-                  <div className="flex items-center gap-4 p-4 glass-effect-subtle rounded-lg">
-                    <div className="w-10 h-10 glass-effect-strong rounded-full flex items-center justify-center flex-shrink-0">
-                      <BriefcaseIcon className="w-5 h-5 text-white" />
+                <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                  <div className="flex items-center gap-3 p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-600">
+                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <BriefcaseIcon className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-white font-medium">
+                      <p className="text-gray-700 dark:text-gray-300 font-medium text-sm">
                         You haven't submitted any applications yet.
                       </p>
-                      <p className="text-white/60 text-sm">
+                      <p className="text-gray-500 dark:text-gray-400 text-xs">
                         Start your job search today!
                       </p>
                     </div>
