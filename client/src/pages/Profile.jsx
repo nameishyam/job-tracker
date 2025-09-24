@@ -120,7 +120,12 @@ const Profile = () => {
   };
 
   const formatDate = (dateString) => {
-    return dateString ? new Date(dateString).toLocaleDateString() : "Unknown";
+    if (!dateString) return "Unknown";
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+    return `${month} - ${day}, ${year}`;
   };
 
   const stats = [
