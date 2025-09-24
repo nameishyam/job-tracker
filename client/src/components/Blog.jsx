@@ -48,7 +48,6 @@ const Blog = ({ data }) => {
       transition={{ duration: 0.3 }}
       className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-6 hover:shadow-md transition-shadow duration-200"
     >
-      {/* Header with user info and company */}
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center space-x-3">
           <div className="w-10 h-10 bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30 rounded-full flex items-center justify-center">
@@ -64,7 +63,6 @@ const Blog = ({ data }) => {
           </div>
         </div>
 
-        {/* Rating */}
         {data.rating && (
           <div className="flex items-center space-x-1">
             <StarIcon className={`w-5 h-5 ${getRatingColor(data.rating)}`} />
@@ -77,7 +75,6 @@ const Blog = ({ data }) => {
         )}
       </div>
 
-      {/* Company and Role */}
       <div className="mb-4">
         <div className="flex items-center space-x-2 mb-2">
           <BuildingOfficeIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
@@ -96,7 +93,6 @@ const Blog = ({ data }) => {
         )}
       </div>
 
-      {/* Review Text */}
       {data.review && (
         <div className="mb-4">
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">
@@ -110,9 +106,7 @@ const Blog = ({ data }) => {
         </div>
       )}
 
-      {/* Salary and Rounds */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-        {/* Salary */}
         <div className="flex items-center space-x-2">
           <CurrencyDollarIcon className="w-4 h-4 text-gray-400 dark:text-gray-500" />
           <div>
@@ -125,7 +119,6 @@ const Blog = ({ data }) => {
           </div>
         </div>
 
-        {/* Interview Rounds */}
         {data.rounds && data.rounds.length > 0 && (
           <div>
             <p className="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-2">

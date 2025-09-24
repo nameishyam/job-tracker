@@ -39,6 +39,10 @@ const Blogpage = () => {
         <Plus size={20} />
       </button>
 
+      <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
+        Showing <span className="font-semibold">{blogs.length}</span> blogs
+      </p>
+
       {showNewBlog && (
         <div className="fixed inset-0 bg-black/50 dark:bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 w-full max-w-xl relative shadow-2xl">
