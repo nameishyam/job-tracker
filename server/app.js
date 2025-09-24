@@ -149,6 +149,19 @@ app.get("/users", authenticateToken, async (req, res) => {
   }
 });
 
+app.get(`/users/:id`, async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 app.post(`/users/jobs`, authenticateToken, async (req, res) => {
   const {
     userId,
