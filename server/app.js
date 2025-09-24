@@ -293,7 +293,6 @@ app.post(`/blogs`, authenticateToken, async (req, res) => {
       rounds,
       role,
     });
-    console.log(blog);
     return res.status(201).json({ message: "Blog created successfully", blog });
   } catch (error) {
     console.log(error);
