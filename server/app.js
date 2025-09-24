@@ -84,6 +84,20 @@ app.post(`/users/signup`, async (req, res) => {
   }
 });
 
+app.put(`/users/bio`, authenticateToken, async (req, res) => {
+  const { userID, bio } = req.body;
+  try {
+    const user = await User.findOne({ where: { id: userID } });
+    if (!user) return res.status(404).json({ message: "user not found" });
+    user.bio = bio;
+    await user.save();
+    return res.status(200).json({ message: "Bio updated successfully", user });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 app.post(`/users/login`, async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -110,6 +124,9 @@ app.post(`/users/login`, async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
       },
       token,
     });
