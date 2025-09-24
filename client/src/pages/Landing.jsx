@@ -33,13 +33,10 @@ const Landing = () => {
   ];
 
   return (
-    <section
-      aria-labelledby="hero-heading"
-      className="relative w-full overflow-hidden"
-    >
+    <section>
       <div className="absolute inset-0 pointer-events-none">
         <div className="w-full h-[600px] relative">
-          <div style={{ width: "100%", height: "100%", position: "relative" }}>
+          <div style={{ width: "100%", height: "100%", position: "absolute" }}>
             <Prism
               animationType="hover"
               timeScale={0.5}

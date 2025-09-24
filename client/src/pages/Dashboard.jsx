@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import JobCard from "../components/JobCard";
 import JobForm from "../components/JobForm";
@@ -12,7 +11,6 @@ const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { user, token, logout } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (!token || !user) return;

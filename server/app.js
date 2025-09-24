@@ -300,6 +300,17 @@ app.post(`/blogs`, authenticateToken, async (req, res) => {
   }
 });
 
+app.get(`/users/blogs`, authenticateToken, async (req, res) => {
+  try {
+    const { userId } = req.query;
+    const blogs = await Blogs.findAll({ where: { userId } });
+    return res.status(200).json({ blogs });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 app.get(`/blogs`, async (req, res) => {
   try {
     const blogs = await Blogs.findAll();
