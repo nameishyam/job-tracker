@@ -7,13 +7,17 @@ import JobForm from "../components/JobForm";
 import { PlusIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
 
 const Dashboard = () => {
-  const [jobs, setJobs] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { user, token, logout } = useAuth();
+  const { user, token, logout, jobs, storeJobs } = useAuth();
 
   useEffect(() => {
-    if (!token || !user) return;
+    if (!token || !user) {
+      setIsLoading(false);
+      return;
+    }
+
+    const controller = new AbortController();
 
     const fetchJobs = async () => {
       try {
@@ -23,13 +27,29 @@ const Dashboard = () => {
           {
             params: { email: user.email },
             headers,
+            signal: controller.signal,
           }
         );
-
         if (Array.isArray(response.data.jobs)) {
-          setJobs(response.data.jobs);
+          if (token && typeof storeJobs === "function") {
+            storeJobs(response.data.jobs);
+            console.debug(
+              "Dashboard: fetched and stored jobs",
+              response.data.jobs
+            );
+          }
+        } else {
+          console.debug(
+            "Dashboard: fetch returned non-array jobs",
+            response.data
+          );
         }
       } catch (error) {
+        if (axios.isCancel(error)) {
+          console.debug("Dashboard: fetchJobs cancelled");
+          return;
+        }
+        console.error("Dashboard: failed to fetch jobs", error);
         if (error.response?.status === 401 || error.response?.status === 403) {
           logout();
         }
@@ -37,17 +57,36 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
-
     fetchJobs();
-  }, [user, token, logout]);
+    return () => {
+      controller.abort();
+    };
+  }, [user, token, logout, storeJobs]);
 
   const handleJobAdded = (newJob) => {
-    setJobs((prevJobs) => [...prevJobs, newJob]);
+    if (token && typeof storeJobs === "function") {
+      storeJobs((prevJobs) => {
+        const base = Array.isArray(prevJobs) ? prevJobs : [];
+        const updated = [...base, newJob];
+        return updated;
+      });
+    } else {
+      console.warn("Dashboard: token missing — not persisting newly added job");
+    }
     setShowForm(false);
   };
 
   const handleJobDeleted = (deletedJobId) => {
-    setJobs((prevJobs) => prevJobs.filter((job) => job.id !== deletedJobId));
+    if (token && typeof storeJobs === "function") {
+      storeJobs((prevJobs) => {
+        const base = Array.isArray(prevJobs) ? prevJobs : [];
+        return base.filter((job) => job.id !== deletedJobId);
+      });
+    } else {
+      console.warn(
+        "Dashboard: token missing — not persisting deleted job change"
+      );
+    }
   };
 
   if (isLoading) {

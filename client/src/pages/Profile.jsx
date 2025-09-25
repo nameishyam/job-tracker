@@ -14,8 +14,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 const Profile = () => {
-  const { user, token } = useAuth();
-  const [jobs, setJobs] = useState([]);
+  const { user, token, jobs } = useAuth();
   const [blogs, setBlogs] = useState([]);
   const [location, setLocation] = useState({ city: "", country: "" });
   const [bio, setBio] = useState("");
@@ -31,18 +30,6 @@ const Profile = () => {
 
     const fetchData = async () => {
       try {
-        const jobsResponse = await axios.get(
-          `${import.meta.env.VITE_API_URL}/jobs`,
-          {
-            params: { email: user.email },
-            headers: { Authorization: `Bearer ${token}` },
-            signal: controller.signal,
-          }
-        );
-        setJobs(
-          Array.isArray(jobsResponse.data?.jobs) ? jobsResponse.data.jobs : []
-        );
-
         const blogsResponse = await axios.get(
           `${import.meta.env.VITE_API_URL}/blogs`,
           {
@@ -102,7 +89,7 @@ const Profile = () => {
     try {
       const response = await axios.put(
         `${import.meta.env.VITE_API_URL}/users/bio`,
-        { userID: user.id, bio },
+        { userId: user.id, bio },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       localStorage.setItem("user", JSON.stringify(response.data.user));

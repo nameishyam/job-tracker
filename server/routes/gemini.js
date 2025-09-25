@@ -7,9 +7,9 @@ const router = express.Router();
 router.post("/ask", authenticateToken, async (req, res) => {
   const { job, review } = req.body;
   try {
-    const prompt = `Generate a detailed analysis and next steps based on this job application review: "${review}" and job description: "${
-      job.description
-    }".
+    const prompt = `Generate a detailed analysis and next steps based on this job application review: "${
+      review ? review : job.review ? job.review : ""
+    }" and job description: "${job.description}".
 Job details for reference:
 - Position: ${job.jobtitle}
 - Company: ${job.company}

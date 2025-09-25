@@ -21,7 +21,7 @@ const JobCard = ({ job, onJobDeleted }) => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/users/jobs`,
+        `${import.meta.env.VITE_API_URL}/jobs`,
         {
           data: { jobId: job.id },
           headers,

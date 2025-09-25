@@ -30,7 +30,7 @@ const JobInfo = ({ job }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/jobs/review`,
+        `${import.meta.env.VITE_API_URL}/jobs/review`,
         payload,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -90,7 +90,7 @@ const JobInfo = ({ job }) => {
       };
 
       const response = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/users/jobs`,
+        `${import.meta.env.VITE_API_URL}/jobs`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -117,7 +117,7 @@ const JobInfo = ({ job }) => {
     const fetchJob = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/users/jobs`,
+          `${import.meta.env.VITE_API_URL}/jobs`,
           {
             params: { email: user.email },
             headers: { Authorization: `Bearer ${token}` },
