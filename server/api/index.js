@@ -18,6 +18,10 @@ const connectDatabase = async () => {
   }
 };
 
+app.get("/", (req, res) => {
+  res.send("<h1>Job Tracker Server</h1><p>Server is running successfully!</p>");
+});
+
 module.exports = async (req, res) => {
   try {
     await connectDatabase();
