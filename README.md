@@ -94,16 +94,16 @@ Job Tracker is a full-stack web application designed to help users organize thei
    Create a `.env` file in the server directory with the following:
 
    ```
-   PORT=3001
+   PORT=3000
    JWT_SECRET=your_jwt_secret
-   NODE_ENV=development
+   DATAASE_URL=your_database_url
+   GOOGLE_API_KEY=your_gemini_api_key
    ```
 
    Create a `.env` file in the client directory with the following:
 
    ```
-   VITE_API_URL=http://localhost:3001
-   VITE_GEMINI_API_KEY=your_gemini_api_key
+   VITE_API_URL=http://localhost:3000/api
    ```
 
 4. Set up the database:
