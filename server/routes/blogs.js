@@ -45,4 +45,14 @@ router.post(`/`, authenticateToken, async (req, res) => {
   }
 });
 
+router.delete(`/:id`, authenticateToken, async (req, res) => {
+  try {
+    const blogId = req.params.id;
+    await Blogs.destroy({ where: { id: blogId } });
+    return res.status(200).json({ message: "Blog deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

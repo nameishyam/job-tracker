@@ -7,7 +7,7 @@ import {
   CurrencyDollarIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/solid";
-import { BuildingOfficeIcon } from "@heroicons/react/24/outline";
+import { BuildingOfficeIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 const ratingColorMap = {
   high: "text-emerald-300",
@@ -15,7 +15,7 @@ const ratingColorMap = {
   low: "text-rose-300",
 };
 
-const Blog = ({ data }) => {
+const Blog = ({ data, onDeleteRequest }) => {
   const [user, setUser] = useState(null);
   const userId = data.userId;
 
@@ -28,12 +28,12 @@ const Blog = ({ data }) => {
         setUser(response.data.user);
       }
     } catch (error) {
-      console.log(error);
+      console.log("fetchUser error:", error);
     }
   };
 
   useEffect(() => {
-    fetchUser(userId);
+    if (userId) fetchUser(userId);
   }, [userId]);
 
   const getRatingVariant = (rating) => {
@@ -70,16 +70,31 @@ const Blog = ({ data }) => {
           </div>
         </div>
 
-        {data.rating && (
-          <div className="flex items-center gap-1 rounded-full bg-white/5 px-3 py-1 border border-white/15">
-            <StarIcon className={`w-5 h-5 ${ratingColorMap[ratingVariant]}`} />
-            <span
-              className={`text-sm font-semibold ${ratingColorMap[ratingVariant]}`}
+        <div className="flex items-center gap-2">
+          {data.rating && (
+            <div className="flex items-center gap-1 rounded-full bg-white/5 px-3 py-1 border border-white/15">
+              <StarIcon
+                className={`w-5 h-5 ${ratingColorMap[ratingVariant]}`}
+              />
+              <span
+                className={`text-sm font-semibold ${ratingColorMap[ratingVariant]}`}
+              >
+                {data.rating}/5
+              </span>
+            </div>
+          )}
+
+          {typeof onDeleteRequest === "function" && (
+            <button
+              onClick={() => onDeleteRequest(data)}
+              className="ml-3 p-2 rounded-lg hover:bg-rose-500/10 transition"
+              title="Delete"
+              aria-label="Delete blog"
             >
-              {data.rating}/5
-            </span>
-          </div>
-        )}
+              <TrashIcon className="w-5 h-5 text-rose-400" />
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="mb-5 space-y-2">

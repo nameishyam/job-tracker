@@ -12,6 +12,8 @@ import {
   CheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import Blog from "../components/Blog";
+import ConfirmBlogDelete from "../components/ConfirmBlogDelete";
 
 const Profile = () => {
   const { user, token, jobs } = useAuth();
@@ -21,6 +23,10 @@ const Profile = () => {
   const [editingBio, setEditingBio] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (!user?.email || !token) return;
@@ -83,6 +89,35 @@ const Profile = () => {
     return () => controller.abort();
   }, [user?.email, token, user?.id, user?.bio]);
 
+  const handleDeleteRequest = (blog) => {
+    setSelectedBlog(blog);
+    setIsDeleteOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedBlog) return;
+    setIsDeleting(true);
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/blogs/${selectedBlog.id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.status === 200 || response.status === 204) {
+        setBlogs((prev) => prev.filter((b) => b.id !== selectedBlog.id));
+      } else {
+        console.error("Delete returned unexpected status:", response.status);
+      }
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+    } finally {
+      setIsDeleting(false);
+      setIsDeleteOpen(false);
+      setSelectedBlog(null);
+    }
+  };
+
   const handleBioSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
@@ -119,7 +154,7 @@ const Profile = () => {
     {
       icon: BriefcaseIcon,
       label: "Job Applications",
-      value: jobs.length,
+      value: jobs?.length ?? 0,
       accent: "from-emerald-400/20 to-emerald-500/10",
     },
     {
@@ -276,8 +311,33 @@ const Profile = () => {
               )}
             </div>
           )}
+
+          <div>
+            <p className="mb-3 text-slate-300/80">your blogs:</p>
+            {blogs.length === 0 ? (
+              <p className="text-slate-400/70">no blogs yet</p>
+            ) : (
+              blogs.map((blog) => (
+                <Blog
+                  key={blog.id}
+                  data={blog}
+                  onDeleteRequest={handleDeleteRequest}
+                />
+              ))
+            )}
+          </div>
         </motion.div>
       </div>
+
+      <ConfirmBlogDelete
+        isOpen={isDeleteOpen}
+        blogTitle={selectedBlog?.company || selectedBlog?.title || ""}
+        onClose={() => {
+          setIsDeleteOpen(false);
+          setSelectedBlog(null);
+        }}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };
