@@ -72,12 +72,7 @@ const Landing = () => {
   ];
 
   return (
-    <div className="page-shell bg-gradient-to-b from-slate-900/60 to-slate-900 min-h-screen text-slate-100">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute -left-24 -top-24 w-[520px] h-[520px] rounded-full bg-gradient-to-br from-emerald-400/10 to-cyan-400/6 blur-3xl" />
-        <div className="absolute right-0 bottom-0 w-[420px] h-[420px] rounded-full bg-gradient-to-tr from-rose-400/8 to-fuchsia-500/6 blur-3xl" />
-      </div>
-
+    <div>
       <main className="relative z-10 py-12">
         <div className="page-width">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
