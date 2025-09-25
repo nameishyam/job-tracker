@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+
 import {
   ChartBarIcon,
   ClipboardDocumentListIcon,
@@ -8,38 +9,41 @@ import {
   NewspaperIcon,
   StarIcon,
 } from "@heroicons/react/24/outline";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { HiOutlineMail } from "react-icons/hi";
+import { SiLeetcode } from "react-icons/si";
 
 const Landing = () => {
   const features = [
     {
       icon: ClipboardDocumentListIcon,
       title: "Track Applications",
-      description: "Keep all your job applications organized in one place",
+      description: "Keep all your job applications organized in one place.",
       accent: "from-emerald-400/20 to-emerald-600/10",
     },
     {
       icon: ChartBarIcon,
       title: "Monitor Progress",
-      description: "Track interview rounds and application status",
+      description: "Track interview rounds and application status.",
       accent: "from-sky-400/20 to-blue-500/10",
     },
     {
       icon: BellIcon,
       title: "Stay Updated",
-      description: "Never miss important deadlines or follow-ups",
+      description: "Never miss important deadlines or follow-ups.",
       accent: "from-violet-400/20 to-indigo-500/10",
     },
     {
       icon: CheckCircleIcon,
       title: "Achieve Goals",
-      description: "Land your dream job with better organization",
+      description: "Land your dream job with better organization.",
       accent: "from-rose-400/20 to-fuchsia-500/10",
     },
     {
       icon: NewspaperIcon,
       title: "Company Reviews & Blogs",
       description:
-        "Read verified reviews and long-form blog posts about companies to make informed decisions.",
+        "Read verified reviews and blog posts to make informed decisions.",
       accent: "from-yellow-300/20 to-amber-500/10",
     },
   ];
@@ -71,6 +75,29 @@ const Landing = () => {
     },
   ];
 
+  const socialLinks = [
+    {
+      href: "mailto:geddamgowtham4@gmail.com",
+      label: "Email",
+      icon: <HiOutlineMail className="w-5 h-5" />,
+    },
+    {
+      href: "https://github.com/nameishyam",
+      label: "GitHub",
+      icon: <FaGithub className="w-5 h-5" />,
+    },
+    {
+      href: "https://www.linkedin.com/in/nameishyam",
+      label: "LinkedIn",
+      icon: <FaLinkedin className="w-5 h-5" />,
+    },
+    {
+      href: "https://leetcode.com/nameishyam",
+      label: "LeetCode",
+      icon: <SiLeetcode className="w-5 h-5" />,
+    },
+  ];
+
   return (
     <div className="page-shell bg-gradient-to-b from-slate-900/60 to-slate-900 min-h-screen text-slate-100">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -81,7 +108,6 @@ const Landing = () => {
       <main className="relative z-10 py-12">
         <div className="page-width">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Hero */}
             <motion.section
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -91,20 +117,18 @@ const Landing = () => {
             >
               <h1
                 id="hero-heading"
-                className="heading-xxl leading-tight max-w-lg"
+                className="text-4xl md:text-5xl font-bold leading-tight max-w-lg"
               >
                 Track every job application —
                 <span className="block bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400">
                   effortlessly and informed
                 </span>
               </h1>
-
               <p className="text-lg text-slate-200/85 max-w-xl">
                 A calm, glassy dashboard to manage your job search, map
                 interview rounds, and read community-driven company reviews so
                 you can make confident decisions about where to apply.
               </p>
-
               <div className="flex flex-wrap gap-4">
                 <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
                   <Link
@@ -114,14 +138,12 @@ const Landing = () => {
                     Create Account
                   </Link>
                 </motion.div>
-
                 <motion.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
                   <Link to="/features" className="glass-button px-6 py-3">
                     See Features
                   </Link>
                 </motion.div>
               </div>
-
               <dl className="mt-6 grid grid-cols-3 gap-4 max-w-md">
                 <div>
                   <dt className="text-sm text-slate-300">Applications</dt>
@@ -159,7 +181,6 @@ const Landing = () => {
                     >
                       <Icon className="w-6 h-6 text-slate-100" />
                     </div>
-
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-slate-100 tracking-tight">
                         {feature.title}
@@ -174,23 +195,22 @@ const Landing = () => {
             </motion.section>
           </div>
 
-          <section className="mt-12">
+          <section className="mt-24">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-2xl font-semibold">
-                  Latest Company Reviews
-                </h2>
-                <p className="text-sm text-slate-300">
+                <h2 className="text-3xl font-bold">Latest Company Reviews</h2>
+                <p className="text-slate-300">
                   Community-written reviews & posts
                 </p>
               </div>
-
-              <Link to="/blogs" className="text-sm underline">
+              <Link
+                to="/blogs"
+                className="text-sm font-medium text-emerald-400 hover:text-emerald-300 transition"
+              >
                 View all reviews
               </Link>
             </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {sampleBlogs.map((b) => (
                 <article
                   key={b.slug}
@@ -203,48 +223,38 @@ const Landing = () => {
                       </h3>
                       <p className="text-xs text-slate-300">{b.company}</p>
                     </div>
-                    <div className="flex items-center gap-1 text-sm">
+                    <div className="flex items-center gap-1 text-sm flex-shrink-0 ml-2">
                       <StarIcon className="w-5 h-5 text-amber-400" />
                       <span className="font-medium">{b.rating}</span>
                     </div>
                   </div>
-
                   <p className="text-sm text-slate-200/80 leading-relaxed">
                     {b.excerpt}
                   </p>
-
-                  <div className="flex items-center justify-between">
-                    <Link to={`/blogs/${b.slug}`} className="text-sm underline">
-                      Read more
-                    </Link>
-
-                    <div className="text-xs text-slate-300">
-                      Updated 2 weeks ago
-                    </div>
+                  <div className="text-xs text-slate-400 pt-2">
+                    Updated 2 weeks ago
                   </div>
                 </article>
               ))}
             </div>
           </section>
 
-          {/* Footer CTA */}
-          <section className="mt-12 glass-panel p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <section className="mt-24 glass-panel p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
-              <h4 className="text-lg font-semibold">
+              <h4 className="text-2xl font-bold">
                 Ready to organize your job search?
               </h4>
-              <p className="text-sm text-slate-300">
-                Create an account and start tracking applications and reading
+              <p className="text-slate-300 mt-1">
+                Create a free account to start tracking applications and reading
                 company reviews.
               </p>
             </div>
-
-            <div className="flex gap-3">
+            <div className="flex gap-3 flex-shrink-0">
               <Link
                 to="/signup"
                 className="glass-button glass-button--primary px-5 py-2"
               >
-                Sign up — it’s free
+                Sign up — it's free
               </Link>
               <Link to="/login" className="glass-button px-5 py-2">
                 Sign in
@@ -254,16 +264,41 @@ const Landing = () => {
         </div>
       </main>
 
-      <footer className="relative z-10 py-8">
-        <div className="page-width text-sm text-slate-400 flex items-center justify-between">
-          <div>© {new Date().getFullYear()} PlacementsTracker</div>
-          <div className="flex gap-4">
-            <Link to="/terms" className="hover:underline">
-              Terms
-            </Link>
-            <Link to="/privacy" className="hover:underline">
-              Privacy
-            </Link>
+      <footer className="relative z-10 border-t border-slate-700/50">
+        <div className="page-width py-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="text-center md:text-left text-sm text-slate-400">
+              <p>
+                &copy; {new Date().getFullYear()} Career Dock. All rights
+                reserved.
+              </p>
+              <p className="mt-1">
+                Designed & Developed by{" "}
+                <a
+                  href="https://portfolio-syam.vercel.app"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-slate-300 hover:text-white transition-colors duration-300"
+                >
+                  Syam Gowtham
+                </a>
+                .
+              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="text-slate-400 hover:text-white transition-colors duration-300"
+                >
+                  {link.icon}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </footer>
