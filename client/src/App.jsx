@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
+import Blogpage from "./pages/Blogpage";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -11,7 +12,6 @@ import { ModalProvider } from "./context/ModalContext";
 import { ThemeProvider } from "./context/ThemeContext";
 
 import "./index.css";
-import Blogpage from "./pages/Blogpage";
 
 const App = () => {
   return (

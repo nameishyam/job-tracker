@@ -85,9 +85,9 @@ app.post(`/users/signup`, async (req, res) => {
 });
 
 app.put(`/users/bio`, authenticateToken, async (req, res) => {
-  const { userID, bio } = req.body;
+  const { userId, bio } = req.body;
   try {
-    const user = await User.findOne({ where: { id: userID } });
+    const user = await User.findOne({ where: { id: userId } });
     if (!user) return res.status(404).json({ message: "user not found" });
     user.bio = bio;
     await user.save();
@@ -146,19 +146,6 @@ app.get("/users", authenticateToken, async (req, res) => {
   } catch (error) {
     console.error("Backend error:", error.message);
     return res.status(500).send("Server error");
-  }
-});
-
-app.get(`/users/:id`, async (req, res) => {
-  const userId = req.params.id;
-  try {
-    const user = await User.findOne({ where: { id: userId } });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    return res.status(200).json({ user });
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
   }
 });
 
@@ -237,7 +224,7 @@ app.post(`/users/jobs/review`, authenticateToken, async (req, res) => {
   }
 });
 
-app.get(`/users/jobs`, authenticateToken, async (req, res) => {
+app.get("/users/jobs", authenticateToken, async (req, res) => {
   const { email } = req.query;
   try {
     const user = await User.findOne({ where: { email } });
@@ -245,13 +232,12 @@ app.get(`/users/jobs`, authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     const jobs = await Job.findAll({ where: { userId: user.id } });
-    if (jobs.length === 0) {
-      return res.status(404).json({ message: "No jobs found for this user" });
-    }
     return res.status(200).json({ jobs });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    console.error("GET /users/jobs error:", error);
+    return res
+      .status(500)
+      .json({ message: error.message || "Internal server error" });
   }
 });
 
@@ -347,6 +333,19 @@ app.get(`/blogs`, async (req, res) => {
     return res.status(200).json({ blogs });
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ message: error.message });
+  }
+});
+
+app.get(`/users/:id`, async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({ user });
+  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
