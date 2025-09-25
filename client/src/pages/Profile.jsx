@@ -37,9 +37,8 @@ const Profile = () => {
     const fetchData = async () => {
       try {
         const blogsResponse = await axios.get(
-          `${import.meta.env.VITE_API_URL}/blogs`,
+          `${import.meta.env.VITE_API_URL}/blogs/${user.id}`,
           {
-            params: { userId: user.id },
             headers: { Authorization: `Bearer ${token}` },
             signal: controller.signal,
           }

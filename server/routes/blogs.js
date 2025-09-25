@@ -45,6 +45,16 @@ router.post(`/`, authenticateToken, async (req, res) => {
   }
 });
 
+router.get(`/:id`, authenticateToken, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const blogs = await Blogs.findAll({ where: { userId } });
+    return res.status(200).json({ blogs });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 router.delete(`/:id`, authenticateToken, async (req, res) => {
   try {
     const blogId = req.params.id;
