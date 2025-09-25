@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import JobInfo from "./JobInfo";
 import axios from "axios";
 import { TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
@@ -10,13 +10,8 @@ const JobCard = ({ job, onJobDeleted }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const { token } = useAuth();
 
-  const handleCardClick = () => {
-    setIsExpanded(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsExpanded(false);
-  };
+  const handleCardClick = () => setIsExpanded(true);
+  const handleCloseModal = () => setIsExpanded(false);
 
   const handleDelete = async (e) => {
     e.stopPropagation();
@@ -33,8 +28,8 @@ const JobCard = ({ job, onJobDeleted }) => {
         }
       );
 
-      if (response.status === 200) {
-        if (onJobDeleted) onJobDeleted(job.id);
+      if (response.status === 200 && onJobDeleted) {
+        onJobDeleted(job.id);
       }
     } catch (error) {
       console.error("Error deleting job:", error);
@@ -48,88 +43,81 @@ const JobCard = ({ job, onJobDeleted }) => {
     return new Date(dateString).toLocaleDateString();
   };
 
-  const getJobTypeColor = (type) => {
+  const getJobTypeClass = (type) => {
     switch (type) {
       case "full-time":
-        return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-200";
+        return "glass-badge glass-badge--teal";
       case "part-time":
-        return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-200";
+        return "glass-badge glass-badge--blue";
       case "intern":
-        return "bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-200";
+        return "glass-badge glass-badge--purple";
       default:
-        return "bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-200";
+        return "glass-badge glass-badge--neutral";
     }
   };
 
   return (
     <>
-      {" "}
       <motion.div
         onClick={handleCardClick}
         whileHover={{ y: -2 }}
-        className="p-3 sm:p-4 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg cursor-pointer hover:shadow-md transition-all duration-200 relative"
+        className="glass-panel glass-panel--surface glass-panel--hover p-5 sm:p-6 cursor-pointer"
       >
-        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between space-y-3 sm:space-y-0">
-          <div className="flex-1 min-w-0">
-            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-2">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white line-clamp-2 sm:truncate">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+          <div className="flex-1 min-w-0 space-y-3">
+            <div className="flex flex-wrap items-center gap-3">
+              <h3 className="text-lg font-semibold text-slate-100 truncate">
                 {job.jobtitle}
               </h3>
               {job.jobtype && (
-                <span
-                  className={`px-2 py-1 text-xs font-medium rounded-full self-start ${getJobTypeColor(
-                    job.jobtype
-                  )}`}
-                >
+                <span className={getJobTypeClass(job.jobtype)}>
                   {job.jobtype.replace("-", " ")}
                 </span>
               )}
             </div>
 
-            <div className="space-y-1">
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Company:</span> {job.company}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-200/80">
+              <p>
+                <span className="text-slate-100/90 font-medium">Company:</span>{" "}
+                {job.company}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Location:</span>{" "}
+              <p>
+                <span className="text-slate-100/90 font-medium">Location:</span>{" "}
                 {job.location || "Not specified"}
               </p>
-              <p className="text-sm text-gray-600 dark:text-gray-300">
-                <span className="font-medium">Applied:</span>{" "}
+              <p>
+                <span className="text-slate-100/90 font-medium">Applied:</span>{" "}
                 {formatDate(job.date)}
               </p>
               {job.salary && (
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  <span className="font-medium">Salary:</span> {job.salary}
+                <p>
+                  <span className="text-slate-100/90 font-medium">Salary:</span>{" "}
+                  {job.salary}
                 </p>
               )}
             </div>
 
             {job.rounds && job.rounds.length > 0 && (
-              <div className="mt-3">
-                <div className="flex flex-wrap gap-1">
-                  {job.rounds.slice(0, 3).map((round, index) => (
-                    <span
-                      key={index}
-                      className="px-2 py-1 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded"
-                    >
-                      {round}
-                    </span>
-                  ))}
-                  {job.rounds.length > 3 && (
-                    <span className="px-2 py-1 bg-gray-100 dark:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs rounded">
-                      +{job.rounds.length - 3} more
-                    </span>
-                  )}
-                </div>
+              <div className="glass-taglist">
+                {job.rounds.slice(0, 3).map((round, index) => (
+                  <span key={index} className="glass-chip">
+                    {round}
+                  </span>
+                ))}
+                {job.rounds.length > 3 && (
+                  <span className="glass-chip">
+                    +{job.rounds.length - 3} more
+                  </span>
+                )}
               </div>
             )}
-          </div>{" "}
-          <div className="flex items-center space-x-2 sm:ml-4">
+          </div>
+
+          <div className="flex items-center gap-2 sm:ml-4">
             <motion.button
               onClick={handleCardClick}
               whileTap={{ scale: 0.95 }}
-              className="p-2 text-gray-400 hover:text-green-600 dark:hover:text-green-400 transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="glass-icon-btn"
               title="View details"
             >
               <EyeIcon className="w-5 h-5" />
@@ -139,11 +127,11 @@ const JobCard = ({ job, onJobDeleted }) => {
               onClick={handleDelete}
               disabled={isDeleting}
               whileTap={{ scale: 0.95 }}
-              className="p-2 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-colors disabled:opacity-50 min-h-[44px] min-w-[44px] flex items-center justify-center"
+              className="glass-icon-btn text-red-300 hover:text-red-200 disabled:opacity-60"
               title="Delete job"
             >
               {isDeleting ? (
-                <div className="loading-spinner w-5 h-5"></div>
+                <div className="loading-spinner w-4 h-4" />
               ) : (
                 <TrashIcon className="w-5 h-5" />
               )}
@@ -151,36 +139,41 @@ const JobCard = ({ job, onJobDeleted }) => {
           </div>
         </div>
       </motion.div>
-      {isExpanded && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          onClick={handleCloseModal}
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
-        >
+
+      <AnimatePresence>
+        {isExpanded && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-gray-800 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleCloseModal}
+            className="fixed inset-0 bg-black/70 backdrop-blur-2xl flex items-center justify-center z-50 p-4"
           >
-            <div className="sticky top-0 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                Job Details
-              </h2>
-              <button
-                onClick={handleCloseModal}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 text-2xl"
-              >
-                ×
-              </button>
-            </div>
-            <JobInfo job={job} />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              onClick={(e) => e.stopPropagation()}
+              className="glass-panel glass-panel--surface w-full max-w-4xl max-h-[90vh] overflow-hidden"
+            >
+              <div className="sticky top-0 flex items-center justify-between px-6 py-4 border-b border-white/10 backdrop-blur-xl bg-white/10">
+                <h2 className="text-xl font-semibold text-slate-50">
+                  Job Details
+                </h2>
+                <button
+                  onClick={handleCloseModal}
+                  className="glass-icon-btn text-slate-200 hover:text-slate-50"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="overflow-y-auto max-h-[calc(90vh-4.5rem)]">
+                <JobInfo job={job} />
+              </div>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   );
 };

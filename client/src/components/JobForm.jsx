@@ -6,7 +6,7 @@ import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 const JobForm = ({ email, onJobAdded }) => {
   const [userId, setUserId] = useState(null);
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const [roundInput, setRoundInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -23,20 +23,12 @@ const JobForm = ({ email, onJobAdded }) => {
   });
 
   useEffect(() => {
-    if (!email || !token) return;
-    const headers = { Authorization: `Bearer ${token}` };
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/users`, {
-        params: { email },
-        headers,
-      })
-      .then((response) => {
-        setUserId(response.data.user.id);
-      })
-      .catch((error) => {
-        console.error("Error fetching user ID:", error);
-      });
-  }, [email, token]);
+    if (!user) {
+      alert("User not logged in. Please log in to add a job.");
+      return;
+    }
+    setUserId(user?.id || null);
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,7 +69,7 @@ const JobForm = ({ email, onJobAdded }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/jobs`,
+        `${import.meta.env.VITE_API_URL}/jobs`,
         payload,
         { headers }
       );
@@ -104,10 +96,16 @@ const JobForm = ({ email, onJobAdded }) => {
     }
   };
 
+  const jobTypes = [
+    { value: "full-time", label: "Full time" },
+    { value: "part-time", label: "Part time" },
+    { value: "intern", label: "Intern" },
+  ];
+
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           Job Title
         </label>
         <input
@@ -115,14 +113,14 @@ const JobForm = ({ email, onJobAdded }) => {
           name="jobtitle"
           value={formData.jobtitle}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="glass-input"
           placeholder="e.g. Software Engineer"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           Company
         </label>
         <input
@@ -130,14 +128,14 @@ const JobForm = ({ email, onJobAdded }) => {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="glass-input"
           placeholder="e.g. Google"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           Location
         </label>
         <input
@@ -145,38 +143,43 @@ const JobForm = ({ email, onJobAdded }) => {
           name="location"
           value={formData.location}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="glass-input"
           placeholder="e.g. San Francisco, CA"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-2">
           Job Type
         </label>
-        <div className="grid grid-cols-3 gap-2">
-          {["full-time", "part-time", "intern"].map((type) => (
-            <label key={type} className="flex items-center">
+        <div className="flex flex-wrap gap-3">
+          {jobTypes.map(({ value, label }) => (
+            <label
+              key={value}
+              className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg text-sm text-slate-200/90 transition-colors ${
+                formData.jobtype === value
+                  ? "ring-2 ring-cyan-400/60"
+                  : "hover:border-white/25"
+              }`}
+            >
               <input
                 type="radio"
                 name="jobtype"
-                value={type}
+                value={value}
                 onChange={handleChange}
-                checked={formData.jobtype === type}
-                className="text-green-600 focus:ring-green-500 border-gray-300 dark:border-gray-600"
+                checked={formData.jobtype === value}
+                className="text-emerald-400 focus:ring-emerald-400 bg-transparent border-slate-500"
                 required
               />
-              <span className="ml-2 text-sm text-gray-700 dark:text-gray-200 capitalize">
-                {type.replace("-", " ")}
-              </span>
+              <span>{label}</span>
             </label>
           ))}
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           Salary
         </label>
         <input
@@ -184,17 +187,17 @@ const JobForm = ({ email, onJobAdded }) => {
           name="salary"
           value={formData.salary}
           onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+          className="glass-input"
           placeholder="e.g. $120,000"
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <label className="block text-sm font-medium text-slate-200 mb-1">
           Interview Rounds
         </label>
-        <div className="flex space-x-2">
+        <div className="flex gap-2">
           <input
             type="text"
             value={roundInput}
@@ -203,30 +206,27 @@ const JobForm = ({ email, onJobAdded }) => {
               e.key === "Enter" && (e.preventDefault(), handleRoundAdd())
             }
             placeholder="e.g. Technical Interview"
-            className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+            className="glass-input flex-1"
           />
           <button
             type="button"
             onClick={handleRoundAdd}
-            className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            className="glass-icon-btn text-emerald-200 hover:text-emerald-100"
           >
             <PlusIcon className="w-4 h-4" />
           </button>
         </div>
         {formData.rounds.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
+          <div className="glass-taglist mt-3">
             {formData.rounds.map((round, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 text-xs rounded-full"
-              >
+              <span key={index} className="glass-chip">
                 {round}
                 <button
                   type="button"
                   onClick={() => handleRoundRemove(index)}
-                  className="ml-1 text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-200"
+                  className="ml-2 text-emerald-200/80 hover:text-emerald-100"
                 >
-                  <XMarkIcon className="w-3 h-3" />
+                  <XMarkIcon className="w-4 h-4" />
                 </button>
               </span>
             ))}
@@ -234,46 +234,47 @@ const JobForm = ({ email, onJobAdded }) => {
         )}
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-          Date Applied
-        </label>
-        <input
-          type="date"
-          name="date"
-          value={formData.date}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-          Description
-        </label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={3}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm resize-none"
-          placeholder="Job description or notes..."
-          required
-        />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-slate-200 mb-1">
+            Date Applied
+          </label>
+          <input
+            type="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            className="glass-input"
+            required
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-slate-200 mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            rows={4}
+            className="glass-textarea resize-none"
+            placeholder="Job description or notes..."
+            required
+          />
+        </div>
       </div>
 
       <motion.button
         type="submit"
         disabled={isSubmitting}
-        whileTap={{ scale: 0.98 }}
-        className="w-full py-2.5 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center"
+        whileTap={{ scale: 0.97 }}
+        className="glass-button glass-button--primary w-full h-12 justify-center disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
-          <>
-            <div className="loading-spinner mr-2"></div>
+          <span className="flex items-center gap-3">
+            <div className="loading-spinner w-4 h-4" />
             Adding Job...
-          </>
+          </span>
         ) : (
           "Add Job"
         )}

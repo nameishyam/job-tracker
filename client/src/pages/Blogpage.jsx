@@ -11,7 +11,6 @@ const Blogpage = () => {
   const handleSuccess = () => {
     setShowNewBlog(false);
     fetchBlogs();
-    console.log("Success! Time to refresh the blog list.");
   };
 
   const fetchBlogs = async () => {
@@ -30,28 +29,47 @@ const Blogpage = () => {
   }, []);
 
   return (
-    <div className="relative max-w-4xl mx-auto p-4 sm:p-6 text-gray-900 dark:text-white">
-      <button
-        onClick={() => setShowNewBlog(true)}
-        aria-label="Add new blog"
-        className="absolute top-4 right-4 p-3 rounded-full bg-green-600 text-white shadow-lg hover:bg-green-700 transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
-      >
-        <Plus size={20} />
-      </button>
+    <div className="page-shell">
+      <div className="page-width relative space-y-8">
+        <button
+          onClick={() => setShowNewBlog(true)}
+          aria-label="Add new blog"
+          className="glass-icon-btn absolute top-0 right-0"
+        >
+          <Plus className="w-5 h-5" />
+        </button>
 
-      <p className="mb-2 text-sm text-gray-600 dark:text-gray-300">
-        Showing <span className="font-semibold">{blogs.length}</span> blogs
-      </p>
+        <div className="pt-2 space-y-2">
+          <p className="text-sm text-slate-200/70">
+            Showing{" "}
+            <span className="font-semibold text-slate-100">{blogs.length}</span>{" "}
+            blogs
+          </p>
+          <h1 className="text-3xl sm:text-4xl font-semibold text-slate-100 tracking-tight">
+            Latest Reviews
+          </h1>
+        </div>
+
+        <div className="space-y-5">
+          {blogs.length > 0 ? (
+            blogs.map((blog) => <Blog key={blog.id} data={blog} />)
+          ) : (
+            <div className="glass-panel glass-panel--tight p-8 text-center text-slate-200/75">
+              No reviews yet. Be the first to share your experience!
+            </div>
+          )}
+        </div>
+      </div>
 
       {showNewBlog && (
-        <div className="fixed inset-0 bg-black/50 dark:bg-black/60 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 w-full max-w-xl relative shadow-2xl">
+        <div className="fixed inset-0 z-[90] bg-slate-950/70 backdrop-blur-xl flex items-center justify-center p-4">
+          <div className="glass-panel glass-panel--surface glass-panel--tight w-full max-w-xl p-8 relative">
             <button
               onClick={() => setShowNewBlog(false)}
-              className="absolute top-3 right-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 text-2xl"
+              className="glass-icon-btn absolute -top-3 -right-3"
               aria-label="Close"
             >
-              &times;
+              ×
             </button>
             <NewBlog
               onSuccess={handleSuccess}
@@ -60,16 +78,6 @@ const Blogpage = () => {
           </div>
         </div>
       )}
-
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
-        Latest Reviews
-      </h1>
-
-      <div className="mt-8 space-y-4">
-        {blogs.map((blog) => (
-          <Blog key={blog.id} data={blog} />
-        ))}
-      </div>
     </div>
   );
 };

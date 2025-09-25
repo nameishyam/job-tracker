@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "../components/JobCard";
 import JobForm from "../components/JobForm";
 import { PlusIcon, BriefcaseIcon } from "@heroicons/react/24/outline";
@@ -19,18 +19,17 @@ const Dashboard = () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/users/jobs`,
+          `${import.meta.env.VITE_API_URL}/jobs`,
           {
             params: { email: user.email },
             headers,
           }
         );
 
-        if (response.data.jobs && response.data.jobs.length > 0) {
+        if (Array.isArray(response.data.jobs)) {
           setJobs(response.data.jobs);
         }
       } catch (error) {
-        console.log(error);
         if (error.response?.status === 401 || error.response?.status === 403) {
           logout();
         }
@@ -46,56 +45,75 @@ const Dashboard = () => {
     setJobs((prevJobs) => [...prevJobs, newJob]);
     setShowForm(false);
   };
+
   const handleJobDeleted = (deletedJobId) => {
     setJobs((prevJobs) => prevJobs.filter((job) => job.id !== deletedJobId));
   };
 
   if (isLoading) {
     return (
-      <div className="min-h-[calc(100vh-3.5rem)] bg-gray-50 dark:bg-gray-900 flex items-center justify-center transition-theme">
-        <div className="loading-spinner w-8 h-8"></div>
-      </div>
+      <section className="page-shell flex items-center justify-center">
+        <div className="glass-panel glass-panel--tight px-6 py-4 flex items-center gap-3">
+          <div className="loading-spinner w-6 h-6" />
+          <p className="text-sm text-slate-200/80">
+            Loading your applications…
+          </p>
+        </div>
+      </section>
     );
   }
 
   return (
-    <div className="min-h-[calc(100vh-3.5rem)] bg-gray-50 dark:bg-gray-900 transition-theme">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+    <section className="page-shell">
+      <div className="page-width space-y-8">
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="glass-panel glass-panel--surface p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6"
+        >
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Job Dashboard
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-1">
-              Track and manage your job applications
+            <h1 className="heading-xl">Job Dashboard</h1>
+            <p className="muted mt-3 max-w-2xl">
+              Track every application, interview round, and insight from one
+              shimmering command center.
             </p>
           </div>
 
           <motion.button
-            onClick={() => setShowForm(!showForm)}
-            whileTap={{ scale: 0.95 }}
-            className="mt-4 sm:mt-0 inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+            onClick={() => setShowForm((prev) => !prev)}
+            whileTap={{ scale: 0.96 }}
+            whileHover={{ scale: 1.02 }}
+            className="glass-button glass-button--primary h-11 px-6 glow-pulse"
           >
-            <PlusIcon className="w-4 h-4 mr-2" />
-            Add Job
+            <PlusIcon className="w-4 h-4" />{" "}
+            {showForm ? "Close Form" : "Add Job"}
           </motion.button>
-        </div>{" "}
-        <div className="grid lg:grid-cols-3 gap-6">
-          {showForm && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="lg:col-span-1"
-            >
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        </motion.div>
+
+        <div
+          className={`grid gap-6 ${
+            showForm
+              ? "lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]"
+              : "lg:grid-cols-1"
+          }`}
+        >
+          <AnimatePresence>
+            {showForm && (
+              <motion.div
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 16 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="glass-panel glass-panel--surface p-6 lg:sticky lg:top-24 h-fit"
+              >
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <h2 className="text-lg font-semibold text-slate-100">
                     Add New Job
                   </h2>
                   <button
                     onClick={() => setShowForm(false)}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                    className="glass-icon-btn text-slate-300 hover:text-slate-100"
                   >
                     ×
                   </button>
@@ -105,63 +123,71 @@ const Dashboard = () => {
                   onJobAdded={handleJobAdded}
                   token={token}
                 />
-              </div>
-            </motion.div>
-          )}{" "}
-          <div className={`${showForm ? "lg:col-span-2" : "lg:col-span-3"}`}>
-            <div className="lg:sticky lg:top-20 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
-              <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                <div className="flex items-center">
-                  <BriefcaseIcon className="w-5 h-5 text-gray-400 mr-2" />
-                  <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Your Applications ({jobs.length})
-                  </h2>
-                </div>
-              </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              <div className="p-4">
-                {jobs.length === 0 ? (
-                  <div className="text-center py-12">
-                    <BriefcaseIcon className="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, ease: "easeOut", delay: 0.05 }}
+            className="glass-panel glass-panel--surface overflow-hidden"
+          >
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <div className="glass-icon-btn">
+                  <BriefcaseIcon className="w-4 h-4" />
+                </div>
+                <h2 className="text-lg font-semibold text-slate-100">
+                  Your Applications ({jobs.length})
+                </h2>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {jobs.length === 0 ? (
+                <div className="glass-panel glass-panel--tight text-center py-14 space-y-4">
+                  <BriefcaseIcon className="w-12 h-12 mx-auto text-slate-300/60" />
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-semibold text-slate-100">
                       No applications yet
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">
-                      Start tracking your job applications by adding your first
-                      one.
+                    <p className="muted max-w-sm mx-auto">
+                      Capture your first opportunity to unlock tailored progress
+                      tracking and AI-powered insights.
                     </p>
-                    <button
-                      onClick={() => setShowForm(true)}
-                      className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 transition-colors"
+                  </div>
+                  <motion.button
+                    onClick={() => setShowForm(true)}
+                    whileTap={{ scale: 0.96 }}
+                    className="glass-button glass-button--primary h-11 px-6"
+                  >
+                    <PlusIcon className="w-4 h-4" /> Add your first job
+                  </motion.button>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {jobs.map((job, index) => (
+                    <motion.div
+                      key={job.id}
+                      initial={{ opacity: 0, y: 18 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.35,
+                        ease: "easeOut",
+                        delay: index * 0.05,
+                      }}
                     >
-                      <PlusIcon className="w-4 h-4 mr-2" />
-                      Add Your First Job
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-3">
-                    {jobs.map((job, index) => (
-                      <motion.div
-                        key={job.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                      >
-                        <JobCard
-                          job={job}
-                          token={token}
-                          onJobDeleted={handleJobDeleted}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>{" "}
-          </div>
+                      <JobCard job={job} onJobDeleted={handleJobDeleted} />
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </motion.div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

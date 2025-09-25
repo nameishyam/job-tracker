@@ -81,7 +81,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
         }
       );
       console.log("Blog submitted:", response.data);
-      onSuccess(); // Signal success to the parent component
+      onSuccess();
     } catch (error) {
       console.log(error);
       setError("Failed to submit blog. Please try again.");
@@ -91,54 +91,51 @@ const NewBlog = ({ onSuccess, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+    <form onSubmit={handleSubmit} className="space-y-6 text-slate-100">
+      <h2 className="text-2xl font-semibold tracking-tight">
         Share Your Experience
       </h2>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-          Company Name
-        </label>
-        <input
-          type="text"
-          name="company"
-          value={formData.company}
-          onChange={handleChange}
-          required
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
-        />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-200/80">
+            Company Name
+          </label>
+          <input
+            type="text"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            required
+            className="glass-input"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-200/80">Role</label>
+          <input
+            type="text"
+            name="role"
+            value={formData.role}
+            onChange={handleChange}
+            className="glass-input"
+          />
+        </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-          Role
-        </label>
-        <input
-          type="text"
-          name="role"
-          value={formData.role}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
-        />
-      </div>
-
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-          Review
-        </label>
+      <div className="space-y-2">
+        <label className="text-sm font-medium text-slate-200/80">Review</label>
         <textarea
           name="review"
           value={formData.review}
           onChange={handleChange}
           rows={4}
-          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm resize-none"
+          className="glass-textarea"
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-200/80">
             Rating (1-5)
           </label>
           <input
@@ -148,11 +145,11 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             placeholder="e.g. 4"
             value={formData.rating ?? ""}
             onChange={handleRatingChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+            className="glass-input"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-slate-200/80">
             Salary
           </label>
           <input
@@ -160,87 +157,90 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             name="salary"
             value={formData.salary}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+            className="glass-input"
           />
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
+      <div className="space-y-3">
+        <label className="text-sm font-medium text-slate-200/80 flex items-center gap-2">
           Interview Rounds
         </label>
         {formData.rounds.length === 0 && (
-          <div className="flex items-center gap-2">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
-              No rounds added yet.
-            </p>
+          <div className="glass-panel glass-panel--tight p-4 text-slate-200/70 flex items-center justify-between">
+            <span>No rounds added yet.</span>
             <button
               type="button"
               onClick={addRoundEnd}
-              className="ml-2 inline-flex items-center px-3 py-1.5 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
+              className="glass-button glass-button--primary px-4 py-2"
             >
               Add round
             </button>
           </div>
         )}
-        <div className="space-y-2 mt-2">
+        <div className="space-y-3">
           {formData.rounds.map((r, i) => (
-            <div key={i} className="flex gap-2 items-center">
+            <div
+              key={i}
+              className="glass-panel glass-panel--tight p-4 flex flex-col gap-3 sm:flex-row sm:items-center"
+            >
               <input
                 type="text"
                 placeholder={`Round ${i + 1} (e.g. HR, Technical)`}
                 value={r}
                 onChange={(e) => handleRoundChange(i, e.target.value)}
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-green-500 focus:border-transparent transition-colors text-sm"
+                className="glass-input flex-1"
               />
-              <button
-                type="button"
-                onClick={() => addRoundAt(i)}
-                title="Add a round after this one"
-                className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
-              >
-                +
-              </button>
-              <button
-                type="button"
-                onClick={() => removeRound(i)}
-                title="Remove this round"
-                className="px-3 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-red-600 dark:text-red-400 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
-              >
-                –
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => addRoundAt(i)}
+                  title="Add a round after this one"
+                  className="glass-icon-btn"
+                >
+                  +
+                </button>
+                <button
+                  type="button"
+                  onClick={() => removeRound(i)}
+                  title="Remove this round"
+                  className="glass-icon-btn"
+                >
+                  –
+                </button>
+              </div>
             </div>
           ))}
         </div>
         {formData.rounds.length > 0 && (
-          <div className="mt-2">
-            <button
-              type="button"
-              onClick={addRoundEnd}
-              className="inline-flex items-center px-3 py-1.5 text-sm rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors"
-            >
-              Add another round
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={addRoundEnd}
+            className="glass-button glass-button--primary px-4 py-2"
+          >
+            Add another round
+          </button>
         )}
       </div>
 
       {error && (
-        <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+        <p className="text-sm text-rose-300 bg-rose-500/10 border border-rose-400/30 rounded-xl px-3 py-2">
+          {error}
+        </p>
       )}
 
       <div className="flex justify-end gap-3 pt-4">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+          className="glass-button glass-button--muted"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="glass-button glass-button--primary disabled:opacity-60"
         >
           {isSubmitting ? "Submitting..." : "Submit"}
         </button>

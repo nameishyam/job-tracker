@@ -9,25 +9,21 @@ const connectDatabase = async () => {
   if (!dbConnected) {
     try {
       await sequelize.authenticate();
-      console.log("Connected to database.");
+      console.log("Connected to database for Vercel.");
       dbConnected = true;
     } catch (error) {
-      console.error("Database connection failed:", error);
+      console.error("Vercel database connection failed:", error);
       throw error;
     }
   }
 };
-
-app.get("/", (req, res) => {
-  res.send("<h1>Job Tracker Server</h1><p>Server is running successfully!</p>");
-});
 
 module.exports = async (req, res) => {
   try {
     await connectDatabase();
     return app(req, res);
   } catch (error) {
-    console.error("Request handling error:", error);
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Request handling error in Vercel function:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

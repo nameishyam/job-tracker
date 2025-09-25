@@ -1,13 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useModal } from "../context/ModalContext";
-import { useTheme } from "../context/ThemeContext";
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   UserCircleIcon,
-  SunIcon,
-  MoonIcon,
   HomeIcon,
   ChartBarIcon,
   ArrowRightOnRectangleIcon,
@@ -17,7 +14,6 @@ import {
 const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuth();
   const { openDeleteModal } = useModal();
-  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -27,18 +23,13 @@ const Navbar = () => {
     setDropdownOpen(false);
   };
 
-  const handleUserChange = () => {
-    navigate("/profile");
-    setDropdownOpen(false);
-  };
-
   const handleDeleteAccount = () => {
     openDeleteModal();
     setDropdownOpen(false);
   };
 
   const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+    setDropdownOpen((prev) => !prev);
   };
 
   useEffect(() => {
@@ -47,115 +38,114 @@ const Navbar = () => {
         setDropdownOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   return (
-    <nav className="sticky top-0 z-50 duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-8">
+    <nav className="sticky top-4 z-50 px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="glass-panel glass-panel--surface glass-panel--tight flex items-center justify-between h-16 px-4 sm:px-6">
+          <div className="flex items-center gap-6">
             <Link
               to="/"
-              className="text-xl font-bold text-white drop-shadow-sm hover:text-cyan-300 transition-colors"
+              className="text-lg sm:text-xl font-semibold tracking-tight text-gradient drop-shadow"
             >
               JobTracker
             </Link>
             <Link
               to="/blog"
-              className="text-sm font-medium text-gray-200 hover:text-white transition-colors"
+              className="text-sm font-medium text-slate-200/80 hover:text-slate-50 transition-colors"
             >
               Blogs
             </Link>
           </div>
 
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 sm:space-x-3">
             {isAuthenticated() ? (
               <div className="relative user-menu">
                 <motion.button
                   onClick={toggleDropdown}
-                  className="flex items-center space-x-2 p-2 rounded-full transition-colors duration-300
-                         border border-transparent hover:border-gray-300/50 dark:hover:border-white/20
-                         hover:bg-white/20 dark:hover:bg-black/20"
+                  className="glass-button glass-button--muted h-11 px-4"
                   whileTap={{ scale: 0.95 }}
                 >
-                  <UserCircleIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-200 hidden sm:block">
+                  <UserCircleIcon className="w-5 h-5 text-slate-100" />
+                  <span className="text-sm font-medium text-slate-100 hidden sm:block">
                     {user?.firstName}
                   </span>
                 </motion.button>
 
-                {dropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-56 rounded-2xl shadow-lg overflow-hidden
-                           border border-white/20
-                           backdrop-blur-xl bg-white/70 dark:bg-gray-900/70"
-                  >
-                    <Link to="/profile" onClick={() => setDropdownOpen(false)}>
-                      <div className="px-4 py-3 border-b border-gray-200/80 dark:border-gray-700/80 hover:bg-black/5 dark:hover:bg-white/5">
-                        <p className="text-sm font-semibold text-gray-900 dark:text-white truncate">
-                          {user?.firstName} {user?.lastName}
-                        </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                          {user?.email}
-                        </p>
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute right-0 mt-3 w-60 glass-panel glass-panel--surface px-1 py-1 overflow-hidden"
+                    >
+                      <Link
+                        to="/profile"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <div className="px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors">
+                          <p className="text-sm font-semibold text-slate-50 truncate">
+                            {user?.firstName} {user?.lastName}
+                          </p>
+                          <p className="text-xs text-slate-300/70 truncate">
+                            {user?.email}
+                          </p>
+                        </div>
+                      </Link>
+
+                      <div className="py-1 space-y-1">
+                        <Link
+                          to="/"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-slate-200/90 hover:bg-white/5 rounded-xl transition-colors"
+                        >
+                          <HomeIcon className="w-4 h-4" /> Home
+                        </Link>
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setDropdownOpen(false)}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-slate-200/90 hover:bg-white/5 rounded-xl transition-colors"
+                        >
+                          <ChartBarIcon className="w-4 h-4" /> Dashboard
+                        </Link>
                       </div>
-                    </Link>
 
-                    <div className="py-1">
-                      <Link
-                        to="/"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
-                      >
-                        <HomeIcon className="w-4 h-4 mr-3" /> Home
-                      </Link>
-                      <Link
-                        to="/dashboard"
-                        onClick={() => setDropdownOpen(false)}
-                        className="flex items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
-                      >
-                        <ChartBarIcon className="w-4 h-4 mr-3" /> Dashboard
-                      </Link>
-                    </div>
-
-                    <div className="py-1 border-t border-gray-200/80 dark:border-gray-700/80">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5"
-                      >
-                        <ArrowRightOnRectangleIcon className="w-4 h-4 mr-3" />{" "}
-                        Logout
-                      </button>
-                      <button
-                        onClick={handleDeleteAccount}
-                        className="flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-500/10"
-                      >
-                        <TrashIcon className="w-4 h-4 mr-3" /> Delete Account
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
+                      <div className="py-1 mt-1 border-t border-white/10 space-y-1">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-slate-200/90 hover:bg-white/5 rounded-xl transition-colors"
+                        >
+                          <ArrowRightOnRectangleIcon className="w-4 h-4" />{" "}
+                          Logout
+                        </button>
+                        <button
+                          onClick={handleDeleteAccount}
+                          className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-300 hover:bg-red-500/15 rounded-xl transition-colors"
+                        >
+                          <TrashIcon className="w-4 h-4" /> Delete Account
+                        </button>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ) : (
               <div className="flex items-center space-x-2">
                 <Link
                   to="/login"
-                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-semibold
-                         transition-all duration-300 backdrop-blur-lg
-                         border bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  className="glass-button glass-button--muted h-11"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="inline-flex items-center justify-center px-4 py-1.5 rounded-full text-sm font-semibold 
-                         text-white transition-all duration-300 backdrop-blur-lg
-                         bg-cyan-500/20 hover:bg-cyan-500/30
-                         border border-cyan-400/50 hover:border-cyan-400/70"
+                  className="glass-button glass-button--primary h-11"
                 >
                   Sign Up
                 </Link>
