@@ -30,6 +30,7 @@ api.interceptors.response.use(
     ) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("jobs");
       window.location.href = "/login";
     }
     return Promise.reject(error);

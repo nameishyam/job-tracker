@@ -98,94 +98,133 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           <h2 className="text-2xl font-semibold tracking-tight">
             Share Your Experience
           </h2>
+          <p className="text-sm text-slate-400 mt-1">
+            Help others by writing a clear, honest review of the interview
+            process.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200/85">
+            <label
+              htmlFor="company"
+              className="text-sm font-medium text-slate-200/85"
+            >
               Company Name
             </label>
             <input
+              id="company"
               type="text"
               name="company"
               value={formData.company}
               onChange={handleChange}
               required
-              className="glass-input"
+              className="w-full rounded-lg bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
               placeholder="Enter company name"
             />
           </div>
+
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200/85">
+            <label
+              htmlFor="role"
+              className="text-sm font-medium text-slate-200/85"
+            >
               Role
             </label>
             <input
+              id="role"
               type="text"
               name="role"
               value={formData.role}
               onChange={handleChange}
-              className="glass-input"
+              className="w-full rounded-lg bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
               placeholder="Enter role/position"
             />
           </div>
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-slate-200/85">
+          <label
+            htmlFor="review"
+            className="text-sm font-medium text-slate-200/85"
+          >
             Review
           </label>
           <textarea
+            id="review"
             name="review"
             value={formData.review}
             onChange={handleChange}
-            rows={4}
-            className="glass-input resize-none"
+            rows={5}
+            className="w-full rounded-lg bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition resize-y"
             placeholder="Share your interview experience..."
           />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200/85">
+            <label
+              htmlFor="rating"
+              className="text-sm font-medium text-slate-200/85"
+            >
               Rating (1-5)
             </label>
             <input
+              id="rating"
               type="number"
               min="1"
               max="5"
               placeholder="e.g. 4"
               value={formData.rating ?? ""}
               onChange={handleRatingChange}
-              className="glass-input"
+              className="w-full rounded-lg bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
             />
+            <p className="text-xs text-slate-400 mt-1">
+              Rate overall interview experience (1 = poor, 5 = excellent)
+            </p>
           </div>
+
           <div className="space-y-2">
-            <label className="text-sm font-medium text-slate-200/85">
+            <label
+              htmlFor="salary"
+              className="text-sm font-medium text-slate-200/85"
+            >
               Salary
             </label>
             <input
+              id="salary"
               type="text"
               name="salary"
               value={formData.salary}
               onChange={handleChange}
-              className="glass-input"
-              placeholder="e.g. 12 LPA"
+              className="w-full rounded-lg bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent transition"
+              placeholder="e.g. 12 LPA / ₹1,00,000 per month"
             />
           </div>
         </div>
 
-        <div className="space-y-4">
-          <label className="text-sm font-medium text-slate-200/85">
-            Interview Rounds
-          </label>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium text-slate-200/85">
+              Interview Rounds
+            </label>
+            <button
+              type="button"
+              onClick={addRoundEnd}
+              className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
+            >
+              <Plus className="w-4 h-4" />
+              Add Round
+            </button>
+          </div>
 
           {formData.rounds.length === 0 ? (
-            <div className="glass-panel glass-panel--tight p-6 text-center">
-              <p className="text-slate-200/70 mb-4">No rounds added yet.</p>
+            <div className="rounded-lg bg-slate-800/50 border border-slate-700 p-4 text-center">
+              <p className="text-slate-400 mb-3">No rounds added yet.</p>
               <button
                 type="button"
                 onClick={addRoundEnd}
-                className="glass-button glass-button--primary px-4 py-2 inline-flex items-center gap-2"
+                className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
               >
                 <Plus className="w-4 h-4" />
                 Add Round
@@ -196,38 +235,60 @@ const NewBlog = ({ onSuccess, onCancel }) => {
               {formData.rounds.map((round, index) => (
                 <div
                   key={index}
-                  className="glass-panel glass-panel--tight p-4 space-y-3"
+                  className="rounded-lg bg-slate-800/50 border border-slate-700 p-3 grid grid-cols-1 sm:grid-cols-6 gap-3 items-start"
                 >
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-slate-200/85">
-                      Round {index + 1}
-                    </span>
-                    <div className="flex items-center gap-1">
-                      <button
-                        type="button"
-                        onClick={() => addRoundAt(index)}
-                        title="Add round after this one"
-                        className="glass-icon-btn"
-                      >
-                        <Plus className="w-3 h-3" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => removeRound(index)}
-                        title="Remove this round"
-                        className="glass-icon-btn"
-                      >
-                        <Minus className="w-3 h-3" />
-                      </button>
+                  <div className="sm:col-span-5">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-slate-200/85">
+                        Round {index + 1}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => addRoundAt(index)}
+                          title="Add round after this one"
+                          className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-700/40 hover:bg-slate-700/60 focus:outline-none"
+                        >
+                          <Plus className="w-3 h-3" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => removeRound(index)}
+                          title="Remove this round"
+                          className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-rose-600/80 hover:bg-rose-600 focus:outline-none"
+                        >
+                          <Minus className="w-3 h-3 text-white" />
+                        </button>
+                      </div>
                     </div>
+
+                    <input
+                      type="text"
+                      placeholder="e.g. HR Round, Technical Round, Coding Test"
+                      value={round}
+                      onChange={(e) => handleRoundChange(index, e.target.value)}
+                      className="w-full rounded-md bg-slate-800/60 border border-slate-700 px-3 py-2 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-slate-500 transition"
+                    />
                   </div>
-                  <input
-                    type="text"
-                    placeholder="e.g. HR Round, Technical Round, Coding Test"
-                    value={round}
-                    onChange={(e) => handleRoundChange(index, e.target.value)}
-                    className="glass-input w-full"
-                  />
+
+                  <div className="sm:col-span-1 flex items-center justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => addRoundAt(index)}
+                      title="Add after"
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-slate-700/40 hover:bg-slate-700/60 focus:outline-none sm:hidden"
+                    >
+                      <Plus className="w-4 h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => removeRound(index)}
+                      title="Remove"
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-rose-600/80 hover:bg-rose-600 focus:outline-none sm:hidden"
+                    >
+                      <Minus className="w-4 h-4 text-white" />
+                    </button>
+                  </div>
                 </div>
               ))}
 
@@ -235,7 +296,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
                 <button
                   type="button"
                   onClick={addRoundEnd}
-                  className="glass-button glass-button--primary px-4 py-2 inline-flex items-center gap-2"
+                  className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
                 >
                   <Plus className="w-4 h-4" />
                   Add Another Round
@@ -246,7 +307,10 @@ const NewBlog = ({ onSuccess, onCancel }) => {
         </div>
 
         {error && (
-          <div className="glass-panel glass-panel--tight p-3 border border-rose-400/40 bg-rose-500/10 text-rose-200 text-sm">
+          <div
+            role="alert"
+            className="rounded-md p-3 border border-rose-400/30 bg-rose-500/10 text-rose-200 text-sm"
+          >
             {error}
           </div>
         )}
@@ -255,18 +319,23 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="glass-button glass-button--muted px-6 py-2"
+            className="rounded-md px-6 py-2 bg-slate-700/40 hover:bg-slate-700/60 transition text-sm"
           >
             Cancel
           </button>
+
           <button
             type="submit"
             disabled={isSubmitting}
-            className="glass-button glass-button--primary px-6 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-md px-6 py-2 bg-green-600/95 hover:bg-green-600 text-white font-medium transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2"
+            aria-disabled={isSubmitting}
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
-                <div className="loading-spinner" />
+                <span
+                  className="inline-block w-4 h-4 rounded-full border-2 border-t-transparent border-white animate-spin"
+                  aria-hidden="true"
+                />
                 Submitting...
               </span>
             ) : (

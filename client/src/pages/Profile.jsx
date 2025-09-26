@@ -15,6 +15,15 @@ import {
 import Blog from "../components/Blog";
 import ConfirmBlogDelete from "../components/ConfirmBlogDelete";
 
+const formatDate = (dateString) => {
+  if (!dateString) return "Unknown";
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = date.toLocaleString("en-US", { month: "long" });
+  const year = date.getFullYear();
+  return `${month} ${day}, ${year}`;
+};
+
 const Profile = () => {
   const { user, token, jobs } = useAuth();
   const [blogs, setBlogs] = useState([]);
@@ -105,8 +114,6 @@ const Profile = () => {
       );
       if (response.status === 200 || response.status === 204) {
         setBlogs((prev) => prev.filter((b) => b.id !== selectedBlog.id));
-      } else {
-        console.error("Delete returned unexpected status:", response.status);
       }
     } catch (error) {
       console.error("Error deleting blog:", error);
@@ -140,15 +147,6 @@ const Profile = () => {
     setEditingBio(false);
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Unknown";
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-    return `${month} - ${day}, ${year}`;
-  };
-
   const stats = [
     {
       icon: BriefcaseIcon,
@@ -173,159 +171,164 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="page-shell flex items-center justify-center">
-        <div className="loading-spinner w-8 h-8" />
+        <div className="inline-block w-6 h-6 rounded-full border-4 border-t-transparent animate-spin border-slate-600/40" />
       </div>
     );
   }
 
   return (
     <div className="page-shell">
-      <div className="page-width space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
-          className="glass-panel glass-panel--surface glass-panel--tight p-8"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-            <div className="flex-shrink-0">
-              <div className="w-20 h-20 rounded-full glass-panel glass-panel--tight glass-panel--hover flex items-center justify-center border border-white/20">
-                <UserCircleIcon className="w-10 h-10 text-emerald-200" />
+      <div className="page-width grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Left Column - User Info & Stats */}
+        <div className="space-y-6">
+          {/* User Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="rounded-xl border border-white/6 shadow-sm bg-[var(--bg-primary)] p-5"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-full bg-slate-800/40 border border-white/12 flex items-center justify-center">
+                <UserCircleIcon className="w-8 h-8 text-emerald-200" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl font-semibold text-slate-100 truncate">
+                  {user?.firstName || "User"} {user?.lastName || ""}
+                </h1>
+                <p className="text-sm text-slate-200/75 truncate">
+                  {user?.email}
+                </p>
+                {location.city && (
+                  <div className="flex items-center text-slate-300/70 gap-1 mt-1 text-sm">
+                    <MapPinIcon className="w-3.5 h-3.5" />
+                    <span>
+                      {location.city}
+                      {location.country ? `, ${location.country}` : ""}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
+          </motion.div>
 
-            <div className="flex-1 space-y-3">
-              <h1 className="text-3xl font-semibold text-slate-100 tracking-tight">
-                {user?.firstName || "User"} {user?.lastName || "Profile"}
-              </h1>
-              <p className="text-slate-200/75">{user?.email}</p>
-
-              {location.city && location.country && (
-                <div className="flex items-center text-slate-300/70 gap-2">
-                  <MapPinIcon className="w-4 h-4" />
-                  <span className="text-sm">
-                    {location.city}, {location.country}
-                  </span>
-                </div>
-              )}
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4"
-        >
-          {stats.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <motion.div
-                key={stat.label}
-                whileHover={{ translateY: -4 }}
-                className="glass-panel glass-panel--tight glass-panel--hover p-5"
-              >
-                <div className="flex items-center gap-4">
+          {/* Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.05 }}
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3"
+          >
+            {stats.map((stat) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={stat.label}
+                  whileHover={{ translateY: -2 }}
+                  className="rounded-xl border border-white/6 bg-[var(--bg-primary)] p-3 flex items-center gap-3"
+                >
                   <div
-                    className={[
-                      "w-12 h-12 rounded-2xl border border-white/15 bg-gradient-to-br flex items-center justify-center",
-                      stat.accent,
-                    ].join(" ")}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center border border-white/12 bg-gradient-to-br ${stat.accent}`}
                   >
-                    <Icon className="w-6 h-6 text-slate-100" />
+                    <Icon className="w-4 h-4 text-slate-100" />
                   </div>
                   <div>
-                    <p className="text-2xl font-semibold text-slate-100">
+                    <p className="text-lg font-semibold text-slate-100">
                       {stat.value}
                     </p>
-                    <p className="text-sm text-slate-200/80">{stat.label}</p>
+                    <p className="text-xs text-slate-200/80">{stat.label}</p>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                </motion.div>
+              );
+            })}
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 22 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: 0.18 }}
-          className="glass-panel glass-panel--tight p-8"
-        >
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-slate-100">About Me</h2>
-            {!editingBio && (
-              <motion.button
-                onClick={() => setEditingBio(true)}
-                whileTap={{ scale: 0.95 }}
-                className="glass-button glass-button--muted px-4 py-2"
-              >
-                <PencilIcon className="w-4 h-4" /> Edit
-              </motion.button>
-            )}
-          </div>
-
-          {editingBio ? (
-            <form onSubmit={handleBioSubmit} className="space-y-4">
-              <textarea
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
-                rows={4}
-                className="glass-textarea"
-                placeholder="Tell us about yourself..."
-              />
-              <div className="flex flex-col sm:flex-row gap-3">
+          {/* About Me */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35, delay: 0.1 }}
+            className="rounded-xl border border-white/6 shadow-sm bg-[var(--bg-primary)] p-5"
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-slate-100">About Me</h2>
+              {!editingBio && (
                 <motion.button
-                  type="submit"
-                  disabled={isSaving}
-                  whileTap={{ scale: 0.97 }}
-                  className="glass-button glass-button--primary justify-center"
+                  onClick={() => setEditingBio(true)}
+                  whileTap={{ scale: 0.95 }}
+                  className="inline-flex items-center gap-1 rounded-md px-2 py-1 bg-slate-800/40 border border-white/6 text-xs text-slate-100 hover:bg-slate-800/60 transition"
+                  aria-label="Edit bio"
                 >
-                  <CheckIcon className="w-4 h-4" />
-                  {isSaving ? "Saving..." : "Save"}
+                  <PencilIcon className="w-3 h-3" />
+                  Edit
                 </motion.button>
-                <motion.button
-                  type="button"
-                  onClick={handleCancelEdit}
-                  disabled={isSaving}
-                  whileTap={{ scale: 0.97 }}
-                  className="glass-button glass-button--muted justify-center"
-                >
-                  <XMarkIcon className="w-4 h-4" /> Cancel
-                </motion.button>
-              </div>
-            </form>
-          ) : (
-            <div className="min-h-[120px] flex items-center">
-              {bio ? (
-                <p className="text-slate-200/80 whitespace-pre-wrap leading-relaxed">
-                  {bio}
-                </p>
-              ) : (
-                <p className="text-slate-300/60 italic">
-                  No bio added yet. Click "Edit" to add information about
-                  yourself.
-                </p>
               )}
             </div>
-          )}
 
-          <div>
-            <p className="mb-3 text-slate-300/80">your blogs:</p>
-            {blogs.length === 0 ? (
-              <p className="text-slate-400/70">no blogs yet</p>
-            ) : (
-              blogs.map((blog) => (
-                <Blog
-                  key={blog.id}
-                  data={blog}
-                  onDeleteRequest={handleDeleteRequest}
+            {editingBio ? (
+              <form onSubmit={handleBioSubmit} className="space-y-3">
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  rows={3}
+                  className="w-full rounded-md bg-slate-800/60 border border-slate-700 px-2 py-1 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-500 transition text-sm"
+                  placeholder="Tell us about yourself..."
                 />
-              ))
+                <div className="flex gap-2">
+                  <motion.button
+                    type="submit"
+                    disabled={isSaving}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-1 rounded-md px-3 py-1 bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-500 transition disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <CheckIcon className="w-3 h-3" />
+                    {isSaving ? "Saving..." : "Save"}
+                  </motion.button>
+                  <motion.button
+                    type="button"
+                    onClick={handleCancelEdit}
+                    disabled={isSaving}
+                    whileTap={{ scale: 0.97 }}
+                    className="inline-flex items-center gap-1 rounded-md px-3 py-1 bg-slate-800/40 border border-white/6 text-xs text-slate-100 hover:bg-slate-800/60 transition"
+                  >
+                    <XMarkIcon className="w-3 h-3" />
+                    Cancel
+                  </motion.button>
+                </div>
+              </form>
+            ) : (
+              <div className="min-h-[80px]">
+                {bio ? (
+                  <p className="text-slate-200/80 text-sm whitespace-pre-wrap leading-relaxed">
+                    {bio}
+                  </p>
+                ) : (
+                  <p className="text-slate-300/60 italic text-sm">
+                    No bio added yet. Click "Edit" to add information about
+                    yourself.
+                  </p>
+                )}
+              </div>
             )}
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Right Column - Blogs */}
+        <div className="space-y-4">
+          {blogs.length === 0 ? (
+            <div className="rounded-xl border border-white/6 bg-white/4 p-4 text-slate-400/80 text-sm">
+              No blogs yet
+            </div>
+          ) : (
+            blogs.map((blog) => (
+              <Blog
+                key={blog.id}
+                data={blog}
+                onDeleteRequest={handleDeleteRequest}
+              />
+            ))
+          )}
+        </div>
       </div>
 
       <ConfirmBlogDelete
@@ -336,6 +339,7 @@ const Profile = () => {
           setSelectedBlog(null);
         }}
         onConfirm={handleConfirmDelete}
+        isDeleting={isDeleting}
       />
     </div>
   );

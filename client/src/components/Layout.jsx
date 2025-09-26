@@ -32,7 +32,7 @@ const Layout = () => {
   return (
     <div className="app-content">
       <Navbar />
-      <main className="app-main">
+      <main className="app-main pt-12">
         <Outlet />
       </main>
 
@@ -47,7 +47,7 @@ const Layout = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="glass-panel glass-panel--surface p-8 w-full max-w-md"
+            className="dark-panel dark-panel--surface p-8 w-full max-w-md"
           >
             <h3 className="text-lg font-semibold mb-2 text-gradient">
               Delete Account
@@ -59,13 +59,13 @@ const Layout = () => {
             <div className="flex space-x-3">
               <button
                 onClick={confirmDeleteAccount}
-                className="glass-button glass-button--danger flex-1"
+                className="dark-button dark-button--danger flex-1"
               >
                 Delete Account
               </button>
               <button
                 onClick={cancelDeleteAccount}
-                className="glass-button glass-button--muted flex-1"
+                className="dark-button dark-button--muted flex-1"
               >
                 Cancel
               </button>

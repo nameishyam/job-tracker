@@ -14,31 +14,24 @@ const JobInfo = ({ job }) => {
   const [currentJob, setCurrentJob] = useState(job);
   const { token, user } = useAuth();
 
-  const handleReviewChange = (e) => {
-    setReview(e.target.value);
-  };
+  const handleReviewChange = (e) => setReview(e.target.value);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!review.trim()) return;
 
     setIsSubmitting(true);
-    const payload = {
-      jobId: job.id,
-      review: review,
-    };
+    const payload = { jobId: job.id, review };
 
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/jobs/review`,
         payload,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.status === 200) {
-        setCurrentJob({ ...currentJob, review: review });
+        setCurrentJob({ ...currentJob, review });
         setReview("");
       }
     } catch (error) {
@@ -54,13 +47,8 @@ const JobInfo = ({ job }) => {
       setAiResponse("");
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/gemini/ask`,
-        {
-          job: currentJob,
-          review,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { job: currentJob, review },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.status === 200) {
@@ -76,19 +64,12 @@ const JobInfo = ({ job }) => {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "Not specified";
-    return new Date(dateString).toLocaleDateString();
-  };
+  const formatDate = (dateString) =>
+    dateString ? new Date(dateString).toLocaleDateString() : "Not specified";
 
   const handleCheckboxChange = async (round, checked) => {
     try {
-      const payload = {
-        jobId: job.id,
-        round,
-        status: checked ? 1 : 0,
-      };
-
+      const payload = { jobId: job.id, round, status: checked ? 1 : 0 };
       const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/jobs`,
         payload,
@@ -96,9 +77,8 @@ const JobInfo = ({ job }) => {
       );
 
       if (response.status === 200) {
-        if (response.data?.job) {
-          setCurrentJob(response.data.job);
-        } else {
+        if (response.data?.job) setCurrentJob(response.data.job);
+        else
           setCurrentJob((prevJob) => ({
             ...prevJob,
             roundStatus: {
@@ -106,7 +86,6 @@ const JobInfo = ({ job }) => {
               [round]: checked ? 1 : 0,
             },
           }));
-        }
       }
     } catch (err) {
       console.error("Failed to update round status:", err);
@@ -137,19 +116,20 @@ const JobInfo = ({ job }) => {
   const getJobTypeClass = (type) => {
     switch (type) {
       case "full-time":
-        return "glass-badge glass-badge--teal";
+        return "dark-badge dark-badge--teal rounded-lg";
       case "part-time":
-        return "glass-badge glass-badge--blue";
+        return "dark-badge dark-badge--blue rounded-lg";
       case "intern":
-        return "glass-badge glass-badge--purple";
+        return "dark-badge dark-badge--purple rounded-lg";
       default:
-        return "glass-badge glass-badge--neutral";
+        return "dark-badge dark-badge--neutral rounded-lg";
     }
   };
 
   return (
     <div className="p-6 sm:p-8 space-y-6 text-slate-100">
-      <div className="border-b border-white/10 pb-4 space-y-3">
+      {/* Header */}
+      <div className="border-b border-white/10 pb-4 space-y-3 rounded-lg">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">
             {job.jobtitle}
@@ -163,6 +143,7 @@ const JobInfo = ({ job }) => {
         <p className="text-lg text-slate-200/85">{job.company}</p>
       </div>
 
+      {/* Info Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
@@ -228,23 +209,25 @@ const JobInfo = ({ job }) => {
         </div>
       </div>
 
+      {/* Description */}
       {job.description && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
             Job Description
           </h3>
-          <div className="glass-panel glass-panel--tight p-5 text-slate-200 whitespace-pre-wrap">
+          <div className="dark-panel dark-panel--tight p-5 text-slate-200 whitespace-pre-wrap rounded-lg">
             {job.description}
           </div>
         </div>
       )}
 
+      {/* Review */}
       {currentJob.review && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
             Your Review
           </h3>
-          <div className="glass-panel glass-panel--tight border border-emerald-300/20 bg-emerald-500/5 text-slate-100">
+          <div className="dark-panel dark-panel--tight border border-emerald-300/20 bg-emerald-500/5 text-slate-100 rounded-lg">
             <p className="whitespace-pre-wrap leading-relaxed">
               {currentJob.review}
             </p>
@@ -252,6 +235,7 @@ const JobInfo = ({ job }) => {
         </div>
       )}
 
+      {/* Add Review */}
       <div className="space-y-4">
         <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
           Add Review
@@ -261,7 +245,7 @@ const JobInfo = ({ job }) => {
             value={review}
             onChange={handleReviewChange}
             rows={4}
-            className="glass-textarea resize-none"
+            className="dark-textarea resize-none rounded-lg"
             placeholder="Share your experience with this application..."
           />
           <div className="flex flex-col sm:flex-row gap-3">
@@ -269,7 +253,7 @@ const JobInfo = ({ job }) => {
               type="submit"
               disabled={isSubmitting || !review.trim()}
               whileTap={{ scale: 0.97 }}
-              className="glass-button glass-button--primary flex-1 sm:flex-none justify-center"
+              className="dark-button dark-button--primary flex-1 sm:flex-none justify-center rounded-lg"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
@@ -285,7 +269,7 @@ const JobInfo = ({ job }) => {
               onClick={AiReview}
               disabled={isGenerating}
               whileTap={{ scale: 0.97 }}
-              className="glass-button glass-button--muted flex-1 sm:flex-none justify-center"
+              className="dark-button dark-button--muted flex-1 sm:flex-none justify-center rounded-lg"
             >
               <SparklesIcon className="w-4 h-4" />
               {isGenerating ? "Analyzing..." : "AI Analysis"}
@@ -294,19 +278,19 @@ const JobInfo = ({ job }) => {
         </form>
       </div>
 
+      {/* AI Response */}
       {isGenerating && (
         <div className="flex items-center justify-center py-8 gap-3 text-slate-200/85">
           <div className="loading-spinner w-5 h-5" />
           AI is analyzing your review...
         </div>
       )}
-
       {aiResponse && !isGenerating && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
             AI Analysis & Next Steps
           </h3>
-          <div className="glass-panel glass-panel--tight">
+          <div className="dark-panel dark-panel--tight rounded-lg">
             <div className="prose prose-sm dark:prose-invert max-w-none text-slate-100">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {aiResponse}

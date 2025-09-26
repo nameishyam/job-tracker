@@ -32,28 +32,19 @@ const JobForm = ({ email, onJobAdded }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleRoundAdd = () => {
     const trimmed = roundInput.trim();
     if (!trimmed) return;
-    setFormData((prev) => ({
-      ...prev,
-      rounds: [...prev.rounds, trimmed],
-    }));
+    setFormData((prev) => ({ ...prev, rounds: [...prev.rounds, trimmed] }));
     setRoundInput("");
   };
 
   const handleRoundRemove = (index) => {
     const updated = formData.rounds.filter((_, i) => i !== index);
-    setFormData((prev) => ({
-      ...prev,
-      rounds: updated,
-    }));
+    setFormData((prev) => ({ ...prev, rounds: updated }));
   };
 
   const handleSubmit = async (e) => {
@@ -86,7 +77,7 @@ const JobForm = ({ email, onJobAdded }) => {
           rounds: [],
         });
         setRoundInput("");
-        if (onJobAdded) onJobAdded(response.data.job);
+        onJobAdded?.(response.data.job);
       }
     } catch (error) {
       console.error("Error creating job:", error);
@@ -103,9 +94,10 @@ const JobForm = ({ email, onJobAdded }) => {
   ];
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {/* Job Title */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Job Title
         </label>
         <input
@@ -113,14 +105,15 @@ const JobForm = ({ email, onJobAdded }) => {
           name="jobtitle"
           value={formData.jobtitle}
           onChange={handleChange}
-          className="glass-input"
+          className="dark-input py-2 text-sm"
           placeholder="e.g. Software Engineer"
           required
         />
       </div>
 
+      {/* Company */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Company
         </label>
         <input
@@ -128,14 +121,15 @@ const JobForm = ({ email, onJobAdded }) => {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="glass-input"
+          className="dark-input py-2 text-sm"
           placeholder="e.g. Google"
           required
         />
       </div>
 
+      {/* Location */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Location
         </label>
         <input
@@ -143,23 +137,24 @@ const JobForm = ({ email, onJobAdded }) => {
           name="location"
           value={formData.location}
           onChange={handleChange}
-          className="glass-input"
+          className="dark-input py-2 text-sm"
           placeholder="e.g. San Francisco, CA"
           required
         />
       </div>
 
+      {/* Job Type */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-2">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Job Type
         </label>
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-2">
           {jobTypes.map(({ value, label }) => (
             <label
               key={value}
-              className={`flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-lg text-sm text-slate-200/90 transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 rounded-lg border border-white/10 bg-white/5 text-xs text-slate-200/90 transition-colors ${
                 formData.jobtype === value
-                  ? "ring-2 ring-cyan-400/60"
+                  ? "ring-1 ring-cyan-400/50"
                   : "hover:border-white/25"
               }`}
             >
@@ -178,8 +173,9 @@ const JobForm = ({ email, onJobAdded }) => {
         </div>
       </div>
 
+      {/* Salary */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Salary
         </label>
         <input
@@ -187,17 +183,18 @@ const JobForm = ({ email, onJobAdded }) => {
           name="salary"
           value={formData.salary}
           onChange={handleChange}
-          className="glass-input"
+          className="dark-input py-2 text-sm"
           placeholder="e.g. $120,000"
           required
         />
       </div>
 
+      {/* Interview Rounds */}
       <div>
-        <label className="block text-sm font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-slate-200 mb-1">
           Interview Rounds
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-1">
           <input
             type="text"
             value={roundInput}
@@ -206,27 +203,27 @@ const JobForm = ({ email, onJobAdded }) => {
               e.key === "Enter" && (e.preventDefault(), handleRoundAdd())
             }
             placeholder="e.g. Technical Interview"
-            className="glass-input flex-1"
+            className="dark-input flex-1 py-2 text-sm"
           />
           <button
             type="button"
             onClick={handleRoundAdd}
-            className="glass-icon-btn text-emerald-200 hover:text-emerald-100"
+            className="dark-icon-btn text-emerald-200 hover:text-emerald-100 p-1"
           >
-            <PlusIcon className="w-4 h-4" />
+            <PlusIcon className="w-3.5 h-3.5" />
           </button>
         </div>
         {formData.rounds.length > 0 && (
-          <div className="glass-taglist mt-3">
+          <div className="dark-taglist mt-2">
             {formData.rounds.map((round, index) => (
-              <span key={index} className="glass-chip">
+              <span key={index} className="dark-chip text-xs">
                 {round}
                 <button
                   type="button"
                   onClick={() => handleRoundRemove(index)}
-                  className="ml-2 text-emerald-200/80 hover:text-emerald-100"
+                  className="ml-1 text-emerald-200/80 hover:text-emerald-100"
                 >
-                  <XMarkIcon className="w-4 h-4" />
+                  <XMarkIcon className="w-3.5 h-3.5" />
                 </button>
               </span>
             ))}
@@ -234,9 +231,10 @@ const JobForm = ({ email, onJobAdded }) => {
         )}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* Date & Description */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-slate-200 mb-1">
+          <label className="block text-xs font-medium text-slate-200 mb-1">
             Date Applied
           </label>
           <input
@@ -244,35 +242,36 @@ const JobForm = ({ email, onJobAdded }) => {
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="glass-input"
+            className="dark-input py-2 text-sm"
             required
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-slate-200 mb-1">
+          <label className="block text-xs font-medium text-slate-200 mb-1">
             Description
           </label>
           <textarea
             name="description"
             value={formData.description}
             onChange={handleChange}
-            rows={4}
-            className="glass-textarea resize-none"
+            rows={3}
+            className="dark-textarea resize-none text-sm"
             placeholder="Job description or notes..."
             required
           />
         </div>
       </div>
 
+      {/* Submit */}
       <motion.button
         type="submit"
         disabled={isSubmitting}
         whileTap={{ scale: 0.97 }}
-        className="glass-button glass-button--primary w-full h-12 justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+        className="dark-button dark-button--primary w-full h-10 justify-center text-sm disabled:opacity-60 disabled:cursor-not-allowed"
       >
         {isSubmitting ? (
-          <span className="flex items-center gap-3">
-            <div className="loading-spinner w-4 h-4" />
+          <span className="flex items-center gap-2">
+            <div className="loading-spinner w-3.5 h-3.5" />
             Adding Job...
           </span>
         ) : (

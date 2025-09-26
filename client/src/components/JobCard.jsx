@@ -14,9 +14,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
 
   const handleDelete = async (e) => {
     e.stopPropagation();
-    if (!window.confirm("Are you sure you want to delete this job?")) {
-      return;
-    }
+    if (!window.confirm("Are you sure you want to delete this job?")) return;
 
     setIsDeleting(true);
     try {
@@ -33,7 +31,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Not specified";
+    if (!dateString) return "N/A";
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
@@ -43,7 +41,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   };
 
   const getJobTypeClass = (type) => {
-    const baseClass = "px-2 py-1 text-xs font-medium rounded-full";
+    const baseClass = "px-2 py-0.5 text-xs font-medium rounded-full";
     switch (type?.toLowerCase()) {
       case "full time":
       case "full-time":
@@ -63,13 +61,14 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   return (
     <motion.div
       onClick={handleCardClick}
-      whileHover={{ y: -2 }}
-      className="glass-panel glass-panel--surface glass-panel--hover p-5 sm:p-6 cursor-pointer"
+      whileHover={{ y: -1 }}
+      className="glass-panel glass-panel--tight glass-panel--hover p-3 sm:p-4 cursor-pointer"
     >
-      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        {/* Job Info */}
         <div className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
-            <h3 className="text-lg sm:text-xl font-semibold text-slate-50 leading-tight">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
+            <h3 className="text-base sm:text-lg font-semibold text-slate-100 truncate">
               {job.position}
             </h3>
             {job.jobType && (
@@ -77,62 +76,55 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
             )}
           </div>
 
-          <h4 className="text-base sm:text-lg font-medium text-slate-200 mb-4">
+          <h4 className="text-sm sm:text-base font-medium text-slate-200 mb-2 truncate">
             {job.company}
           </h4>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-2 gap-x-6 text-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-4 text-xs text-slate-300">
             <div>
-              <span className="text-slate-400 font-medium">Location:</span>
-              <span className="text-slate-200 ml-2">
-                {job.location || "Not specified"}
-              </span>
+              <span className="font-medium text-slate-400">Location:</span>{" "}
+              <span>{job.location || "N/A"}</span>
             </div>
             <div>
-              <span className="text-slate-400 font-medium">Salary:</span>
-              <span className="text-slate-200 ml-2">
-                {job.salary || "Not specified"}
-              </span>
+              <span className="font-medium text-slate-400">Salary:</span>{" "}
+              <span>{job.salary || "N/A"}</span>
             </div>
             <div>
-              <span className="text-slate-400 font-medium">Applied:</span>
-              <span className="text-slate-200 ml-2">
-                {formatDate(job.dateApplied)}
-              </span>
+              <span className="font-medium text-slate-400">Applied:</span>{" "}
+              <span>{formatDate(job.dateApplied)}</span>
             </div>
             <div>
-              <span className="text-slate-400 font-medium">Status:</span>
-              <span className="text-slate-200 ml-2">
-                {job.status || "Applied"}
-              </span>
+              <span className="font-medium text-slate-400">Status:</span>{" "}
+              <span>{job.status || "Applied"}</span>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 sm:ml-4">
+        {/* Action Buttons */}
+        <div className="flex items-center gap-2 sm:ml-2">
           <motion.button
             onClick={(e) => {
               e.stopPropagation();
               handleCardClick();
             }}
             whileTap={{ scale: 0.95 }}
-            className="glass-icon-btn"
+            className="glass-icon-btn p-1 text-slate-200 hover:text-slate-50"
             title="View details"
           >
-            <EyeIcon className="w-5 h-5" />
+            <EyeIcon className="w-4 h-4" />
           </motion.button>
 
           <motion.button
             onClick={handleDelete}
             disabled={isDeleting}
             whileTap={{ scale: 0.95 }}
-            className="glass-icon-btn text-rose-300 hover:text-rose-200 disabled:opacity-50"
+            className="glass-icon-btn p-1 text-rose-300 hover:text-rose-200 disabled:opacity-50"
             title="Delete job"
           >
             {isDeleting ? (
-              <div className="w-4 h-4 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
+              <div className="w-3.5 h-3.5 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <TrashIcon className="w-5 h-5" />
+              <TrashIcon className="w-4 h-4" />
             )}
           </motion.button>
         </div>
