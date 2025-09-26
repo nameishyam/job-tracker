@@ -137,7 +137,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/signup"
-                className="h-11 px-4 bg-blue-600 hover:bg-blue-500 text-white rounded-full flex items-center justify-center transition-colors"
+                className="h-11 px-4 bg-emerald-600 hover:bg-emerald-500 text-white rounded-full flex items-center justify-center transition-colors"
               >
                 Sign Up
               </Link>
