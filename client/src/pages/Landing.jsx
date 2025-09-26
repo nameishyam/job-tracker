@@ -112,7 +112,7 @@ const Landing = () => {
             >
               <h1
                 id="hero-heading"
-                className="text-4xl md:text-5xl font-bold leading-tight max-w-lg"
+                className="text-2xl md:text-4xl font-bold leading-tight max-w-lg"
               >
                 <div className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400">
                   Track every job application
