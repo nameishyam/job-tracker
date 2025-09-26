@@ -250,9 +250,9 @@ const Landing = () => {
             <div className="flex gap-3 flex-shrink-0">
               <Link
                 to="/signup"
-                className="glass-button min-w-[200px] glass-button--primary px-4 py-2"
+                className="glass-button glass-button--primary px-4 py-2"
               >
-                Sign up — it's free
+                Sign up <span className="hidden md:inline">— it's free</span>
               </Link>
               <Link
                 to="/login"
