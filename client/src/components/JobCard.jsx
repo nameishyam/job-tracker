@@ -41,20 +41,20 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   };
 
   const getJobTypeClass = (type) => {
-    const baseClass = "px-2 py-0.5 text-xs font-medium rounded-full";
+    const baseClass = "px-2 py-0.5 text-xs font-medium rounded-full border";
     switch (type?.toLowerCase()) {
       case "full time":
       case "full-time":
-        return `${baseClass} bg-emerald-400/20 text-emerald-300 border border-emerald-400/30`;
+        return `${baseClass} bg-emerald-400/20 text-emerald-300 border-emerald-400/30`;
       case "part time":
       case "part-time":
-        return `${baseClass} bg-blue-400/20 text-blue-300 border border-blue-400/30`;
+        return `${baseClass} bg-blue-400/20 text-blue-300 border-blue-400/30`;
       case "contract":
-        return `${baseClass} bg-amber-400/20 text-amber-300 border border-amber-400/30`;
+        return `${baseClass} bg-amber-400/20 text-amber-300 border-amber-400/30`;
       case "internship":
-        return `${baseClass} bg-purple-400/20 text-purple-300 border border-purple-400/30`;
+        return `${baseClass} bg-purple-400/20 text-purple-300 border-purple-400/30`;
       default:
-        return `${baseClass} bg-slate-400/20 text-slate-300 border border-slate-400/30`;
+        return `${baseClass} bg-slate-400/20 text-slate-300 border-slate-400/30`;
     }
   };
 
@@ -62,13 +62,12 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
     <motion.div
       onClick={handleCardClick}
       whileHover={{ y: -1 }}
-      className="glass-panel glass-panel--tight glass-panel--hover p-3 sm:p-4 cursor-pointer"
+      className="p-3 sm:p-4 cursor-pointer rounded-2xl bg-[#0f172a] border border-white/6 shadow-md flex flex-col transition hover:bg-[#1e293b]"
     >
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-        {/* Job Info */}
         <div className="flex-1 min-w-0">
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-            <h3 className="text-base sm:text-lg font-semibold text-slate-100 truncate">
+            <h3 className="text-base sm:text-lg font-semibold text-[#f1f5f9] truncate">
               {job.position}
             </h3>
             {job.jobType && (
@@ -76,31 +75,30 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
             )}
           </div>
 
-          <h4 className="text-sm sm:text-base font-medium text-slate-200 mb-2 truncate">
+          <h4 className="text-sm sm:text-base font-medium text-[#94a3b8] mb-2 truncate">
             {job.company}
           </h4>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-4 text-xs text-slate-300">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-1 gap-x-4 text-xs text-[#94a3b8]">
             <div>
-              <span className="font-medium text-slate-400">Location:</span>{" "}
+              <span className="font-medium text-[#94a3b8]">Location:</span>{" "}
               <span>{job.location || "N/A"}</span>
             </div>
             <div>
-              <span className="font-medium text-slate-400">Salary:</span>{" "}
+              <span className="font-medium text-[#94a3b8]">Salary:</span>{" "}
               <span>{job.salary || "N/A"}</span>
             </div>
             <div>
-              <span className="font-medium text-slate-400">Applied:</span>{" "}
+              <span className="font-medium text-[#94a3b8]">Applied:</span>{" "}
               <span>{formatDate(job.dateApplied)}</span>
             </div>
             <div>
-              <span className="font-medium text-slate-400">Status:</span>{" "}
+              <span className="font-medium text-[#94a3b8]">Status:</span>{" "}
               <span>{job.status || "Applied"}</span>
             </div>
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex items-center gap-2 sm:ml-2">
           <motion.button
             onClick={(e) => {
@@ -108,7 +106,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
               handleCardClick();
             }}
             whileTap={{ scale: 0.95 }}
-            className="glass-icon-btn p-1 text-slate-200 hover:text-slate-50"
+            className="p-1 rounded-lg text-[#f1f5f9] hover:text-white transition"
             title="View details"
           >
             <EyeIcon className="w-4 h-4" />
@@ -118,7 +116,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
             onClick={handleDelete}
             disabled={isDeleting}
             whileTap={{ scale: 0.95 }}
-            className="glass-icon-btn p-1 text-rose-300 hover:text-rose-200 disabled:opacity-50"
+            className="p-1 rounded-lg text-rose-300 hover:text-rose-200 disabled:opacity-50 transition"
             title="Delete job"
           >
             {isDeleting ? (

@@ -75,9 +75,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen text-slate-100">
+    <div className="min-h-screen text-slate-100 bg-slate-950">
       <main className="relative z-10 pb-12">
-        <div className="page-width">
+        <div className="max-w-[1120px] w-[92vw] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <section aria-labelledby="hero-heading" className="space-y-6">
               <h1
@@ -94,7 +94,22 @@ const Landing = () => {
                 interview rounds, and read community-driven company reviews so
                 you can make confident decisions about where to apply.
               </p>
+              <div className="flex gap-3 flex-shrink-0">
+                <Link
+                  to="/signup"
+                  className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
+                >
+                  Sign up — it's free
+                </Link>
+                <Link
+                  to="/login"
+                  className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
+                >
+                  Sign in
+                </Link>
+              </div>
             </section>
+
             <section className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {features.map((feature) => {
                 const Icon = feature.icon;
@@ -121,35 +136,11 @@ const Landing = () => {
               })}
             </section>
           </div>
-          <section className="mt-24 rounded-xl border border-slate-800 bg-slate-900 p-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div>
-              <h4 className="text-2xl font-bold">
-                Ready to organize your job search?
-              </h4>
-              <p className="text-slate-400 mt-1">
-                Create a free account to start tracking applications and reading
-                company reviews.
-              </p>
-            </div>
-            <div className="flex gap-3 flex-shrink-0">
-              <Link
-                to="/signup"
-                className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
-              >
-                Sign up — it's free
-              </Link>
-              <Link
-                to="/login"
-                className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
-              >
-                Sign in
-              </Link>
-            </div>
-          </section>
         </div>
       </main>
+
       <footer className="relative z-10 border-t border-slate-800 bg-slate-950">
-        <div className="page-width py-6">
+        <div className="max-w-[1120px] w-[92vw] mx-auto py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left text-sm text-slate-400">
               <p>

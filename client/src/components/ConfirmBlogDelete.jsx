@@ -10,13 +10,13 @@ const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.95, opacity: 0 }}
         transition={{ duration: 0.16 }}
-        className="bg-slate-900 rounded-2xl shadow-lg p-6 w-full max-w-sm border border-white/10"
+        className="bg-[#0f172a] rounded-2xl shadow-lg p-6 w-full max-w-sm border border-white/10"
       >
-        <h2 className="text-lg font-semibold text-slate-100 mb-2">
+        <h2 className="text-lg font-semibold text-[#f1f5f9] mb-2">
           Confirm Delete
         </h2>
 
-        <p className="text-slate-300 text-sm mb-4">
+        <p className="text-[#94a3b8] text-sm mb-4">
           Are you sure you want to delete{blogTitle ? ` "${blogTitle}"` : ""}?
           This action cannot be undone.
         </p>
@@ -24,14 +24,14 @@ const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
         <div className="flex justify-end gap-3">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-sm font-medium rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200"
+            className="px-4 py-2 text-sm font-medium rounded-lg bg-[#334155] hover:bg-[#475569] text-[#f1f5f9] transition"
           >
             Cancel
           </button>
 
           <button
             onClick={onConfirm}
-            className="px-4 py-2 text-sm font-medium rounded-lg bg-rose-600 hover:bg-rose-500 text-white"
+            className="px-4 py-2 text-sm font-medium rounded-lg bg-[#ef4444] hover:bg-[#f87171] text-white transition"
           >
             Delete
           </button>

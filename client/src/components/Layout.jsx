@@ -30,12 +30,18 @@ const Layout = () => {
   };
 
   return (
-    <div className="app-content">
-      <Navbar />
-      <main className="app-main pt-12">
+    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
+      {/* Fixed navbar */}
+      <div className="fixed top-0 left-0 w-full z-50">
+        <Navbar />
+      </div>
+
+      {/* Main content */}
+      <main className="flex-1 pt-24 overflow-y-auto">
         <Outlet />
       </main>
 
+      {/* Delete Account Modal */}
       {showDeleteModal && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -47,25 +53,25 @@ const Layout = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="dark-panel dark-panel--surface p-8 w-full max-w-md"
+            className="bg-[#0f172a] border border-white/10 rounded-2xl p-8 w-full max-w-md text-[#f1f5f9]"
           >
-            <h3 className="text-lg font-semibold mb-2 text-gradient">
+            <h3 className="text-lg font-semibold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-teal-400">
               Delete Account
             </h3>
-            <p className="muted mb-6">
+            <p className="text-[#94a3b8] mb-6">
               Are you sure you want to delete your account? This action cannot
               be undone and will remove all your data.
             </p>
             <div className="flex space-x-3">
               <button
                 onClick={confirmDeleteAccount}
-                className="dark-button dark-button--danger flex-1"
+                className="flex-1 px-4 py-2 rounded-full bg-rose-600 hover:bg-rose-500 text-white font-semibold transition"
               >
                 Delete Account
               </button>
               <button
                 onClick={cancelDeleteAccount}
-                className="dark-button dark-button--muted flex-1"
+                className="flex-1 px-4 py-2 rounded-full bg-[#334155] hover:bg-[#475569] text-[#f1f5f9] font-semibold transition"
               >
                 Cancel
               </button>

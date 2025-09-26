@@ -170,15 +170,15 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <div className="page-shell flex items-center justify-center">
+      <div className="flex min-h-screen items-center justify-center">
         <div className="inline-block w-6 h-6 rounded-full border-4 border-t-transparent animate-spin border-slate-600/40" />
       </div>
     );
   }
 
   return (
-    <div className="page-shell">
-      <div className="page-width grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
+      <div className="max-w-[1120px] w-[92vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
         {/* Left Column - User Info & Stats */}
         <div className="space-y-6">
           {/* User Info */}
@@ -186,7 +186,7 @@ const Profile = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="rounded-xl border border-white/6 shadow-sm bg-[var(--bg-primary)] p-5"
+            className="rounded-xl border border-white/6 shadow-sm bg-slate-900/80 p-5"
           >
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-slate-800/40 border border-white/12 flex items-center justify-center">
@@ -225,7 +225,7 @@ const Profile = () => {
                 <motion.div
                   key={stat.label}
                   whileHover={{ translateY: -2 }}
-                  className="rounded-xl border border-white/6 bg-[var(--bg-primary)] p-3 flex items-center gap-3"
+                  className="rounded-xl border border-white/6 bg-slate-900/80 p-3 flex items-center gap-3"
                 >
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center border border-white/12 bg-gradient-to-br ${stat.accent}`}
@@ -248,7 +248,7 @@ const Profile = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1 }}
-            className="rounded-xl border border-white/6 shadow-sm bg-[var(--bg-primary)] p-5"
+            className="rounded-xl border border-white/6 shadow-sm bg-slate-900/80 p-5"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-slate-100">About Me</h2>
@@ -316,7 +316,7 @@ const Profile = () => {
         {/* Right Column - Blogs */}
         <div className="space-y-4">
           {blogs.length === 0 ? (
-            <div className="rounded-xl border border-white/6 bg-white/4 p-4 text-slate-400/80 text-sm">
+            <div className="rounded-xl border border-white/6 bg-slate-900/60 p-4 text-slate-400/80 text-sm">
               No blogs yet
             </div>
           ) : (

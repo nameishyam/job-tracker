@@ -97,7 +97,7 @@ const JobForm = ({ email, onJobAdded }) => {
     <form onSubmit={handleSubmit} className="space-y-3">
       {/* Job Title */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Job Title
         </label>
         <input
@@ -105,7 +105,7 @@ const JobForm = ({ email, onJobAdded }) => {
           name="jobtitle"
           value={formData.jobtitle}
           onChange={handleChange}
-          className="dark-input py-2 text-sm"
+          className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
           placeholder="e.g. Software Engineer"
           required
         />
@@ -113,7 +113,7 @@ const JobForm = ({ email, onJobAdded }) => {
 
       {/* Company */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Company
         </label>
         <input
@@ -121,7 +121,7 @@ const JobForm = ({ email, onJobAdded }) => {
           name="company"
           value={formData.company}
           onChange={handleChange}
-          className="dark-input py-2 text-sm"
+          className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
           placeholder="e.g. Google"
           required
         />
@@ -129,7 +129,7 @@ const JobForm = ({ email, onJobAdded }) => {
 
       {/* Location */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Location
         </label>
         <input
@@ -137,7 +137,7 @@ const JobForm = ({ email, onJobAdded }) => {
           name="location"
           value={formData.location}
           onChange={handleChange}
-          className="dark-input py-2 text-sm"
+          className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
           placeholder="e.g. San Francisco, CA"
           required
         />
@@ -145,14 +145,14 @@ const JobForm = ({ email, onJobAdded }) => {
 
       {/* Job Type */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Job Type
         </label>
         <div className="flex flex-wrap gap-2">
           {jobTypes.map(({ value, label }) => (
             <label
               key={value}
-              className={`flex items-center gap-1 px-2 py-1 rounded-lg border border-white/10 bg-white/5 text-xs text-slate-200/90 transition-colors ${
+              className={`flex items-center gap-1 px-2 py-1 rounded-lg border border-white/10 bg-white/5 text-xs text-[#f1f5f9] transition-colors ${
                 formData.jobtype === value
                   ? "ring-1 ring-cyan-400/50"
                   : "hover:border-white/25"
@@ -175,7 +175,7 @@ const JobForm = ({ email, onJobAdded }) => {
 
       {/* Salary */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Salary
         </label>
         <input
@@ -183,7 +183,7 @@ const JobForm = ({ email, onJobAdded }) => {
           name="salary"
           value={formData.salary}
           onChange={handleChange}
-          className="dark-input py-2 text-sm"
+          className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
           placeholder="e.g. $120,000"
           required
         />
@@ -191,7 +191,7 @@ const JobForm = ({ email, onJobAdded }) => {
 
       {/* Interview Rounds */}
       <div>
-        <label className="block text-xs font-medium text-slate-200 mb-1">
+        <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Interview Rounds
         </label>
         <div className="flex gap-1">
@@ -203,25 +203,28 @@ const JobForm = ({ email, onJobAdded }) => {
               e.key === "Enter" && (e.preventDefault(), handleRoundAdd())
             }
             placeholder="e.g. Technical Interview"
-            className="dark-input flex-1 py-2 text-sm"
+            className="flex-1 px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
           />
           <button
             type="button"
             onClick={handleRoundAdd}
-            className="dark-icon-btn text-emerald-200 hover:text-emerald-100 p-1"
+            className="p-1 text-emerald-200 hover:text-emerald-100 transition"
           >
             <PlusIcon className="w-3.5 h-3.5" />
           </button>
         </div>
         {formData.rounds.length > 0 && (
-          <div className="dark-taglist mt-2">
+          <div className="flex flex-wrap gap-1 mt-2">
             {formData.rounds.map((round, index) => (
-              <span key={index} className="dark-chip text-xs">
+              <span
+                key={index}
+                className="flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-[#334155] text-[#f1f5f9]"
+              >
                 {round}
                 <button
                   type="button"
                   onClick={() => handleRoundRemove(index)}
-                  className="ml-1 text-emerald-200/80 hover:text-emerald-100"
+                  className="ml-1 text-emerald-200/80 hover:text-emerald-100 transition"
                 >
                   <XMarkIcon className="w-3.5 h-3.5" />
                 </button>
@@ -234,7 +237,7 @@ const JobForm = ({ email, onJobAdded }) => {
       {/* Date & Description */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs font-medium text-slate-200 mb-1">
+          <label className="block text-xs font-medium text-[#94a3b8] mb-1">
             Date Applied
           </label>
           <input
@@ -242,12 +245,12 @@ const JobForm = ({ email, onJobAdded }) => {
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="dark-input py-2 text-sm"
+            className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400"
             required
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-slate-200 mb-1">
+          <label className="block text-xs font-medium text-[#94a3b8] mb-1">
             Description
           </label>
           <textarea
@@ -255,23 +258,23 @@ const JobForm = ({ email, onJobAdded }) => {
             value={formData.description}
             onChange={handleChange}
             rows={3}
-            className="dark-textarea resize-none text-sm"
+            className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] focus:outline-none focus:ring-1 focus:ring-cyan-400 resize-none"
             placeholder="Job description or notes..."
             required
           />
         </div>
       </div>
 
-      {/* Submit */}
+      {/* Submit Button */}
       <motion.button
         type="submit"
         disabled={isSubmitting}
         whileTap={{ scale: 0.97 }}
-        className="dark-button dark-button--primary w-full h-10 justify-center text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+        className="w-full h-10 text-sm font-semibold rounded-full bg-[#10b981] border border-[#10b981] text-[#020617] flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#34d399] hover:border-[#34d399] transition"
       >
         {isSubmitting ? (
           <span className="flex items-center gap-2">
-            <div className="loading-spinner w-3.5 h-3.5" />
+            <div className="w-3.5 h-3.5 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />
             Adding Job...
           </span>
         ) : (

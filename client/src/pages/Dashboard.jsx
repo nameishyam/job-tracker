@@ -69,9 +69,9 @@ const Dashboard = () => {
 
   if (isLoading)
     return (
-      <section className="page-shell flex items-center justify-center">
-        <div className="dark-panel p-4 flex items-center gap-2 text-sm">
-          <div className="loading-spinner w-5 h-5" />
+      <section className="flex flex-col min-h-screen items-center justify-center">
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-center gap-2 text-sm">
+          <span className="inline-block w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" />
           Loading your applications…
         </div>
       </section>
@@ -79,14 +79,14 @@ const Dashboard = () => {
 
   return (
     <>
-      <section className="page-shell">
-        <div className="page-width space-y-6">
+      <section className="flex flex-col min-h-screen">
+        <div className="max-w-[1120px] w-[92vw] mx-auto space-y-6">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="dark-panel p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+            className="bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
           >
             <div>
               <h1 className="text-xl sm:text-2xl font-semibold text-slate-100">
@@ -101,7 +101,7 @@ const Dashboard = () => {
             <motion.button
               onClick={() => setShowForm((prev) => !prev)}
               whileTap={{ scale: 0.95 }}
-              className="dark-button dark-button--primary h-9 px-4 flex items-center gap-1 text-sm"
+              className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-green-500 bg-green-500 text-slate-900 transition hover:bg-green-400 hover:border-green-400"
             >
               <PlusIcon className="w-3.5 h-3.5" />
               {showForm ? "Close Form" : "Add Job"}
@@ -123,7 +123,7 @@ const Dashboard = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 12 }}
                   transition={{ duration: 0.3 }}
-                  className="dark-panel p-4 lg:sticky lg:top-20 h-fit"
+                  className="bg-slate-800 border border-slate-700 rounded-xl p-4 lg:sticky lg:top-20 h-fit"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <h2 className="text-lg font-semibold text-slate-100">
@@ -131,7 +131,7 @@ const Dashboard = () => {
                     </h2>
                     <button
                       onClick={() => setShowForm(false)}
-                      className="dark-icon-btn text-slate-300 hover:text-slate-100"
+                      className="inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-300 hover:text-slate-100"
                     >
                       <XMarkIcon className="w-4 h-4" />
                     </button>
@@ -150,11 +150,11 @@ const Dashboard = () => {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35, delay: 0.05 }}
-              className="dark-panel overflow-hidden"
+              className="bg-slate-800 border border-slate-700 rounded-xl overflow-hidden"
             >
               <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
-                  <div className="dark-icon-btn p-2">
+                  <div className="inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40">
                     <BriefcaseIcon className="w-3.5 h-3.5" />
                   </div>
                   <h2 className="text-md font-semibold text-slate-100">
@@ -165,7 +165,7 @@ const Dashboard = () => {
 
               <div className="p-4 space-y-3">
                 {jobs.length === 0 ? (
-                  <div className="dark-panel p-6 text-center space-y-3">
+                  <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-center space-y-3">
                     <BriefcaseIcon className="w-10 h-10 mx-auto text-slate-300/60" />
                     <h3 className="text-md font-semibold text-slate-100">
                       No applications yet
@@ -177,7 +177,7 @@ const Dashboard = () => {
                     <motion.button
                       onClick={() => setShowForm(true)}
                       whileTap={{ scale: 0.95 }}
-                      className="dark-button dark-button--primary h-8 px-4 flex items-center gap-1 text-sm mx-auto"
+                      className="inline-flex items-center justify-center rounded-full h-8 px-4 font-semibold text-sm border border-green-500 bg-green-500 text-slate-900 transition hover:bg-green-400 hover:border-green-400 mx-auto"
                     >
                       <PlusIcon className="w-3.5 h-3.5" /> Add Job
                     </motion.button>
@@ -220,7 +220,7 @@ const Dashboard = () => {
                 </h2>
                 <button
                   onClick={handleCloseJobDetail}
-                  className="dark-icon-btn text-slate-200 hover:text-slate-50"
+                  className="inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-200 hover:text-slate-50"
                 >
                   <XMarkIcon className="w-4 h-4" />
                 </button>

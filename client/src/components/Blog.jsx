@@ -24,9 +24,7 @@ const Blog = ({ data, onDeleteRequest }) => {
       const response = await axios.get(
         `${import.meta.env.VITE_API_URL}/users/${userId}`
       );
-      if (response.status === 200) {
-        setUser(response.data.user);
-      }
+      if (response.status === 200) setUser(response.data.user);
     } catch (error) {
       console.log("fetchUser error:", error);
     }
@@ -43,10 +41,7 @@ const Blog = ({ data, onDeleteRequest }) => {
     return "low";
   };
 
-  const formatSalary = (salary) => {
-    if (!salary) return "Not disclosed";
-    return salary;
-  };
+  const formatSalary = (salary) => (salary ? salary : "Not disclosed");
 
   const ratingVariant = getRatingVariant(data.rating);
 
@@ -55,13 +50,13 @@ const Blog = ({ data, onDeleteRequest }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="dark-panel dark-panel--tight dark-panel--hover p-6 rounded-2xl border border-white/6 shadow-md"
+      className="p-6 rounded-2xl border border-white/6 shadow-md bg-[#0f172a] hover:bg-[#1e293b] flex flex-col"
       role="article"
       aria-label={`Review for ${data.company || "company"}`}
     >
       <div className="flex items-start justify-between mb-5 gap-4">
         <div className="flex items-start gap-3 min-w-0">
-          <div className="w-12 h-12 dark-panel dark-panel--tight flex items-center justify-center rounded-full border border-white/12 bg-slate-800/40">
+          <div className="w-12 h-12 flex items-center justify-center rounded-full border border-white/12 bg-slate-800/40">
             <UserCircleIcon className="w-6 h-6 text-slate-100" />
           </div>
 

@@ -12,12 +12,16 @@ import { ModalProvider } from "./context/ModalContext";
 
 const App = () => {
   return (
-    <div className="app-shell transition-theme">
-      <div className="app-bg" aria-hidden="true">
-        <div className="app-blob app-blob--teal" />
-        <div className="app-blob app-blob--violet" />
-        <div className="app-grid-overlay" />
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden">
+      {/* Background blobs / visual overlays */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-32 -left-32 w-[400px] h-[400px] rounded-full bg-emerald-600/30 blur-3xl animate-blob" />
+        <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-violet-600/30 blur-3xl animate-blob animation-delay-2000" />
+        <div className="absolute inset-0 grid grid-cols-12 grid-rows-12 pointer-events-none">
+          <div className="col-span-12 row-span-12 border border-slate-800/10" />
+        </div>
       </div>
+
       <AuthProvider>
         <ModalProvider>
           <BrowserRouter>

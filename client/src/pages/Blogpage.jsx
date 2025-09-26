@@ -33,7 +33,6 @@ const Blogpage = () => {
     fetchBlogs();
   }, []);
 
-  // close on Escape
   useEffect(() => {
     if (!showNewBlog) return;
     const onKey = (e) => {
@@ -43,21 +42,19 @@ const Blogpage = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, [showNewBlog]);
 
-  // Optional: focus the panel when opened (improves keyboard UX)
   useEffect(() => {
     if (showNewBlog && panelRef.current) {
-      // small timeout so element is mounted
       setTimeout(() => panelRef.current?.focus?.(), 0);
     }
   }, [showNewBlog]);
 
   return (
-    <div className="page-shell">
-      <div className="page-width relative space-y-8 py-6">
+    <div className="flex flex-col min-h-screen">
+      <div className="max-w-[1120px] w-[92vw] mx-auto relative space-y-8 py-6">
         <button
           onClick={() => setShowNewBlog(true)}
           aria-label="Add new blog"
-          className="dark-icon-btn absolute top-4 right-4 inline-flex items-center justify-center"
+          className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500"
         >
           <Plus className="w-5 h-5" />
         </button>
@@ -75,13 +72,13 @@ const Blogpage = () => {
 
         <div className="space-y-5">
           {loading ? (
-            <div className="dark-panel dark-panel--tight p-8 text-center text-slate-200/75">
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-200/75">
               Loading...
             </div>
           ) : blogs.length > 0 ? (
             blogs.map((blog) => <Blog key={blog.id} data={blog} />)
           ) : (
-            <div className="dark-panel dark-panel--tight p-8 text-center text-slate-200/75">
+            <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-200/75">
               No reviews yet. Be the first to share your experience!
             </div>
           )}
@@ -89,20 +86,16 @@ const Blogpage = () => {
       </div>
 
       {showNewBlog && (
-        // overlay: clicking this overlay (but not the inner panel) will close the modal
         <div
           className="fixed inset-0 z-[90] bg-slate-950/70 backdrop-blur-xl flex items-center justify-center p-4"
-          // only close when clicking directly on the overlay (not when clicking children)
           onMouseDown={(e) => {
-            // e.currentTarget is this overlay div; if target === currentTarget, user clicked the backdrop
             if (e.target === e.currentTarget) setShowNewBlog(false);
           }}
         >
           <div
             ref={panelRef}
-            // make panel focusable for the autofocus above
             tabIndex={-1}
-            className="dark-panel dark-panel--surface dark-panel--tight w-full max-w-xl p-6 sm:p-8 relative rounded-2xl shadow-2xl border border-white/6 transition-transform transform-gpu"
+            className="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-8 w-full max-w-xl relative shadow-2xl transition-transform transform-gpu"
             onMouseDown={(e) => e.stopPropagation()}
             role="dialog"
             aria-modal="true"
@@ -110,7 +103,7 @@ const Blogpage = () => {
           >
             <button
               onClick={() => setShowNewBlog(false)}
-              className="dark-icon-btn absolute -top-3 -right-3"
+              className="absolute -top-3 -right-3 inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500"
               aria-label="Close"
             >
               ×

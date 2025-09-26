@@ -116,19 +116,19 @@ const JobInfo = ({ job }) => {
   const getJobTypeClass = (type) => {
     switch (type) {
       case "full-time":
-        return "dark-badge dark-badge--teal rounded-lg";
+        return "px-2 py-1 rounded-lg bg-emerald-400/20 text-emerald-300 text-xs font-semibold";
       case "part-time":
-        return "dark-badge dark-badge--blue rounded-lg";
+        return "px-2 py-1 rounded-lg bg-blue-400/20 text-blue-300 text-xs font-semibold";
       case "intern":
-        return "dark-badge dark-badge--purple rounded-lg";
+        return "px-2 py-1 rounded-lg bg-purple-400/20 text-purple-300 text-xs font-semibold";
       default:
-        return "dark-badge dark-badge--neutral rounded-lg";
+        return "px-2 py-1 rounded-lg bg-slate-400/20 text-slate-300 text-xs font-semibold";
     }
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 text-slate-100">
-      {/* Header */}
+    <div className="p-6 sm:p-8 space-y-6 text-[#f1f5f9]">
+      {/* Job Header */}
       <div className="border-b border-white/10 pb-4 space-y-3 rounded-lg">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -140,38 +140,34 @@ const JobInfo = ({ job }) => {
             </span>
           )}
         </div>
-        <p className="text-lg text-slate-200/85">{job.company}</p>
+        <p className="text-lg text-[#94a3b8]">{job.company}</p>
       </div>
 
-      {/* Info Grid */}
+      {/* Job Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
-            <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Location
             </h3>
-            <p className="mt-2 text-slate-100">
-              {job.location || "Not specified"}
-            </p>
+            <p className="mt-2">{job.location || "Not specified"}</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Date Applied
             </h3>
-            <p className="mt-2 text-slate-100">{formatDate(job.date)}</p>
+            <p className="mt-2">{formatDate(job.date)}</p>
           </div>
         </div>
         <div className="space-y-4">
           <div>
-            <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Salary
             </h3>
-            <p className="mt-2 text-slate-100">
-              {job.salary || "Not specified"}
-            </p>
+            <p className="mt-2">{job.salary || "Not specified"}</p>
           </div>
           <div>
-            <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+            <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Interview Rounds
             </h3>
             <div className="mt-3 flex flex-wrap gap-3">
@@ -180,7 +176,7 @@ const JobInfo = ({ job }) => {
                 Object.keys(currentJob.roundStatus).map((round) => (
                   <label
                     key={round}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-sm text-slate-200/85"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-sm text-[#f1f5f9]"
                   >
                     <input
                       type="checkbox"
@@ -202,7 +198,7 @@ const JobInfo = ({ job }) => {
                   </label>
                 ))
               ) : (
-                <span className="text-slate-400">None specified</span>
+                <span className="text-[#94a3b8]">None specified</span>
               )}
             </div>
           </div>
@@ -212,22 +208,22 @@ const JobInfo = ({ job }) => {
       {/* Description */}
       {job.description && (
         <div className="space-y-3">
-          <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+          <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
             Job Description
           </h3>
-          <div className="dark-panel dark-panel--tight p-5 text-slate-200 whitespace-pre-wrap rounded-lg">
+          <div className="p-5 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9] whitespace-pre-wrap">
             {job.description}
           </div>
         </div>
       )}
 
-      {/* Review */}
+      {/* User Review */}
       {currentJob.review && (
         <div className="space-y-3">
-          <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+          <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
             Your Review
           </h3>
-          <div className="dark-panel dark-panel--tight border border-emerald-300/20 bg-emerald-500/5 text-slate-100 rounded-lg">
+          <div className="p-4 bg-emerald-500/5 border border-emerald-300/20 rounded-lg text-[#f1f5f9]">
             <p className="whitespace-pre-wrap leading-relaxed">
               {currentJob.review}
             </p>
@@ -237,7 +233,7 @@ const JobInfo = ({ job }) => {
 
       {/* Add Review */}
       <div className="space-y-4">
-        <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+        <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
           Add Review
         </h3>
         <form onSubmit={handleReviewSubmit} className="space-y-4">
@@ -245,7 +241,7 @@ const JobInfo = ({ job }) => {
             value={review}
             onChange={handleReviewChange}
             rows={4}
-            className="dark-textarea resize-none rounded-lg"
+            className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] resize-none focus:outline-none focus:ring-1 focus:ring-cyan-400"
             placeholder="Share your experience with this application..."
           />
           <div className="flex flex-col sm:flex-row gap-3">
@@ -253,11 +249,12 @@ const JobInfo = ({ job }) => {
               type="submit"
               disabled={isSubmitting || !review.trim()}
               whileTap={{ scale: 0.97 }}
-              className="dark-button dark-button--primary flex-1 sm:flex-none justify-center rounded-lg"
+              className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#10b981] border border-[#10b981] text-[#020617] disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#34d399] hover:border-[#34d399] transition flex items-center"
             >
               {isSubmitting ? (
                 <span className="flex items-center gap-2">
-                  <div className="loading-spinner w-4 h-4" /> Submitting...
+                  <div className="w-4 h-4 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />{" "}
+                  Submitting...
                 </span>
               ) : (
                 "Submit Review"
@@ -269,7 +266,7 @@ const JobInfo = ({ job }) => {
               onClick={AiReview}
               disabled={isGenerating}
               whileTap={{ scale: 0.97 }}
-              className="dark-button dark-button--muted flex-1 sm:flex-none justify-center rounded-lg"
+              className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#334155] border border-white/10 text-[#f1f5f9] disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#475569] transition flex items-center gap-2"
             >
               <SparklesIcon className="w-4 h-4" />
               {isGenerating ? "Analyzing..." : "AI Analysis"}
@@ -280,18 +277,18 @@ const JobInfo = ({ job }) => {
 
       {/* AI Response */}
       {isGenerating && (
-        <div className="flex items-center justify-center py-8 gap-3 text-slate-200/85">
-          <div className="loading-spinner w-5 h-5" />
+        <div className="flex items-center justify-center py-8 gap-3 text-[#f1f5f9]/85">
+          <div className="w-5 h-5 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />
           AI is analyzing your review...
         </div>
       )}
       {aiResponse && !isGenerating && (
         <div className="space-y-3">
-          <h3 className="text-xs font-semibold tracking-[0.2em] text-slate-400 uppercase">
+          <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
             AI Analysis & Next Steps
           </h3>
-          <div className="dark-panel dark-panel--tight rounded-lg">
-            <div className="prose prose-sm dark:prose-invert max-w-none text-slate-100">
+          <div className="p-5 bg-[#0f172a] border border-white/10 rounded-lg">
+            <div className="prose prose-sm dark:prose-invert max-w-none text-[#f1f5f9]">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {aiResponse}
               </ReactMarkdown>
