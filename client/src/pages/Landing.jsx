@@ -41,7 +41,7 @@ const Landing = () => {
     },
     {
       icon: NewspaperIcon,
-      title: "Company Reviews & Blogs",
+      title: "Reviews & Blogs",
       description:
         "Read verified reviews and blog posts to make informed decisions.",
       accent: "from-yellow-300/20 to-amber-500/10",
@@ -100,24 +100,24 @@ const Landing = () => {
 
   return (
     <div>
-      <main className="relative z-10 py-12">
+      <main className="relative z-10">
         <div className="page-width">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.section
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               aria-labelledby="hero-heading"
-              className="space-y-6"
+              className="space-y-6 min-h-svh md:min-h-auto flex flex-col justify-center"
             >
               <h1
                 id="hero-heading"
                 className="text-4xl md:text-5xl font-bold leading-tight max-w-lg"
               >
-                Track every job application —
-                <span className="block bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400">
-                  effortlessly and informed
-                </span>
+                <div className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-cyan-300 to-blue-400">
+                  Track every job application
+                </div>
+                effortlessly and informed
               </h1>
               <p className="text-lg text-slate-200/85 max-w-xl">
                 A calm, glassy dashboard to manage your job search, map
@@ -169,18 +169,21 @@ const Landing = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: 0.2 + index * 0.06 }}
-                    className="glass-panel glass-panel--tight glass-panel--hover p-6 flex gap-4 items-start"
+                    className="glass-panel glass-panel--tight glass-panel--hover flex flex-col gap-4 items-start"
                   >
-                    <div
-                      className={`flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.accent} border border-white/10 flex items-center justify-center`}
-                    >
-                      <Icon className="w-6 h-6 text-slate-100" />
-                    </div>
-                    <div className="flex-1">
+                    <div className="flex gap-4 items-center p-4 pb-0">
+                      <div
+                        className={`flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br ${feature.accent} border border-white/10 flex items-center justify-center`}
+                      >
+                        <Icon className="w-6 h-6 text-slate-100" />
+                      </div>
                       <h3 className="text-lg font-semibold text-slate-100 tracking-tight">
                         {feature.title}
                       </h3>
-                      <p className="text-sm text-slate-200/80 leading-relaxed">
+                    </div>
+                    <hr className="border-white/10 border w-full" />
+                    <div className="flex justify-center items-center">
+                      <p className="p-4 pt-0 text-sm text-slate-200/80 leading-relaxed">
                         {feature.description}
                       </p>
                     </div>
@@ -191,11 +194,11 @@ const Landing = () => {
           </div>
 
           <section className="mt-24">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-3xl font-bold">Latest Company Reviews</h2>
+            <div className="flex flex-col gap-2 md:gap-auto md:flex-row md:items-center justify-between mb-6">
+              <div className="flex gap-2 flex-col">
+                <h2 className="text-3xl font-bold">Latest Reviews</h2>
                 <p className="text-slate-300">
-                  Community-written reviews & posts
+                  Community-written reviews & posts of Companies
                 </p>
               </div>
               <Link
@@ -247,11 +250,14 @@ const Landing = () => {
             <div className="flex gap-3 flex-shrink-0">
               <Link
                 to="/signup"
-                className="glass-button glass-button--primary px-5 py-2"
+                className="glass-button min-w-[200px] glass-button--primary px-4 py-2"
               >
                 Sign up — it's free
               </Link>
-              <Link to="/login" className="glass-button px-5 py-2">
+              <Link
+                to="/login"
+                className="glass-button min-w-[120px] px-4 py-2"
+              >
                 Sign in
               </Link>
             </div>
@@ -259,7 +265,7 @@ const Landing = () => {
         </div>
       </main>
 
-      <footer className="relative z-10 border-t border-slate-700/50">
+      <footer className="relative z-10 border-t border-slate-700/50 mt-2">
         <div className="page-width py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left text-sm text-slate-400">
