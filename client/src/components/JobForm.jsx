@@ -95,7 +95,6 @@ const JobForm = ({ email, onJobAdded }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
-      {/* Job Title */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Job Title
@@ -111,7 +110,6 @@ const JobForm = ({ email, onJobAdded }) => {
         />
       </div>
 
-      {/* Company */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Company
@@ -127,7 +125,6 @@ const JobForm = ({ email, onJobAdded }) => {
         />
       </div>
 
-      {/* Location */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Location
@@ -143,7 +140,6 @@ const JobForm = ({ email, onJobAdded }) => {
         />
       </div>
 
-      {/* Job Type */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Job Type
@@ -173,7 +169,6 @@ const JobForm = ({ email, onJobAdded }) => {
         </div>
       </div>
 
-      {/* Salary */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Salary
@@ -189,7 +184,6 @@ const JobForm = ({ email, onJobAdded }) => {
         />
       </div>
 
-      {/* Interview Rounds */}
       <div>
         <label className="block text-xs font-medium text-[#94a3b8] mb-1">
           Interview Rounds
@@ -234,7 +228,6 @@ const JobForm = ({ email, onJobAdded }) => {
         )}
       </div>
 
-      {/* Date & Description */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-medium text-[#94a3b8] mb-1">
@@ -265,7 +258,6 @@ const JobForm = ({ email, onJobAdded }) => {
         </div>
       </div>
 
-      {/* Submit Button */}
       <motion.button
         type="submit"
         disabled={isSubmitting}

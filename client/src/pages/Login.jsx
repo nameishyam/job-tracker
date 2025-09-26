@@ -52,7 +52,6 @@ const Login = () => {
   };
 
   return (
-    // The main container now uses a fixed position to cover the viewport and prevent scrolling.
     <div className="fixed inset-0 bg-slate-950 flex items-center justify-center p-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}

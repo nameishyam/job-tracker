@@ -179,9 +179,7 @@ const Profile = () => {
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
       <div className="max-w-[1120px] w-[92vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
-        {/* Left Column - User Info & Stats */}
         <div className="space-y-6">
-          {/* User Info */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -212,7 +210,6 @@ const Profile = () => {
             </div>
           </motion.div>
 
-          {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -243,7 +240,6 @@ const Profile = () => {
             })}
           </motion.div>
 
-          {/* About Me */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -313,7 +309,6 @@ const Profile = () => {
           </motion.div>
         </div>
 
-        {/* Right Column - Blogs */}
         <div className="space-y-4">
           {blogs.length === 0 ? (
             <div className="rounded-xl border border-white/6 bg-slate-900/60 p-4 text-slate-400/80 text-sm">

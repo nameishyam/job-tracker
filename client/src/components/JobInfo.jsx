@@ -128,7 +128,6 @@ const JobInfo = ({ job }) => {
 
   return (
     <div className="p-6 sm:p-8 space-y-6 text-[#f1f5f9]">
-      {/* Job Header */}
       <div className="border-b border-white/10 pb-4 space-y-3 rounded-lg">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-2xl font-semibold tracking-tight">
@@ -143,7 +142,6 @@ const JobInfo = ({ job }) => {
         <p className="text-lg text-[#94a3b8]">{job.company}</p>
       </div>
 
-      {/* Job Details */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-4">
           <div>
@@ -205,7 +203,6 @@ const JobInfo = ({ job }) => {
         </div>
       </div>
 
-      {/* Description */}
       {job.description && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
@@ -217,7 +214,6 @@ const JobInfo = ({ job }) => {
         </div>
       )}
 
-      {/* User Review */}
       {currentJob.review && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
@@ -231,7 +227,6 @@ const JobInfo = ({ job }) => {
         </div>
       )}
 
-      {/* Add Review */}
       <div className="space-y-4">
         <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
           Add Review
@@ -275,7 +270,6 @@ const JobInfo = ({ job }) => {
         </form>
       </div>
 
-      {/* AI Response */}
       {isGenerating && (
         <div className="flex items-center justify-center py-8 gap-3 text-[#f1f5f9]/85">
           <div className="w-5 h-5 border-2 border-[#10b981] border-t-transparent rounded-full animate-spin" />

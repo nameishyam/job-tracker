@@ -82,30 +82,31 @@ const Landing = () => {
             <section aria-labelledby="hero-heading" className="space-y-6">
               <h1
                 id="hero-heading"
-                className="text-4xl md:text-5xl font-bold leading-tight max-w-lg"
+                className="text-3xl md:text-4xl font-bold leading-tight max-w-lg"
               >
-                Track every job application —
-                <span className="block text-emerald-300">
-                  effortlessly and informed
+                <span className="block text-emerald-300 text-4xl md:text-5xl">
+                  Career Dock
                 </span>
+                Your Professional Job Application Tracker
               </h1>
               <p className="text-lg text-slate-300 max-w-xl">
-                A calm, organized dashboard to manage your job search, map
-                interview rounds, and read community-driven company reviews so
-                you can make confident decisions about where to apply.
+                Streamline your job search with a modern dashboard to organize
+                applications, monitor interview progress, and access trusted
+                company insights. Empower your career decisions with clarity and
+                confidence.
               </p>
               <div className="flex gap-3 flex-shrink-0">
                 <Link
                   to="/signup"
                   className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
                 >
-                  Sign up — it's free
+                  Get Started
                 </Link>
                 <Link
                   to="/login"
                   className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
                 >
-                  Sign in
+                  Sign In
                 </Link>
               </div>
             </section>
@@ -143,10 +144,6 @@ const Landing = () => {
         <div className="max-w-[1120px] w-[92vw] mx-auto py-6">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left text-sm text-slate-400">
-              <p>
-                &copy; {new Date().getFullYear()} Career Dock. All rights
-                reserved.
-              </p>
               <p className="mt-1">
                 Designed & Developed by{" "}
                 <a

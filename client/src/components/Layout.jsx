@@ -31,17 +31,14 @@ const Layout = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
-      {/* Fixed navbar */}
       <div className="fixed top-0 left-0 w-full z-50">
         <Navbar />
       </div>
 
-      {/* Main content */}
       <main className="flex-1 pt-24 overflow-y-auto">
         <Outlet />
       </main>
 
-      {/* Delete Account Modal */}
       {showDeleteModal && (
         <motion.div
           initial={{ opacity: 0 }}

@@ -81,7 +81,6 @@ const Dashboard = () => {
     <>
       <section className="flex flex-col min-h-screen">
         <div className="max-w-[1120px] w-[92vw] mx-auto space-y-6">
-          {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -108,7 +107,6 @@ const Dashboard = () => {
             </motion.button>
           </motion.div>
 
-          {/* Main Grid */}
           <div
             className={`grid gap-4 ${
               showForm
@@ -145,7 +143,6 @@ const Dashboard = () => {
               )}
             </AnimatePresence>
 
-            {/* Jobs List */}
             <motion.div
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
@@ -204,7 +201,6 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* Job Detail Modal */}
       <AnimatePresence>
         {selectedJob && (
           <motion.div

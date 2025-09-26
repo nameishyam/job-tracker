@@ -79,7 +79,7 @@ const Navbar = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -12 }}
                     transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute right-0 mt-3 w-60 px-1 py-1 bg-white/10 backdrop-blur-sm border border-white/20 shadow-lg rounded-2xl overflow-hidden"
+                    className="absolute right-0 mt-3 w-60 px-1 py-1 bg-white/10 backdrop-blur-3xl border border-white/20 shadow-lg rounded-2xl overflow-hidden"
                   >
                     <Link to="/profile" onClick={() => setDropdownOpen(false)}>
                       <div className="px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors rounded-t-2xl">
