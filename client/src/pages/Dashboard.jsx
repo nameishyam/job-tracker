@@ -108,7 +108,7 @@ const Dashboard = () => {
             <motion.button
               onClick={() => setShowForm((prev) => !prev)}
               whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-green-500 bg-green-500 text-slate-900 transition hover:bg-green-400 hover:border-green-400"
+              className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
             >
               <PlusIcon className="w-3.5 h-3.5" />
               {showForm ? "Close Form" : "Add Job"}
@@ -182,7 +182,7 @@ const Dashboard = () => {
                     <motion.button
                       onClick={() => setShowForm(true)}
                       whileTap={{ scale: 0.95 }}
-                      className="inline-flex items-center justify-center rounded-full h-8 px-4 font-semibold text-sm border border-green-500 bg-green-500 text-slate-900 transition hover:bg-green-400 hover:border-green-400 mx-auto"
+                      className="inline-flex items-center justify-center rounded-full h-8 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400 mx-auto"
                     >
                       <PlusIcon className="w-3.5 h-3.5" /> Add Job
                     </motion.button>

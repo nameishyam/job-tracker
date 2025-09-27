@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Blog from "../components/Blog";
 import NewBlog from "../components/NewBlog";
-import { Plus } from "lucide-react";
 import axios from "axios";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PlusIcon } from "@heroicons/react/24/outline";
+import { motion } from "framer-motion";
 
 const Blogpage = () => {
   const [showNewBlog, setShowNewBlog] = useState(false);
@@ -52,13 +52,16 @@ const Blogpage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="max-w-[1120px] w-[92vw] mx-auto relative space-y-8 py-6">
-        <button
-          onClick={() => setShowNewBlog(true)}
-          aria-label="Add new blog"
-          className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500"
-        >
-          <Plus className="w-5 h-5" />
-        </button>
+        <div className="absolute top-0 right-0 pt-6 pr-6">
+          <motion.button
+            onClick={() => setShowNewBlog(true)}
+            whileTap={{ scale: 0.95 }}
+            className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
+          >
+            <PlusIcon className="w-3.5 h-3.5" />
+            {"Add Review"}
+          </motion.button>
+        </div>
 
         <div className="pt-2 space-y-2">
           <p className="text-sm text-slate-200/70">

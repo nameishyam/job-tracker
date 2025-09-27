@@ -211,7 +211,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             <button
               type="button"
               onClick={addRoundEnd}
-              className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
             >
               <Plus className="w-4 h-4" />
               Add Round
@@ -224,7 +224,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
               <button
                 type="button"
                 onClick={addRoundEnd}
-                className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 <Plus className="w-4 h-4" />
                 Add Round
@@ -296,7 +296,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
                 <button
                   type="button"
                   onClick={addRoundEnd}
-                  className="inline-flex items-center gap-2 rounded-md bg-green-600/90 hover:bg-green-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <Plus className="w-4 h-4" />
                   Add Another Round
@@ -327,7 +327,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md px-6 py-2 bg-green-600/95 hover:bg-green-600 text-white font-medium transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2"
+            className="rounded-md px-6 py-2 bg-emerald-600/95 hover:bg-emerald-600 text-white font-medium transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2"
             aria-disabled={isSubmitting}
           >
             {isSubmitting ? (
