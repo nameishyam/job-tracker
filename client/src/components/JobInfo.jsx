@@ -45,9 +45,13 @@ const JobInfo = ({ job, onClose }) => {
   };
 
   const handleRoundChange = async (round, checked) => {
+    const newRoundStatus = {
+      ...draftJob.roundStatus,
+      [round]: checked ? 1 : 0,
+    };
     setDraftJob((prev) => ({
       ...prev,
-      roundStatus: { ...prev.roundStatus, [round]: checked ? 1 : 0 },
+      roundStatus: newRoundStatus,
     }));
 
     try {
@@ -77,9 +81,12 @@ const JobInfo = ({ job, onClose }) => {
         "location",
         "description",
         "review",
+        "roundStatus",
       ];
       editableFields.forEach((field) => {
-        if (draftJob[field] !== currentJob[field]) {
+        if (
+          JSON.stringify(draftJob[field]) !== JSON.stringify(currentJob[field])
+        ) {
           payload[field] = draftJob[field];
         }
       });
@@ -137,10 +144,10 @@ const JobInfo = ({ job, onClose }) => {
   };
 
   return (
-    <div className="flex flex-col min-h-0 p-6 sm:p-8 space-y-6 text-[#f1f5f9] relative">
-      <div className="relative border-b border-white/10 pb-4">
+    <div className="flex flex-col min-h-0 p-4 sm:p-6 space-y-6 text-[#f1f5f9]">
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 border-b border-white/10 pb-4">
         <div className="space-y-1 min-w-0">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center flex-wrap gap-x-3 gap-y-2">
             {editMode ? (
               <input
                 type="text"
@@ -148,10 +155,10 @@ const JobInfo = ({ job, onClose }) => {
                 placeholder="Job Title"
                 onChange={(e) => handleInputChange("jobtitle", e.target.value)}
                 required
-                className="px-2 py-1 rounded bg-[#0f172a] border border-white/10 text-[#f1f5f9] text-2xl font-semibold"
+                className="px-2 py-1 rounded bg-[#0f172a] border border-white/10 text-[#f1f5f9] text-xl sm:text-2xl font-semibold w-full"
               />
             ) : (
-              <h1 className="text-2xl font-semibold tracking-tight truncate">
+              <h1 className="text-xl sm:text-2xl font-semibold tracking-tight break-words">
                 {currentJob.jobtitle || currentJob.position || currentJob.title}
               </h1>
             )}
@@ -168,10 +175,10 @@ const JobInfo = ({ job, onClose }) => {
               placeholder="Company Name"
               required
               onChange={(e) => handleInputChange("company", e.target.value)}
-              className="mt-1 text-lg text-[#94a3b8] w-full px-2 py-1 rounded bg-[#0f172a] border border-white/10"
+              className="mt-1 text-base sm:text-lg text-[#94a3b8] w-full px-2 py-1 rounded bg-[#0f172a] border border-white/10"
             />
           ) : (
-            <p className="text-lg text-[#94a3b8] truncate">
+            <p className="text-base sm:text-lg text-[#94a3b8] truncate">
               {currentJob.company}
             </p>
           )}
@@ -180,10 +187,10 @@ const JobInfo = ({ job, onClose }) => {
         <motion.button
           onClick={() => setEditMode(!editMode)}
           whileTap={{ scale: 0.95 }}
-          className="absolute top-0 right-0 mt-2 mr-2 inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
+          className="flex-shrink-0 self-start sm:self-center inline-flex items-center justify-center rounded-lg h-10 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
         >
           <PencilIcon className="w-5 h-5 text-slate-900" />
-          {editMode ? "Editing" : "Edit Job"}
+          <span className="ml-2">{editMode ? "Editing" : "Edit Job"}</span>
         </motion.button>
       </div>
 
@@ -235,13 +242,13 @@ const JobInfo = ({ job, onClose }) => {
             )}
           </div>
 
-          <div className="space-y-2 mt-2">
+          <div className="space-y-2">
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Interview Rounds
             </h3>
 
             {editMode && (
-              <div className="flex gap-2 items-center mb-2">
+              <div className="flex gap-2 items-center">
                 <input
                   type="text"
                   placeholder="Add new round..."
@@ -267,52 +274,51 @@ const JobInfo = ({ job, onClose }) => {
                       newRound: "",
                     }));
                   }}
-                  className="px-2 py-1 bg-[#10b981] text-[#020617] rounded-lg text-sm hover:bg-[#34d399] transition"
+                  className="px-3 py-1 bg-[#10b981] text-[#020617] rounded-lg text-sm hover:bg-[#34d399] transition"
                 >
                   Add
                 </button>
               </div>
             )}
 
-            <div className="flex flex-wrap gap-2">
-              {Object.keys(draftJob.roundStatus || {}).map((round) =>
-                editMode ? (
-                  <label
+            <div className="flex flex-wrap gap-2 pt-1">
+              {Object.keys(draftJob.roundStatus || {}).length > 0 ? (
+                Object.keys(draftJob.roundStatus).map((round) => (
+                  <div
                     key={round}
-                    className="flex items-center gap-1 px-2 py-1 rounded-lg border border-white/10 bg-white/3 text-xs text-[#f1f5f9]"
+                    className="flex items-center px-2 py-1 rounded-lg text-xs bg-slate-700/50"
                   >
-                    <Checkbox
-                      checked={draftJob.roundStatus[round] === 1}
-                      onChange={(e) =>
-                        handleRoundChange(round, e.target.checked)
+                    {editMode && (
+                      <Checkbox
+                        checked={!!draftJob.roundStatus[round]}
+                        onChange={(e) =>
+                          handleRoundChange(round, e.target.checked)
+                        }
+                        sx={{
+                          p: 0,
+                          mr: 1,
+                          "& .MuiSvgIcon-root": {
+                            fontSize: 18,
+                            color: "#94a3b8",
+                          },
+                          "&.Mui-checked .MuiSvgIcon-root": {
+                            color: "#4ade80",
+                          },
+                        }}
+                      />
+                    )}
+                    <span
+                      className={
+                        draftJob.roundStatus[round]
+                          ? "text-green-300"
+                          : "text-yellow-300"
                       }
-                      sx={{
-                        width: 16,
-                        height: 16,
-                        color:
-                          draftJob.roundStatus[round] === 1
-                            ? "#4ade80"
-                            : "#facc15",
-                        "&.Mui-checked": { color: "#4ade80" },
-                      }}
-                    />
-                    {round}
-                  </label>
-                ) : (
-                  <span
-                    key={round}
-                    className={`px-2 py-1 rounded text-xs ${
-                      draftJob.roundStatus[round] === 1
-                        ? "bg-green-500/20 text-green-300"
-                        : "bg-yellow-500/20 text-yellow-300"
-                    }`}
-                  >
-                    {round}
-                  </span>
-                )
-              )}
-              {(!draftJob.roundStatus ||
-                Object.keys(draftJob.roundStatus).length === 0) && (
+                    >
+                      {round}
+                    </span>
+                  </div>
+                ))
+              ) : (
                 <span className="text-[#94a3b8] text-xs">
                   No rounds specified
                 </span>
@@ -333,10 +339,11 @@ const JobInfo = ({ job, onClose }) => {
               onChange={(e) => handleInputChange("description", e.target.value)}
               placeholder="Job Description"
               required
-              className="w-full p-5 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9]"
+              rows="6"
+              className="w-full p-3 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9] text-sm"
             />
           ) : (
-            <div className="p-5 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9] whitespace-pre-wrap">
+            <div className="p-4 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9] whitespace-pre-wrap text-sm">
               {currentJob.description}
             </div>
           )}
@@ -353,16 +360,17 @@ const JobInfo = ({ job, onClose }) => {
             onChange={(e) => handleInputChange("review", e.target.value)}
             placeholder="Add your review..."
             required
+            rows="4"
             className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9]"
           />
         ) : currentJob.review ? (
           <div className="p-4 bg-emerald-500/5 border border-emerald-300/20 rounded-lg text-[#f1f5f9]">
-            <p className="whitespace-pre-wrap leading-relaxed">
+            <p className="whitespace-pre-wrap leading-relaxed text-sm">
               {currentJob.review}
             </p>
           </div>
         ) : (
-          <span className="text-[#94a3b8]">No review added</span>
+          <span className="text-[#94a3b8] text-sm">No review added</span>
         )}
       </div>
 
@@ -372,27 +380,30 @@ const JobInfo = ({ job, onClose }) => {
             onClick={handleJobUpdate}
             disabled={isSubmitting}
             whileTap={{ scale: 0.97 }}
-            className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#10b981] border border-[#10b981] text-[#020617] disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#34d399] hover:border-[#34d399] transition flex items-center"
+            className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#10b981] border border-[#10b981] text-[#020617] font-semibold disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#34d399] hover:border-[#34d399] transition flex items-center"
           >
             {isSubmitting ? "Saving..." : "Save Changes"}
           </motion.button>
           <motion.button
             type="button"
-            onClick={() => setEditMode(false)}
-            className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#334155] border border-white/10 text-[#f1f5f9] hover:bg-[#475569] transition flex items-center"
+            onClick={() => {
+              setEditMode(false);
+              setDraftJob(currentJob);
+            }}
+            className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#334155] border border-white/10 text-[#f1f5f9] font-semibold hover:bg-[#475569] transition flex items-center"
           >
             Cancel
           </motion.button>
         </div>
       )}
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 pt-4 border-t border-white/10">
         <motion.button
           type="button"
           onClick={AiReview}
           disabled={isGenerating}
           whileTap={{ scale: 0.97 }}
-          className="flex-1 sm:flex-none justify-center rounded-lg px-4 py-2 bg-[#334155] border border-white/10 text-[#f1f5f9] disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#475569] transition flex items-center gap-2"
+          className="w-full sm:w-auto self-center justify-center rounded-lg px-4 py-2 bg-[#334155] border border-white/10 text-[#f1f5f9] font-semibold disabled:opacity-60 disabled:cursor-not-allowed hover:bg-[#475569] transition flex items-center gap-2"
         >
           <SparklesIcon className="w-4 h-4" />
           {isGenerating ? "Analyzing..." : "AI Analysis"}
@@ -408,7 +419,7 @@ const JobInfo = ({ job, onClose }) => {
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               AI Analysis & Next Steps
             </h3>
-            <div className="p-5 bg-[#0f172a] border border-white/10 rounded-lg">
+            <div className="p-4 bg-[#0f172a] border border-white/10 rounded-lg">
               <div className="prose prose-sm dark:prose-invert max-w-none text-[#f1f5f9]">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>
                   {aiResponse}
