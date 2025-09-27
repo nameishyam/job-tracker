@@ -106,7 +106,7 @@ const JobInfo = ({ job, onClose }) => {
       setAiResponse("");
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/gemini/ask`,
-        { job: currentJob, review: draftJob.review },
+        { job: currentJob },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setAiResponse(response.data.response || "No response");
@@ -386,7 +386,7 @@ const JobInfo = ({ job, onClose }) => {
         </div>
       )}
 
-      <div className="flex mt-2">
+      <div className="flex flex-col gap-4">
         <motion.button
           type="button"
           onClick={AiReview}
