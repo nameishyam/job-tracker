@@ -145,7 +145,9 @@ const JobInfo = ({ job, onClose }) => {
               <input
                 type="text"
                 value={draftJob.jobtitle || ""}
+                placeholder="Job Title"
                 onChange={(e) => handleInputChange("jobtitle", e.target.value)}
+                required
                 className="px-2 py-1 rounded bg-[#0f172a] border border-white/10 text-[#f1f5f9] text-2xl font-semibold"
               />
             ) : (
@@ -163,6 +165,8 @@ const JobInfo = ({ job, onClose }) => {
             <input
               type="text"
               value={draftJob.company || ""}
+              placeholder="Company Name"
+              required
               onChange={(e) => handleInputChange("company", e.target.value)}
               className="mt-1 text-lg text-[#94a3b8] w-full px-2 py-1 rounded bg-[#0f172a] border border-white/10"
             />
@@ -193,6 +197,8 @@ const JobInfo = ({ job, onClose }) => {
               <input
                 type="text"
                 value={draftJob.location || ""}
+                placeholder="Location"
+                required
                 onChange={(e) => handleInputChange("location", e.target.value)}
                 className="mt-2 w-full px-2 py-1 rounded bg-[#0f172a] border border-white/10 text-[#f1f5f9]"
               />
@@ -219,6 +225,8 @@ const JobInfo = ({ job, onClose }) => {
               <input
                 type="text"
                 value={draftJob.salary || ""}
+                placeholder="Salary"
+                required
                 onChange={(e) => handleInputChange("salary", e.target.value)}
                 className="mt-2 w-full px-2 py-1 rounded bg-[#0f172a] border border-white/10 text-[#f1f5f9]"
               />
@@ -323,6 +331,8 @@ const JobInfo = ({ job, onClose }) => {
             <textarea
               value={draftJob.description}
               onChange={(e) => handleInputChange("description", e.target.value)}
+              placeholder="Job Description"
+              required
               className="w-full p-5 bg-[#0f172a] border border-white/10 rounded-lg text-[#f1f5f9]"
             />
           ) : (
@@ -341,8 +351,9 @@ const JobInfo = ({ job, onClose }) => {
           <textarea
             value={draftJob.review || ""}
             onChange={(e) => handleInputChange("review", e.target.value)}
-            className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9]"
             placeholder="Add your review..."
+            required
+            className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9]"
           />
         ) : currentJob.review ? (
           <div className="p-4 bg-emerald-500/5 border border-emerald-300/20 rounded-lg text-[#f1f5f9]">
