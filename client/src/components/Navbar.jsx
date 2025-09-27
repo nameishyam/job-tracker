@@ -46,9 +46,9 @@ const Navbar = () => {
         <div className="flex items-center gap-6">
           <Link
             to="/"
-            className="text-lg sm:text-xl font-semibold tracking-tight text-white drop-shadow"
+            className="text-lg sm:text-xl font-semibold tracking-tight text-[#50C878] drop-shadow"
           >
-            JobTracker
+            Career Dock
           </Link>
           <Link
             to="/blog"
