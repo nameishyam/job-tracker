@@ -59,8 +59,8 @@ router.post(`/`, authenticateToken, async (req, res) => {
   }
 });
 
-router.patch(`/`, authenticateToken, async (req, res) => {
-  const { jobId, round, status } = req.body;
+router.patch("/", authenticateToken, async (req, res) => {
+  const { jobId, round, status, ...otherFields } = req.body;
   try {
     const job = await Job.findOne({
       where: { id: jobId, userId: req.user.userId },
@@ -70,35 +70,31 @@ router.patch(`/`, authenticateToken, async (req, res) => {
         message: "Job not found or you don't have permission to edit it.",
       });
     }
-    let roundStatus = job.roundStatus || {};
-    roundStatus = {
-      ...roundStatus,
-      [round]: status === "1" || status === 1 ? 1 : 0,
-    };
-    job.roundStatus = roundStatus;
+    if (round !== undefined && status !== undefined) {
+      let roundStatus = job.roundStatus || {};
+      roundStatus = {
+        ...roundStatus,
+        [round]: status === "1" || status === 1 ? 1 : 0,
+      };
+      job.roundStatus = roundStatus;
+    }
+    const editableFields = [
+      "review",
+      "jobtitle",
+      "company",
+      "salary",
+      "location",
+      "description",
+    ];
+    editableFields.forEach((field) => {
+      if (otherFields[field] !== undefined) {
+        job[field] = otherFields[field];
+      }
+    });
     await job.save();
     return res.status(200).json({ message: "Job updated successfully", job });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-});
-
-router.post(`/review`, authenticateToken, async (req, res) => {
-  const { jobId, review } = req.body;
-  try {
-    const job = await Job.findOne({
-      where: { id: jobId, userId: req.user.userId },
-    });
-    if (!job) {
-      return res.status(404).json({
-        message: "Job not found or you don't have permission to edit it.",
-      });
-    }
-    job.review = review;
-    await job.save();
-    return res.status(200).json({ message: "Review added successfully", job });
-  } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: error.message });
   }
 });

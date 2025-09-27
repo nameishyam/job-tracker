@@ -1,4 +1,11 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react";
 import { setupAxiosInterceptors } from "../utils/api";
 
 const AuthContext = createContext();
@@ -16,26 +23,26 @@ export const AuthProvider = ({ children }) => {
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
-      setJobs(JSON.parse(storedJobs));
+      setJobs(JSON.parse(storedJobs) || []);
       setupAxiosInterceptors(storedToken);
     }
     setLoading(false);
   }, []);
 
-  const login = (userData, authToken) => {
+  const login = useCallback((userData, authToken) => {
     setUser(userData);
     setToken(authToken);
     localStorage.setItem("token", authToken);
     localStorage.setItem("user", JSON.stringify(userData));
     setupAxiosInterceptors(authToken);
-  };
+  }, []);
 
-  const storeJobs = (jobsData) => {
+  const storeJobs = useCallback((jobsData) => {
     setJobs(jobsData);
     localStorage.setItem("jobs", JSON.stringify(jobsData));
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     setToken(null);
     setJobs([]);
@@ -43,28 +50,25 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("user");
     localStorage.removeItem("jobs");
     setupAxiosInterceptors(null);
-  };
+  }, []);
 
-  const isAuthenticated = () => {
-    return !!token;
-  };
+  const isAuthenticated = useCallback(() => !!token, [token]);
 
-  return (
-    <AuthContext.Provider
-      value={{
-        user,
-        token,
-        jobs,
-        storeJobs,
-        login,
-        logout,
-        isAuthenticated,
-        loading,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      token,
+      jobs,
+      storeJobs,
+      login,
+      logout,
+      isAuthenticated,
+      loading,
+    }),
+    [user, token, jobs, storeJobs, login, logout, isAuthenticated, loading]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => useContext(AuthContext);

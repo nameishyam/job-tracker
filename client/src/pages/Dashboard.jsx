@@ -18,11 +18,13 @@ const Dashboard = () => {
   const { user, token, logout, jobs, storeJobs } = useAuth();
 
   useEffect(() => {
-    if (!token || !user) {
+    if (!token || !user?.email) {
       setIsLoading(false);
       return;
     }
+
     const controller = new AbortController();
+
     const fetchJobs = async () => {
       try {
         const headers = { Authorization: `Bearer ${token}` };
@@ -34,10 +36,8 @@ const Dashboard = () => {
             signal: controller.signal,
           }
         );
-        if (
-          Array.isArray(response.data.jobs) &&
-          typeof storeJobs === "function"
-        ) {
+
+        if (Array.isArray(response.data.jobs)) {
           storeJobs(response.data.jobs);
         }
       } catch (error) {
@@ -48,9 +48,10 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
+
     fetchJobs();
     return () => controller.abort();
-  }, [user, token, logout, storeJobs]);
+  }, [user?.email, token, storeJobs, logout]);
 
   useEffect(() => {
     const prev = document.body.style.overflow;
