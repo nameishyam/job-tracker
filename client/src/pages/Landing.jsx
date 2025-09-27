@@ -28,20 +28,6 @@ const Landing = () => {
       accentColor: "text-sky-300",
     },
     {
-      icon: BellIcon,
-      title: "Stay Updated",
-      description: "Never miss important deadlines or follow-ups.",
-      accentBg: "bg-violet-600/20",
-      accentColor: "text-violet-300",
-    },
-    {
-      icon: CheckCircleIcon,
-      title: "Achieve Goals",
-      description: "Land your dream job with better organization.",
-      accentBg: "bg-rose-600/20",
-      accentColor: "text-rose-300",
-    },
-    {
       icon: NewspaperIcon,
       title: "Company Reviews & Blogs",
       description:
@@ -76,7 +62,7 @@ const Landing = () => {
 
   return (
     <div className="min-height:80vh text-slate-100 bg-slate-950">
-      <main className="relative z-10 pb-20">
+      <main className="relative z-10 pb-30 pt-10">
         {" "}
         <div className="max-w-[1120px] w-[92vw] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
@@ -88,13 +74,15 @@ const Landing = () => {
                 <span className="block text-emerald-300 text-4xl md:text-5xl">
                   Career Dock
                 </span>
-                Your Professional Job Application Tracker
+                <div className="h-1 w-24 bg-emerald-500 rounded mt-2 mb-4" />
+                <div className="mt-1">
+                  Your Professional Job Application Tracker
+                </div>
               </h1>
               <p className="text-lg text-slate-300 max-w-xl">
-                Streamline your job search with a modern dashboard to organize
-                applications, monitor interview progress, and access trusted
-                company insights. Empower your career decisions with clarity and
-                confidence.
+                Streamline your job search with a dashboard to organize
+                applications, monitor interview progress, and access company
+                insights.
               </p>
               <div className="flex gap-3 flex-shrink-0">
                 <Link
@@ -115,7 +103,7 @@ const Landing = () => {
             <section className="grid grid-cols-1 sm:grid-cols-2 gap-5">
               {features.map((feature, idx) => {
                 const Icon = feature.icon;
-                const isLast = idx === features.length - 1; // conditional for the last item
+                const isLast = idx === features.length - 1;
                 return (
                   <article
                     key={feature.title}
@@ -150,7 +138,7 @@ const Landing = () => {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left text-sm text-slate-400">
               <p className="mt-1">
-                Designed & Developed by{" "}
+                Developed by{" "}
                 <a
                   href="https://portfolio-syam.vercel.app"
                   target="_blank"

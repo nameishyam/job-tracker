@@ -35,7 +35,7 @@ const Layout = () => {
         <Navbar />
       </div>
 
-      <main className="flex-1 pt-24 overflow-y-auto">
+      <main className="flex-1 pt-30 overflow-y-auto">
         <Outlet />
       </main>
 
