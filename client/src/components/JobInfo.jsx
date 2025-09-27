@@ -3,11 +3,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import axios from "axios";
 import { motion } from "framer-motion";
-import {
-  SparklesIcon,
-  PencilIcon,
-  PlusIcon,
-} from "@heroicons/react/24/outline";
+import { SparklesIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "../context/AuthContext";
 import Checkbox from "@mui/material/Checkbox";
 
@@ -41,7 +37,6 @@ const JobInfo = ({ job, onClose }) => {
         console.error("Failed to fetch job:", error);
       }
     };
-
     fetchJob();
   }, [user.email, job.id, token, editMode]);
 
@@ -75,7 +70,6 @@ const JobInfo = ({ job, onClose }) => {
     try {
       setIsSubmitting(true);
       const payload = { jobId: currentJob.id };
-
       const editableFields = [
         "jobtitle",
         "company",
@@ -89,13 +83,11 @@ const JobInfo = ({ job, onClose }) => {
           payload[field] = draftJob[field];
         }
       });
-
       const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/jobs`,
         payload,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       if (response.status === 200 && response.data.job) {
         setCurrentJob(response.data.job);
         setDraftJob(response.data.job);
