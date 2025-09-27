@@ -1,12 +1,13 @@
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+import { motion } from "framer-motion";
 import { SparklesIcon } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
+import Checkbox from "@mui/material/Checkbox";
 
-const JobInfo = ({ job }) => {
+const JobInfo = ({ job, onClose }) => {
   const [review, setReview] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
@@ -14,22 +15,23 @@ const JobInfo = ({ job }) => {
   const [currentJob, setCurrentJob] = useState(job);
   const { token, user } = useAuth();
 
+  useEffect(() => setCurrentJob(job), [job]);
+
   const handleReviewChange = (e) => setReview(e.target.value);
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!review.trim()) return;
-
     setIsSubmitting(true);
     const payload = { jobId: job.id, review };
-
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/jobs/review`,
         payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
-
       if (response.status === 200) {
         setCurrentJob({ ...currentJob, review });
         setReview("");
@@ -50,10 +52,8 @@ const JobInfo = ({ job }) => {
         { job: currentJob, review },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      if (response.status === 200) {
-        setAiResponse(response.data.response);
-      }
+      if (response.status === 200)
+        setAiResponse(response.data.response || "No response");
     } catch (error) {
       console.error("AI analysis error:", error);
       setAiResponse(
@@ -73,18 +73,16 @@ const JobInfo = ({ job }) => {
       const response = await axios.patch(
         `${import.meta.env.VITE_API_URL}/jobs`,
         payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
       );
-
       if (response.status === 200) {
         if (response.data?.job) setCurrentJob(response.data.job);
         else
           setCurrentJob((prevJob) => ({
             ...prevJob,
-            roundStatus: {
-              ...prevJob.roundStatus,
-              [round]: checked ? 1 : 0,
-            },
+            roundStatus: { ...prevJob.roundStatus, [round]: checked ? 1 : 0 },
           }));
       }
     } catch (err) {
@@ -127,19 +125,21 @@ const JobInfo = ({ job }) => {
   };
 
   return (
-    <div className="p-6 sm:p-8 space-y-6 text-[#f1f5f9]">
-      <div className="border-b border-white/10 pb-4 space-y-3 rounded-lg">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {job.jobtitle}
-          </h1>
-          {job.jobtype && (
-            <span className={getJobTypeClass(job.jobtype)}>
-              {job.jobtype.replace("-", " ")}
-            </span>
-          )}
+    <div className="flex flex-col min-h-0 p-6 sm:p-8 space-y-6 text-[#f1f5f9]">
+      <div className="flex items-start justify-between border-b border-white/10 pb-4">
+        <div className="space-y-1 min-w-0">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold tracking-tight truncate">
+              {job.jobtitle || job.position || job.title}
+            </h1>
+            {job.jobtype && (
+              <span className={getJobTypeClass(job.jobtype)}>
+                {job.jobtype.replace("-", " ")}
+              </span>
+            )}
+          </div>
+          <p className="text-lg text-[#94a3b8] truncate">{job.company}</p>
         </div>
-        <p className="text-lg text-[#94a3b8]">{job.company}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -148,7 +148,7 @@ const JobInfo = ({ job }) => {
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Location
             </h3>
-            <p className="mt-2">{job.location || "Not specified"}</p>
+            <p className="mt-2 truncate">{job.location || "Not specified"}</p>
           </div>
           <div>
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
@@ -157,6 +157,7 @@ const JobInfo = ({ job }) => {
             <p className="mt-2">{formatDate(job.date)}</p>
           </div>
         </div>
+
         <div className="space-y-4">
           <div>
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
@@ -168,31 +169,33 @@ const JobInfo = ({ job }) => {
             <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
               Interview Rounds
             </h3>
-            <div className="mt-3 flex flex-wrap gap-3">
-              {currentJob.roundStatus &&
+            <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {currentJob?.roundStatus &&
               Object.keys(currentJob.roundStatus).length > 0 ? (
                 Object.keys(currentJob.roundStatus).map((round) => (
                   <label
                     key={round}
-                    className="flex items-center gap-2 px-3 py-2 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md text-sm text-[#f1f5f9]"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg border border-white/6 bg-white/3 backdrop-blur-md text-sm text-[#f1f5f9]"
                   >
-                    <input
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-slate-500 text-emerald-400 focus:ring-emerald-400"
+                    <Checkbox
                       checked={!!currentJob.roundStatus?.[round]}
                       onChange={(e) =>
                         handleCheckboxChange(round, e.target.checked)
                       }
+                      sx={{
+                        color: "#4ade80",
+                        "&.Mui-checked": {
+                          color: "#4ade80",
+                        },
+                      }}
                     />
-                    <span
-                      className={`px-3 py-1 text-xs font-semibold rounded-full ${
-                        currentJob.roundStatus[round] === 1
-                          ? "bg-emerald-500/10 text-emerald-200"
-                          : "bg-red-500/10 text-red-200"
-                      }`}
-                    >
-                      {round}
-                    </span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-sm truncate">
+                          {round}
+                        </span>
+                      </div>
+                    </div>
                   </label>
                 ))
               ) : (
@@ -214,7 +217,7 @@ const JobInfo = ({ job }) => {
         </div>
       )}
 
-      {currentJob.review && (
+      {currentJob?.review && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">
             Your Review
@@ -239,7 +242,8 @@ const JobInfo = ({ job }) => {
             className="w-full px-3 py-2 text-sm rounded-lg bg-[#0f172a] border border-white/10 text-[#f1f5f9] resize-none focus:outline-none focus:ring-1 focus:ring-cyan-400"
             placeholder="Share your experience with this application..."
           />
-          <div className="flex flex-col sm:flex-row gap-3">
+
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <motion.button
               type="submit"
               disabled={isSubmitting || !review.trim()}
@@ -266,6 +270,10 @@ const JobInfo = ({ job }) => {
               <SparklesIcon className="w-4 h-4" />
               {isGenerating ? "Analyzing..." : "AI Analysis"}
             </motion.button>
+
+            <div className="ml-auto text-xs text-[#94a3b8] hidden sm:block">
+              Tip: Use AI to get feedback and next steps!
+            </div>
           </div>
         </form>
       </div>
@@ -276,6 +284,7 @@ const JobInfo = ({ job }) => {
           AI is analyzing your review...
         </div>
       )}
+
       {aiResponse && !isGenerating && (
         <div className="space-y-3">
           <h3 className="text-xs font-semibold tracking-[0.2em] text-[#94a3b8] uppercase">

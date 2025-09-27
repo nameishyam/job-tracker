@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "../components/JobCard";
 import JobForm from "../components/JobForm";
@@ -10,6 +9,7 @@ import {
   BriefcaseIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+import { useAuth } from "../context/AuthContext";
 
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
@@ -22,7 +22,6 @@ const Dashboard = () => {
       setIsLoading(false);
       return;
     }
-
     const controller = new AbortController();
     const fetchJobs = async () => {
       try {
@@ -52,6 +51,15 @@ const Dashboard = () => {
     fetchJobs();
     return () => controller.abort();
   }, [user, token, logout, storeJobs]);
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    if (selectedJob) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = prev || "";
+    return () => {
+      document.body.style.overflow = prev || "";
+    };
+  }, [selectedJob]);
 
   const handleJobAdded = (newJob) => {
     storeJobs?.((prevJobs) => [...(prevJobs || []), newJob]);
@@ -204,13 +212,24 @@ const Dashboard = () => {
       <AnimatePresence>
         {selectedJob && (
           <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm"
           >
-            <div className="h-full flex flex-col">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/30 bg-slate-900/70 backdrop-blur-md">
+            <div
+              className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+              onClick={handleCloseJobDetail}
+            />
+
+            <motion.div
+              initial={{ scale: 0.98, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.98, y: 10, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="relative z-10 max-w-3xl w-full mx-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+            >
+              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/30 bg-slate-900/70 backdrop-blur-md flex-shrink-0">
                 <h2 className="text-lg font-semibold text-slate-50">
                   Job Details
                 </h2>
@@ -221,10 +240,11 @@ const Dashboard = () => {
                   <XMarkIcon className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto p-4">
-                <JobInfo job={selectedJob} />
+
+              <div className="overflow-y-auto p-4 min-h-0">
+                <JobInfo job={selectedJob} onClose={handleCloseJobDetail} />
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

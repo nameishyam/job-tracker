@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext";
-import { TrashIcon, EyeIcon } from "@heroicons/react/24/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   const [isDeleting, setIsDeleting] = useState(false);
   const { token } = useAuth();
 
-  const handleCardClick = () => {
-    onJobSelect(job);
-  };
+  const handleCardClick = () => onJobSelect(job);
 
   const handleDelete = async (e) => {
     e.stopPropagation();
     if (!window.confirm("Are you sure you want to delete this job?")) return;
-
     setIsDeleting(true);
     try {
       await axios.delete(`${import.meta.env.VITE_API_URL}/jobs/${job.id}`, {
@@ -41,20 +38,22 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   };
 
   const getJobTypeClass = (type) => {
-    const baseClass = "px-2 py-0.5 text-xs font-medium rounded-full border";
-    switch (type?.toLowerCase()) {
+    const base = "px-2 py-0.5 text-xs font-medium rounded-full border";
+    if (!type)
+      return `${base} bg-slate-400/20 text-slate-300 border-slate-400/30`;
+    switch (type.toLowerCase()) {
       case "full time":
       case "full-time":
-        return `${baseClass} bg-emerald-400/20 text-emerald-300 border-emerald-400/30`;
+        return `${base} bg-emerald-400/20 text-emerald-300 border-emerald-400/30`;
       case "part time":
       case "part-time":
-        return `${baseClass} bg-blue-400/20 text-blue-300 border-blue-400/30`;
+        return `${base} bg-blue-400/20 text-blue-300 border-blue-400/30`;
       case "contract":
-        return `${baseClass} bg-amber-400/20 text-amber-300 border-amber-400/30`;
+        return `${base} bg-amber-400/20 text-amber-300 border-amber-400/30`;
       case "internship":
-        return `${baseClass} bg-purple-400/20 text-purple-300 border-purple-400/30`;
+        return `${base} bg-purple-400/20 text-purple-300 border-purple-400/30`;
       default:
-        return `${baseClass} bg-slate-400/20 text-slate-300 border-slate-400/30`;
+        return `${base} bg-slate-400/20 text-slate-300 border-slate-400/30`;
     }
   };
 
@@ -89,8 +88,8 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
               <span>{job.salary || "N/A"}</span>
             </div>
             <div>
-              <span className="font-medium text-[#94a3b8]">Applied:</span>{" "}
-              <span>{formatDate(job.dateApplied)}</span>
+              <span className="font-medium text-[#94a3b8]">Applied on:</span>{" "}
+              <span>{formatDate(job.date)}</span>
             </div>
             <div>
               <span className="font-medium text-[#94a3b8]">Status:</span>{" "}
@@ -100,18 +99,6 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
         </div>
 
         <div className="flex items-center gap-2 sm:ml-2">
-          <motion.button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleCardClick();
-            }}
-            whileTap={{ scale: 0.95 }}
-            className="p-1 rounded-lg text-[#f1f5f9] hover:text-white transition"
-            title="View details"
-          >
-            <EyeIcon className="w-4 h-4" />
-          </motion.button>
-
           <motion.button
             onClick={handleDelete}
             disabled={isDeleting}

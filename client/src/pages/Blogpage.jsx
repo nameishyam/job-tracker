@@ -3,6 +3,7 @@ import Blog from "../components/Blog";
 import NewBlog from "../components/NewBlog";
 import { Plus } from "lucide-react";
 import axios from "axios";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 const Blogpage = () => {
   const [showNewBlog, setShowNewBlog] = useState(false);
@@ -103,10 +104,9 @@ const Blogpage = () => {
           >
             <button
               onClick={() => setShowNewBlog(false)}
-              className="absolute -top-3 -right-3 inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500"
-              aria-label="Close"
+              className="absolute top-4 right-4 inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-300 hover:text-slate-100"
             >
-              ×
+              <XMarkIcon className="w-4 h-4" />
             </button>
 
             <NewBlog
