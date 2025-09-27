@@ -2,16 +2,16 @@ import { Link } from "react-router-dom";
 import {
   ChartBarIcon,
   ClipboardDocumentListIcon,
-  BellIcon,
-  CheckCircleIcon,
   NewspaperIcon,
   LinkIcon,
 } from "@heroicons/react/24/outline";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { SiLeetcode } from "react-icons/si";
+import { useAuth } from "../context/AuthContext";
 
 const Landing = () => {
+  const { isAuthenticated } = useAuth();
   const features = [
     {
       icon: ClipboardDocumentListIcon,
@@ -63,7 +63,6 @@ const Landing = () => {
   return (
     <div className="min-height:80vh text-slate-100 bg-slate-950">
       <main className="relative z-10 pb-30 pt-10">
-        {" "}
         <div className="max-w-[1120px] w-[92vw] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <section aria-labelledby="hero-heading" className="space-y-6">
@@ -85,18 +84,37 @@ const Landing = () => {
                 insights.
               </p>
               <div className="flex gap-3 flex-shrink-0">
-                <Link
-                  to="/signup"
-                  className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
-                >
-                  Get Started
-                </Link>
-                <Link
-                  to="/login"
-                  className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
-                >
-                  Sign In
-                </Link>
+                {isAuthenticated() ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                      to="/profile"
+                      className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
+                    >
+                      Profile
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/signup"
+                      className="rounded-lg bg-emerald-500 px-5 py-2 font-semibold text-slate-900 hover:bg-emerald-400 transition-colors duration-150"
+                    >
+                      Get Started
+                    </Link>
+                    <Link
+                      to="/login"
+                      className="rounded-lg border border-slate-700 px-5 py-2 text-slate-100 hover:border-slate-500 transition-colors duration-150"
+                    >
+                      Sign In
+                    </Link>
+                  </>
+                )}
               </div>
             </section>
 
@@ -106,7 +124,7 @@ const Landing = () => {
                 const isLast = idx === features.length - 1;
                 return (
                   <article
-                    key={feature.title}
+                    key={feature.id || feature.title} // Prefer feature.id if available
                     className={`rounded-xl border border-slate-800 bg-slate-900 p-6 flex gap-4 items-start ${
                       isLast ? "sm:col-span-2" : ""
                     }`}
