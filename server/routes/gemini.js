@@ -33,7 +33,7 @@ Job details for reference:
             .join(", ")
         : "None specified"
     }
-Provide actionable advice, next steps, and if applicable, congratulations or motivation. Address the user directly using "you" (e.g., "you have done this," "my advice to you is..."). Do not conclude with open-ended questions inviting further conversation. Format your response in markdown.`;
+Provide actionable advice, next steps, and if applicable, congratulations or motivation. Address the user directly using "you" (e.g., "you have done this," "my advice to you is..."). Do not conclude with open-ended questions inviting further conversation. Format your response in markdown. Lastly consolidate it into a 2 to 3 paragraphs content without any bolds and other syntaxes. Ensure the response is clear, concise, and free of grammatical errors.`;
     const result = await model.generateContent(prompt);
     const response = result.response.text().trim();
     return res
