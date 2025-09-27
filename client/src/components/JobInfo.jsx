@@ -112,7 +112,7 @@ const JobInfo = ({ job, onClose }) => {
       setIsGenerating(true);
       setAiResponse("");
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/gemini/ask`,
+        `${import.meta.env.VITE_API_URL}/openrouter/ask`,
         { job: currentJob },
         { headers: { Authorization: `Bearer ${token}` } }
       );

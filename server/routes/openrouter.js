@@ -1,6 +1,6 @@
 const express = require("express");
 const { authenticateToken } = require("../middleware/auth");
-const model = require("../utils/gemini");
+const main = require("../utils/openrouter");
 
 const router = express.Router();
 
@@ -33,9 +33,9 @@ Job details for reference:
             .join(", ")
         : "None specified"
     }
-Provide actionable advice, next steps, and if applicable, congratulations or motivation. Address the user directly using "you" (e.g., "you have done this," "my advice to you is..."). Do not conclude with open-ended questions inviting further conversation. Format your response in markdown. Lastly consolidate it into a 2 to 3 paragraphs content without any bolds and other syntaxes. Ensure the response is clear, concise, and free of grammatical errors.`;
-    const result = await model.generateContent(prompt);
-    const response = result.response.text().trim();
+Provide actionable advice, next steps, and if applicable, congratulations or motivation. Address the user directly using "you" (e.g., "you have done this," "my advice to you is..."). Do not conclude with open-ended questions inviting further conversation. Format your response in markdown. Lastly consolidate it into a 2 to 3 paragraphs content without any bolds and other syntaxes. Ensure the response is clear, concise, and free of grammatical errors. No need to give any headings and side headings in the response. just start with the content. no need to tell what you are going to do, just do it.`;
+    const result = await main({ query: prompt });
+    const response = result.choices[0].message.content.trim();
     return res
       .status(200)
       .json({ message: "AI analysis generated successfully", response });
