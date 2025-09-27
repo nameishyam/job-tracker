@@ -75,8 +75,9 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-h-screen text-slate-100 bg-slate-950">
-      <main className="relative z-10 pb-12">
+    <div className="min-height:80vh text-slate-100 bg-slate-950">
+      <main className="relative z-10 pb-20">
+        {" "}
         <div className="max-w-[1120px] w-[92vw] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <section aria-labelledby="hero-heading" className="space-y-6">
@@ -112,12 +113,15 @@ const Landing = () => {
             </section>
 
             <section className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {features.map((feature) => {
+              {features.map((feature, idx) => {
                 const Icon = feature.icon;
+                const isLast = idx === features.length - 1; // conditional for the last item
                 return (
                   <article
                     key={feature.title}
-                    className="rounded-xl border border-slate-800 bg-slate-900 p-6 flex gap-4 items-start"
+                    className={`rounded-xl border border-slate-800 bg-slate-900 p-6 flex gap-4 items-start ${
+                      isLast ? "sm:col-span-2" : ""
+                    }`}
                   >
                     <div
                       className={`flex-shrink-0 w-12 h-12 rounded-lg ${feature.accentBg} border border-slate-800 flex items-center justify-center`}
@@ -141,7 +145,8 @@ const Landing = () => {
       </main>
 
       <footer className="relative z-10 border-t border-slate-800 bg-slate-950">
-        <div className="max-w-[1120px] w-[92vw] mx-auto py-6">
+        <div className="max-w-[1120px] w-[92vw] mx-auto py-4">
+          {" "}
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left text-sm text-slate-400">
               <p className="mt-1">
