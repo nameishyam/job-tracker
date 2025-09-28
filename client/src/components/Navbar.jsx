@@ -5,11 +5,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   UserCircleIcon,
-  HomeIcon,
   ChartBarIcon,
-  ArrowRightOnRectangleIcon,
+  ArrowRightStartOnRectangleIcon,
   TrashIcon,
+  QueueListIcon,
 } from "@heroicons/react/24/outline";
+import { HomeIcon } from "@heroicons/react/24/solid";
 
 const Navbar = () => {
   const { isAuthenticated, logout, user } = useAuth();
@@ -48,17 +49,28 @@ const Navbar = () => {
             to="/"
             className="text-lg sm:text-xl font-semibold tracking-tight text-[#50C878] drop-shadow"
           >
-            Career Dock
+            <HomeIcon className="w-6 h-6 mb-1 mr-1" />
           </Link>
           <Link
             to="/blog"
             className="text-sm font-medium text-gray-300 hover:text-white transition-colors"
           >
+            <QueueListIcon className="w-4 h-4 inline mb-1 mr-1" />
             Blogs
           </Link>
+          {isAuthenticated() ? (
+            <div className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+              <Link to="/dashboard">
+                <ChartBarIcon className="w-4 h-4 inline mb-1 mr-1" />
+                Dashboard
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="flex items-center gap-6 space-x-2 sm:space-x-3">
           {isAuthenticated() ? (
             <div className="relative user-menu">
               <motion.button
@@ -84,15 +96,15 @@ const Navbar = () => {
                     <Link to="/profile" onClick={() => setDropdownOpen(false)}>
                       <div className="px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors rounded-t-2xl">
                         <p className="text-sm font-semibold text-white truncate">
-                          {user?.firstName} {user?.lastName}
+                          Profile
                         </p>
                         <p className="text-xs text-white/70 truncate">
-                          {user?.email}
+                          {user?.firstName} {user?.lastName}
                         </p>
                       </div>
                     </Link>
 
-                    <div className="py-1 space-y-1">
+                    {/* <div className="py-1 space-y-1">
                       <Link
                         to="/"
                         onClick={() => setDropdownOpen(false)}
@@ -107,14 +119,15 @@ const Navbar = () => {
                       >
                         <ChartBarIcon className="w-4 h-4" /> Dashboard
                       </Link>
-                    </div>
+                    </div> */}
 
-                    <div className="py-1 mt-1 border-t border-white/10 space-y-1">
+                    <div className="py-1 mt-1 space-y-1">
                       <button
                         onClick={handleLogout}
                         className="flex items-center gap-3 w-full px-4 py-2 text-sm text-white/90 hover:bg-white/5 rounded-xl transition-colors"
                       >
-                        <ArrowRightOnRectangleIcon className="w-4 h-4" /> Logout
+                        <ArrowRightStartOnRectangleIcon className="w-4 h-4" />{" "}
+                        Logout
                       </button>
                       <button
                         onClick={handleDeleteAccount}
