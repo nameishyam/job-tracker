@@ -1,32 +1,8 @@
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { TrashIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
 
-const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
-  const [isDeleting, setIsDeleting] = useState(false);
-  const { token } = useAuth();
-
+const JobCard = ({ job, onJobDeleteClick, onJobSelect }) => {
   const handleCardClick = () => onJobSelect(job);
-
-  const handleDelete = async (e) => {
-    e.stopPropagation();
-    if (!window.confirm("Are you sure you want to delete this job?")) return;
-    setIsDeleting(true);
-    try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/jobs`, {
-        headers: { Authorization: `Bearer ${token}` },
-        data: { jobId: job.id },
-      });
-      onJobDeleted(job.id);
-    } catch (error) {
-      console.error("Failed to delete job:", error);
-      alert("Failed to delete job. Please try again.");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";
@@ -100,17 +76,15 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
 
         <div className="flex items-center gap-2 sm:ml-2">
           <motion.button
-            onClick={handleDelete}
-            disabled={isDeleting}
+            onClick={(e) => {
+              e.stopPropagation();
+              onJobDeleteClick?.(job);
+            }}
             whileTap={{ scale: 0.95 }}
             className="ml-1 p-2 rounded-lg hover:bg-rose-500/10 transition focus:outline-none focus:ring-2 focus:ring-rose-400/20"
             title="Delete job"
           >
-            {isDeleting ? (
-              <div className="w-3.5 h-3.5 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <TrashIcon className="w-5 h-5 text-rose-400" />
-            )}
+            <TrashIcon className="w-5 h-5 text-rose-400" />
           </motion.button>
         </div>
       </div>

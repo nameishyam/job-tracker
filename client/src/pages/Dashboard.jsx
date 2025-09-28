@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "../components/JobCard";
 import JobForm from "../components/JobForm";
 import JobInfo from "../components/JobInfo";
+import ConfirmJobDelete from "../components/ConfirmJobDelete";
 import {
   PlusIcon,
   BriefcaseIcon,
@@ -14,6 +15,7 @@ import { useAuth } from "../context/AuthContext";
 const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [deleteJob, setDeleteJob] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const { user, token, logout, jobs, storeJobs } = useAuth();
 
@@ -93,6 +95,22 @@ const Dashboard = () => {
 
   const handleJobSelect = (job) => setSelectedJob(job);
   const handleCloseJobDetail = () => setSelectedJob(null);
+
+  const confirmDeleteJob = async () => {
+    if (!deleteJob) return;
+    try {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/jobs`, {
+        headers: { Authorization: `Bearer ${token}` },
+        data: { jobId: deleteJob.id },
+      });
+      handleJobDeleted(deleteJob.id);
+    } catch (error) {
+      console.error("Failed to delete job:", error);
+      alert("Failed to delete job. Please try again.");
+    } finally {
+      setDeleteJob(null);
+    }
+  };
 
   if (isLoading)
     return (
@@ -226,7 +244,7 @@ const Dashboard = () => {
                     >
                       <JobCard
                         job={job}
-                        onJobDeleted={handleJobDeleted}
+                        onJobDeleteClick={() => setDeleteJob(job)}
                         onJobSelect={handleJobSelect}
                       />
                     </motion.div>
@@ -236,47 +254,58 @@ const Dashboard = () => {
             </motion.div>
           </div>
         </div>
-      </section>
 
-      <AnimatePresence>
-        {selectedJob && (
-          <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center px-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div
-              className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
-              onClick={handleCloseJobDetail}
-            />
-
+        <AnimatePresence>
+          {selectedJob && (
             <motion.div
-              initial={{ scale: 0.98, y: 10 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.98, y: 10, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="relative z-10 max-w-3xl w-full mx-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+              className="fixed inset-0 z-50 flex items-center justify-center px-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
             >
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/30 bg-slate-900/70 backdrop-blur-md flex-shrink-0">
-                <h2 className="text-lg font-semibold text-slate-50">
-                  Job Details
-                </h2>
-                <button
-                  onClick={handleCloseJobDetail}
-                  className="inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-200 hover:text-slate-50"
-                >
-                  <XMarkIcon className="w-4 h-4" />
-                </button>
-              </div>
+              <div
+                className="absolute inset-0 bg-slate-950/70 backdrop-blur-sm"
+                onClick={handleCloseJobDetail}
+              />
 
-              <div className="overflow-y-auto p-4 min-h-0">
-                <JobInfo job={selectedJob} onClose={handleCloseJobDetail} />
-              </div>
+              <motion.div
+                initial={{ scale: 0.98, y: 10 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.98, y: 10, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="relative z-10 max-w-3xl w-full mx-auto bg-slate-900 border border-slate-700 rounded-2xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col"
+              >
+                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700/30 bg-slate-900/70 backdrop-blur-md flex-shrink-0">
+                  <h2 className="text-lg font-semibold text-slate-50">
+                    Job Details
+                  </h2>
+                  <button
+                    onClick={handleCloseJobDetail}
+                    className="inline-flex items-center justify-center rounded-full p-2 bg-slate-700/40 hover:bg-slate-700/60 transition focus:outline-none focus:ring-2 focus:ring-slate-500 text-slate-200 hover:text-slate-50"
+                  >
+                    <XMarkIcon className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="overflow-y-auto p-4 min-h-0">
+                  <JobInfo job={selectedJob} onClose={handleCloseJobDetail} />
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {deleteJob && (
+            <ConfirmJobDelete
+              isOpen={!!deleteJob}
+              jobTitle={deleteJob.position}
+              onClose={() => setDeleteJob(null)}
+              onConfirm={confirmDeleteJob}
+            />
+          )}
+        </AnimatePresence>
+      </section>
     </>
   );
 };
