@@ -61,8 +61,8 @@ const Landing = () => {
   ];
 
   return (
-    <div className="min-height:80vh text-slate-100 bg-slate-950">
-      <main className="relative z-10 pb-30 pt-10">
+    <div className="min-h-[80vh] text-slate-100 bg-slate-950">
+      <main className="relative z-10 pb-30 pt-25">
         <div className="max-w-[1120px] w-[92vw] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <section aria-labelledby="hero-heading" className="space-y-6">

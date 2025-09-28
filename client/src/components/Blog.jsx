@@ -50,7 +50,7 @@ const Blog = ({ data, onDeleteRequest }) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.35 }}
-      className="p-6 rounded-2xl border border-white/6 shadow-md bg-[#0f172a] hover:bg-[#1e293b] flex flex-col"
+      className="p-6 rounded-2xl border border-white/6 shadow-md bg-[#0f172a] flex flex-col"
       role="article"
       aria-label={`Review for ${data.company || "company"}`}
     >

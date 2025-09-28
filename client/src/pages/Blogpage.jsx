@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 const Blogpage = () => {
   const [showNewBlog, setShowNewBlog] = useState(false);
   const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const panelRef = useRef(null);
 
   const handleSuccess = () => {
@@ -17,7 +17,7 @@ const Blogpage = () => {
   };
 
   const fetchBlogs = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const response = await axios.get(`${import.meta.env.VITE_API_URL}/blogs`);
       if (response.status === 200) {
@@ -26,7 +26,7 @@ const Blogpage = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -49,9 +49,25 @@ const Blogpage = () => {
     }
   }, [showNewBlog]);
 
+  if (isLoading) {
+    return (
+      <section className="flex flex-col min-h-screen items-center justify-center">
+        <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-center gap-2 text-sm">
+          <span className="inline-block w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" />
+          Loading Reviews…
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <div className="max-w-[1120px] w-[92vw] mx-auto relative space-y-8 py-6">
+    <div className="flex flex-col min-h-[80vh] pt-8">
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        className="max-w-[1120px] w-[92vw] mx-auto relative space-y-6"
+      >
         <div className="absolute top-0 right-0 pt-6 pr-6">
           <motion.button
             onClick={() => setShowNewBlog(true)}
@@ -75,11 +91,7 @@ const Blogpage = () => {
         </div>
 
         <div className="space-y-5">
-          {loading ? (
-            <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-200/75">
-              Loading...
-            </div>
-          ) : blogs.length > 0 ? (
+          {blogs.length > 0 ? (
             blogs.map((blog) => <Blog key={blog.id} data={blog} />)
           ) : (
             <div className="bg-slate-800 border border-slate-700 rounded-xl p-8 text-center text-slate-200/75">
@@ -87,7 +99,7 @@ const Blogpage = () => {
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
 
       {showNewBlog && (
         <div

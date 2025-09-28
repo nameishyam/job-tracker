@@ -81,7 +81,6 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log("Blog submitted:", response.data);
       onSuccess();
     } catch (error) {
       console.log(error);
@@ -208,14 +207,6 @@ const NewBlog = ({ onSuccess, onCancel }) => {
             <label className="text-sm font-medium text-slate-200/85">
               Interview Rounds
             </label>
-            <button
-              type="button"
-              onClick={addRoundEnd}
-              className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-3 py-1.5 text-xs font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
-            >
-              <Plus className="w-4 h-4" />
-              Add Round
-            </button>
           </div>
 
           {formData.rounds.length === 0 ? (
@@ -224,7 +215,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
               <button
                 type="button"
                 onClick={addRoundEnd}
-                className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="inline-flex items-center gap-2 rounded-md bg-emerald-500 hover:bg-emerald-400 px-4 py-2 text-sm text-slate-900 font-semibold transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
                 <Plus className="w-4 h-4" />
                 Add Round
@@ -296,7 +287,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
                 <button
                   type="button"
                   onClick={addRoundEnd}
-                  className="inline-flex items-center gap-2 rounded-md bg-emerald-600/90 hover:bg-emerald-600 px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                  className="inline-flex items-center gap-2 rounded-md bg-emerald-500 hover:bg-emerald-400 px-4 py-2 text-sm text-slate-900 font-semibold transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
                   <Plus className="w-4 h-4" />
                   Add Another Round
@@ -319,7 +310,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           <button
             type="button"
             onClick={onCancel}
-            className="rounded-md px-6 py-2 bg-slate-700/40 hover:bg-slate-700/60 transition text-sm"
+            className="rounded-md px-6 py-2 bg-slate-700/40 hover:bg-slate-700/60 font-semibold transition text-sm"
           >
             Cancel
           </button>
@@ -327,13 +318,13 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="rounded-md px-6 py-2 bg-emerald-600/95 hover:bg-emerald-600 text-white font-medium transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2"
+            className="rounded-md px-6 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-900 font-semibold transition disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center gap-2"
             aria-disabled={isSubmitting}
           >
             {isSubmitting ? (
               <span className="flex items-center gap-2">
                 <span
-                  className="inline-block w-4 h-4 rounded-full border-2 border-t-transparent border-white animate-spin"
+                  className="inline-block w-4 h-4 rounded-full border-2 border-t-transparent text-slate-900 font-semibold border-slate-900 animate-spin"
                   aria-hidden="true"
                 />
                 Submitting...

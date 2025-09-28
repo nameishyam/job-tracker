@@ -170,14 +170,14 @@ const Profile = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-[80vh] items-center justify-center">
         <div className="inline-block w-6 h-6 rounded-full border-4 border-t-transparent animate-spin border-slate-600/40" />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col min-h-[80vh] pt-8 bg-slate-950 text-slate-100">
       <div className="max-w-[1120px] w-[92vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 py-6">
         <div className="space-y-6">
           <motion.div
@@ -221,7 +221,6 @@ const Profile = () => {
               return (
                 <motion.div
                   key={stat.label}
-                  whileHover={{ translateY: -2 }}
                   className="rounded-xl border border-white/6 bg-slate-900/80 p-3 flex items-center gap-3"
                 >
                   <div

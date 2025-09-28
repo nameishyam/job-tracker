@@ -17,6 +17,8 @@ const Dashboard = () => {
   const [selectedJob, setSelectedJob] = useState(null);
   const { user, token, logout, jobs, storeJobs } = useAuth();
 
+  const safeJobs = Array.isArray(jobs) ? jobs : [];
+
   useEffect(() => {
     if (!token || !user?.email) {
       setIsLoading(false);
@@ -37,8 +39,18 @@ const Dashboard = () => {
           }
         );
 
-        if (Array.isArray(response.data.jobs)) {
-          storeJobs(response.data.jobs);
+        const maybeJobsArray = response.data?.jobs;
+        const maybeSingleJob = response.data?.job;
+
+        if (Array.isArray(maybeJobsArray)) {
+          storeJobs(maybeJobsArray);
+        } else if (maybeSingleJob) {
+          storeJobs((prev) => [
+            ...(Array.isArray(prev) ? prev : []),
+            maybeSingleJob,
+          ]);
+        } else {
+          storeJobs((prev) => (Array.isArray(prev) ? prev : []));
         }
       } catch (error) {
         if (axios.isCancel(error)) return;
@@ -63,14 +75,20 @@ const Dashboard = () => {
   }, [selectedJob]);
 
   const handleJobAdded = (newJob) => {
-    storeJobs?.((prevJobs) => [...(prevJobs || []), newJob]);
+    storeJobs?.((prevJobs) => {
+      const arr = Array.isArray(prevJobs) ? prevJobs : [];
+      return [...arr, newJob];
+    });
     setShowForm(false);
   };
 
   const handleJobDeleted = (deletedJobId) => {
-    storeJobs?.((prevJobs) =>
-      (prevJobs || []).filter((job) => job.id !== deletedJobId)
+    storeJobs((prev) =>
+      Array.isArray(prev) ? prev.filter((j) => j.id !== deletedJobId) : []
     );
+    if (selectedJob?.id === deletedJobId) {
+      setSelectedJob(null);
+    }
   };
 
   const handleJobSelect = (job) => setSelectedJob(job);
@@ -88,16 +106,35 @@ const Dashboard = () => {
 
   return (
     <>
-      <section className="flex flex-col min-h-screen">
+      <section className="flex flex-col min-h-[80vh] pt-8">
         <div className="max-w-[1120px] w-[92vw] mx-auto space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
-            className="bg-slate-800 border border-slate-700 rounded-xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+            className="max-w-[1120px] w-[92vw] mx-auto relative space-y-6"
           >
-            <div>
-              <h1 className="text-xl sm:text-2xl font-semibold text-slate-100">
+            <div className="absolute top-0 right-0 pt-6 pr-6">
+              <motion.button
+                onClick={() => setShowForm((prev) => !prev)}
+                whileTap={{ scale: 0.95 }}
+                className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
+              >
+                {showForm ? (
+                  <>
+                    <XMarkIcon className="w-3.5 h-3.5 mr-2" />
+                    Close
+                  </>
+                ) : (
+                  <>
+                    <PlusIcon className="w-3.5 h-3.5 mr-2" />
+                    Add Job
+                  </>
+                )}
+              </motion.button>
+            </div>
+            <div className="pt-2 space-y-2">
+              <h1 className="text-3xl sm:text-4xl font-semibold text-slate-100 tracking-tight">
                 Job Dashboard
               </h1>
               <p className="text-sm text-slate-300 max-w-md mt-1">
@@ -105,15 +142,6 @@ const Dashboard = () => {
                 place.
               </p>
             </div>
-
-            <motion.button
-              onClick={() => setShowForm((prev) => !prev)}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center justify-center rounded-full h-9 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
-            >
-              <PlusIcon className="w-3.5 h-3.5" />
-              {showForm ? "Close Form" : "Add Job"}
-            </motion.button>
           </motion.div>
 
           <div
@@ -164,13 +192,13 @@ const Dashboard = () => {
                     <BriefcaseIcon className="w-3.5 h-3.5" />
                   </div>
                   <h2 className="text-md font-semibold text-slate-100">
-                    Your Applications ({jobs.length})
+                    Your Applications ({safeJobs.length})
                   </h2>
                 </div>
               </div>
 
               <div className="p-4 space-y-3">
-                {jobs.length === 0 ? (
+                {safeJobs.length === 0 ? (
                   <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 text-center space-y-3">
                     <BriefcaseIcon className="w-10 h-10 mx-auto text-slate-300/60" />
                     <h3 className="text-md font-semibold text-slate-100">
@@ -189,7 +217,7 @@ const Dashboard = () => {
                     </motion.button>
                   </div>
                 ) : (
-                  jobs.map((job, index) => (
+                  safeJobs.map((job, index) => (
                     <motion.div
                       key={job.id}
                       initial={{ opacity: 0, y: 12 }}

@@ -189,8 +189,10 @@ const JobInfo = ({ job, onClose }) => {
           whileTap={{ scale: 0.95 }}
           className="flex-shrink-0 self-start sm:self-center inline-flex items-center justify-center rounded-lg h-10 px-4 font-semibold text-sm border border-emerald-500 bg-emerald-500 text-slate-900 transition hover:bg-emerald-400 hover:border-emerald-400"
         >
-          <PencilIcon className="w-5 h-5 text-slate-900" />
-          <span className="ml-2">{editMode ? "Editing" : "Edit Job"}</span>
+          <PencilIcon className="w-5 h-5 text-slate-900 font-semibold" />
+          <span className="ml-2 text-slate-900 font-semibold">
+            {editMode ? "Editing" : "Edit Job"}
+          </span>
         </motion.button>
       </div>
 
@@ -274,7 +276,7 @@ const JobInfo = ({ job, onClose }) => {
                       newRound: "",
                     }));
                   }}
-                  className="px-3 py-1 bg-[#10b981] text-[#020617] rounded-lg text-sm hover:bg-[#34d399] transition"
+                  className="px-3 py-1 bg-emerald-500 text-slate-900 font-semibold rounded-lg text-sm hover:bg-emerald-400 transition"
                 >
                   Add
                 </button>

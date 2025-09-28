@@ -1,23 +1,22 @@
 import { motion } from "framer-motion";
 
-const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
+const ConfirmJobDelete = ({ isOpen, jobTitle, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 backdrop-blur-sm">
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ duration: 0.16 }}
-        className="bg-[#0f172a] rounded-2xl shadow-lg p-6 w-full max-w-sm border border-white/10"
-      >
+    <motion.div
+      initial={{ scale: 0.95, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.95, opacity: 0 }}
+      transition={{ duration: 0.16 }}
+    >
+      <div className="bg-[#0f172a] rounded-2xl shadow-lg p-6 w-full max-w-sm border border-white/10">
         <h2 className="text-lg font-semibold text-[#f1f5f9] mb-2">
           Confirm Delete
         </h2>
 
         <p className="text-[#94a3b8] text-sm mb-4">
-          Are you sure you want to delete{blogTitle ? ` "${blogTitle}"` : ""}?
+          Are you sure you want to delete{jobTitle ? ` "${jobTitle}"` : ""}?
           This action cannot be undone.
         </p>
 
@@ -35,9 +34,9 @@ const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
             Delete
           </button>
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 };
 
-export default ConfirmBlogDelete;
+export default ConfirmJobDelete;

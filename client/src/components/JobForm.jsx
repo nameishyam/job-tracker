@@ -4,9 +4,9 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { PlusIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
-const JobForm = ({ email, onJobAdded }) => {
+const JobForm = ({ onJobAdded }) => {
   const [userId, setUserId] = useState(null);
-  const { token, user } = useAuth();
+  const { token, user, storeJobs } = useAuth();
   const [roundInput, setRoundInput] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 

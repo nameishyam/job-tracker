@@ -15,8 +15,9 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
     if (!window.confirm("Are you sure you want to delete this job?")) return;
     setIsDeleting(true);
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/jobs/${job.id}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL}/jobs`, {
         headers: { Authorization: `Bearer ${token}` },
+        data: { jobId: job.id },
       });
       onJobDeleted(job.id);
     } catch (error) {
@@ -60,8 +61,7 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
   return (
     <motion.div
       onClick={handleCardClick}
-      whileHover={{ y: -1 }}
-      className="p-3 sm:p-4 cursor-pointer rounded-2xl bg-[#0f172a] border border-white/6 shadow-md flex flex-col transition hover:bg-[#1e293b]"
+      className="p-3 sm:p-4 cursor-pointer rounded-2xl bg-[#0f172a] border border-white/6 shadow-md flex flex-col transition"
     >
       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
         <div className="flex-1 min-w-0">
@@ -103,13 +103,13 @@ const JobCard = ({ job, onJobDeleted, onJobSelect }) => {
             onClick={handleDelete}
             disabled={isDeleting}
             whileTap={{ scale: 0.95 }}
-            className="p-1 rounded-lg text-rose-300 hover:text-rose-200 disabled:opacity-50 transition"
+            className="ml-1 p-2 rounded-lg hover:bg-rose-500/10 transition focus:outline-none focus:ring-2 focus:ring-rose-400/20"
             title="Delete job"
           >
             {isDeleting ? (
               <div className="w-3.5 h-3.5 border-2 border-rose-300 border-t-transparent rounded-full animate-spin" />
             ) : (
-              <TrashIcon className="w-4 h-4" />
+              <TrashIcon className="w-5 h-5 text-rose-400" />
             )}
           </motion.button>
         </div>
