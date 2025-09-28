@@ -6,9 +6,10 @@ import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
 import Blogpage from "./pages/Blogpage";
 import Dashboard from "./pages/Dashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { ModalProvider } from "./context/ModalContext";
+import PublicRoute from "./routes/PublicRoute";
 
 const App = () => {
   return (
@@ -27,8 +28,10 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Layout />}>
                 <Route index element={<Landing />} />
-                <Route path="login" element={<Login />} />
-                <Route path="signup" element={<Signup />} />
+                <Route element={<PublicRoute />}>
+                  <Route path="login" element={<Login />} />
+                  <Route path="signup" element={<Signup />} />
+                </Route>
                 <Route path="blog" element={<Blogpage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="dashboard" element={<Dashboard />} />

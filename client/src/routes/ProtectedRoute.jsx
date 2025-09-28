@@ -5,7 +5,11 @@ const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-8 h-8 border-4 border-emerald-500 text-slate-900 font-semibold border-dashed rounded-full animate-spin">
+        Loading...
+      </div>
+    );
   }
 
   if (!isAuthenticated()) {
