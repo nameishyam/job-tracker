@@ -51,7 +51,7 @@ const Blogpage = () => {
 
   if (isLoading) {
     return (
-      <section className="flex flex-col min-h-screen items-center justify-center">
+      <section className="flex flex-col min-h-[80vh] pt-8 items-center justify-center">
         <div className="bg-slate-800 border border-slate-700 rounded-xl p-4 flex items-center gap-2 text-sm">
           <span className="inline-block w-5 h-5 border-2 border-t-transparent border-white rounded-full animate-spin" />
           Loading Reviews…
