@@ -73,21 +73,13 @@ router.post(`/login`, async (req, res) => {
   }
 });
 
-// In-memory store for OTPs (for demo, replace with Redis/db in production)
-
-// Generate OTP
 router.post("/generate-otp", async (req, res) => {
   const { email } = req.body;
   try {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-    // Hash OTP before storing
     const hashedOTP = await bcrypt.hash(otp, saltRounds);
-    otpStore[email] = { hashedOTP, expires: Date.now() + 5 * 60 * 1000 }; // 5 min expiry
-
-    // Send OTP via email
+    otpStore[email] = { hashedOTP, expires: Date.now() + 5 * 60 * 1000 };
     await sendMailServices(email, "Your OTP Code", `Your OTP is: ${otp}`);
-
     return res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
     console.error(error);
@@ -95,7 +87,6 @@ router.post("/generate-otp", async (req, res) => {
   }
 });
 
-// Validate OTP
 router.post("/validate-otp", async (req, res) => {
   const { email, otp } = req.body;
   try {
@@ -106,11 +97,9 @@ router.post("/validate-otp", async (req, res) => {
       delete otpStore[email];
       return res.status(400).json({ message: "OTP expired" });
     }
-
     const isMatch = await bcrypt.compare(otp, record.hashedOTP);
     if (!isMatch) return res.status(400).json({ message: "Invalid OTP" });
-
-    delete otpStore[email]; // remove OTP once validated
+    delete otpStore[email];
     return res.status(200).json({ message: "OTP validated successfully" });
   } catch (error) {
     console.error(error);
@@ -118,13 +107,11 @@ router.post("/validate-otp", async (req, res) => {
   }
 });
 
-// Reset Password
 router.patch("/reset-password", async (req, res) => {
   const { email, newPassword } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ message: "User not found" });
-
     user.password = await bcrypt.hash(newPassword, saltRounds);
     await user.save();
     return res.status(200).json({ message: "Password reset successfully" });

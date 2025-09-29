@@ -28,10 +28,8 @@ const Forgotpass = () => {
     if (error) setError("");
   };
 
-  // Generate OTP
   const handleGenerateOTP = async () => {
     if (resendTimer > 0) return;
-
     setIsGenerating(true);
     setError("");
     const email = formData.email;
@@ -40,15 +38,12 @@ const Forgotpass = () => {
       setIsGenerating(false);
       return;
     }
-
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/users/generate-otp`, {
         email,
       });
       setOtpRequested(true);
       setIsGenerating(false);
-
-      // start 60s resend timer
       setResendTimer(60);
       const interval = setInterval(() => {
         setResendTimer((prev) => {
@@ -66,7 +61,6 @@ const Forgotpass = () => {
     }
   };
 
-  // Validate OTP
   const handleValidateOTP = async () => {
     setIsValidating(true);
     setError("");
@@ -84,12 +78,10 @@ const Forgotpass = () => {
     }
   };
 
-  // Submit new password
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-
     if (!otpValidated) {
       setError("Please validate OTP before submitting.");
       setIsLoading(false);
@@ -100,7 +92,6 @@ const Forgotpass = () => {
       setIsLoading(false);
       return;
     }
-
     try {
       await axios.patch(
         `${import.meta.env.VITE_API_URL}/users/reset-password`,
@@ -147,7 +138,6 @@ const Forgotpass = () => {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5 max-w-md">
-            {/* Email */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-slate-300">
                 Email Address
@@ -164,7 +154,6 @@ const Forgotpass = () => {
               />
             </div>
 
-            {/* Generate OTP button */}
             <div className="flex gap-2">
               <button
                 type="button"
@@ -187,7 +176,6 @@ const Forgotpass = () => {
               )}
             </div>
 
-            {/* OTP input */}
             {otpRequested && (
               <div className="space-y-2">
                 <label className="text-sm font-medium text-slate-300">
@@ -211,13 +199,12 @@ const Forgotpass = () => {
                   {isValidating
                     ? "Validating..."
                     : otpValidated
-                    ? "Validated ✅"
+                    ? "Validated"
                     : "Validate OTP"}
                 </button>
               </div>
             )}
 
-            {/* Password fields */}
             {otpValidated && (
               <>
                 <div className="space-y-2 relative">
