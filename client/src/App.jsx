@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Layout from "./components/Layout";
 import Profile from "./pages/Profile";
-import Blogpage from "./pages/Blogpage";
+import Reviewpage from "./pages/Reviewpage";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
@@ -32,7 +32,7 @@ const App = () => {
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
                 </Route>
-                <Route path="blog" element={<Blogpage />} />
+                <Route path="reviews" element={<Reviewpage />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="profile" element={<Profile />} />

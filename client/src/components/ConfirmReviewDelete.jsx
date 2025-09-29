@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
+const ConfirmReviewDelete = ({ isOpen, reviewTitle, onClose, onConfirm }) => {
   if (!isOpen) return null;
 
   return (
@@ -17,8 +17,9 @@ const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
         </h2>
 
         <p className="text-[#94a3b8] text-sm mb-4">
-          Are you sure you want to delete{blogTitle ? ` "${blogTitle}"` : ""}?
-          This action cannot be undone.
+          Are you sure you want to delete
+          {reviewTitle ? ` "${reviewTitle}"` : ""}? This action cannot be
+          undone.
         </p>
 
         <div className="flex justify-end gap-3">
@@ -40,4 +41,4 @@ const ConfirmBlogDelete = ({ isOpen, blogTitle, onClose, onConfirm }) => {
   );
 };
 
-export default ConfirmBlogDelete;
+export default ConfirmReviewDelete;

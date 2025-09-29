@@ -38,7 +38,9 @@ router.post(`/`, authenticateToken, async (req, res) => {
       rounds,
       role,
     });
-    return res.status(201).json({ message: "Blog created successfully", blog });
+    return res
+      .status(201)
+      .json({ message: "Review created successfully", blog });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: error.message });
@@ -59,7 +61,7 @@ router.delete(`/:id`, authenticateToken, async (req, res) => {
   try {
     const blogId = req.params.id;
     await Blogs.destroy({ where: { id: blogId } });
-    return res.status(200).json({ message: "Blog deleted successfully" });
+    return res.status(200).json({ message: "Review deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

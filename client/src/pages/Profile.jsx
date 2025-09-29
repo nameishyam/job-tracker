@@ -12,8 +12,8 @@ import {
   CheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import Blog from "../components/Blog";
-import ConfirmBlogDelete from "../components/ConfirmBlogDelete";
+import Review from "../components/Review";
+import ConfirmReviewDelete from "../components/ConfirmReviewDelete";
 
 const formatDate = (dateString) => {
   if (!dateString) return "Unknown";
@@ -26,7 +26,7 @@ const formatDate = (dateString) => {
 
 const Profile = () => {
   const { user, token, jobs } = useAuth();
-  const [blogs, setBlogs] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [location, setLocation] = useState({ city: "", country: "" });
   const [bio, setBio] = useState("");
   const [editingBio, setEditingBio] = useState(false);
@@ -34,7 +34,7 @@ const Profile = () => {
   const [isSaving, setIsSaving] = useState(false);
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
-  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [selectedReview, setSelectedReview] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
@@ -45,16 +45,16 @@ const Profile = () => {
 
     const fetchData = async () => {
       try {
-        const blogsResponse = await axios.get(
-          `${import.meta.env.VITE_API_URL}/blogs/${user.id}`,
+        const reviewsResponse = await axios.get(
+          `${import.meta.env.VITE_API_URL}/reviews/${user.id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
             signal: controller.signal,
           }
         );
-        setBlogs(
-          Array.isArray(blogsResponse.data?.blogs)
-            ? blogsResponse.data.blogs
+        setReviews(
+          Array.isArray(reviewsResponse.data?.blogs)
+            ? reviewsResponse.data.blogs
             : []
         );
       } catch (err) {
@@ -90,37 +90,35 @@ const Profile = () => {
         }
       );
     }
-
     setBio(user?.bio || "");
     fetchData();
-
     return () => controller.abort();
   }, [user?.email, token, user?.id, user?.bio]);
 
-  const handleDeleteRequest = (blog) => {
-    setSelectedBlog(blog);
+  const handleDeleteRequest = (review) => {
+    setSelectedReview(review);
     setIsDeleteOpen(true);
   };
 
   const handleConfirmDelete = async () => {
-    if (!selectedBlog) return;
+    if (!selectedReview) return;
     setIsDeleting(true);
     try {
       const response = await axios.delete(
-        `${import.meta.env.VITE_API_URL}/blogs/${selectedBlog.id}`,
+        `${import.meta.env.VITE_API_URL}/reviews/${selectedReview.id}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
       if (response.status === 200 || response.status === 204) {
-        setBlogs((prev) => prev.filter((b) => b.id !== selectedBlog.id));
+        setReviews((prev) => prev.filter((b) => b.id !== selectedReview.id));
       }
     } catch (error) {
-      console.error("Error deleting blog:", error);
+      console.error("Error deleting review:", error);
     } finally {
       setIsDeleting(false);
       setIsDeleteOpen(false);
-      setSelectedBlog(null);
+      setSelectedReview(null);
     }
   };
 
@@ -156,8 +154,8 @@ const Profile = () => {
     },
     {
       icon: DocumentTextIcon,
-      label: "Blog Posts",
-      value: blogs.length,
+      label: "Review Posts",
+      value: reviews.length,
       accent: "from-violet-400/20 to-indigo-500/10",
     },
     {
@@ -309,15 +307,15 @@ const Profile = () => {
         </div>
 
         <div className="space-y-4">
-          {blogs.length === 0 ? (
+          {reviews.length === 0 ? (
             <div className="rounded-xl border border-white/6 bg-slate-900/60 p-4 text-slate-400/80 text-sm">
-              No blogs yet
+              No reviews yet
             </div>
           ) : (
-            blogs.map((blog) => (
-              <Blog
-                key={blog.id}
-                data={blog}
+            reviews.map((review) => (
+              <Review
+                key={review.id}
+                data={review}
                 onDeleteRequest={handleDeleteRequest}
               />
             ))
@@ -325,12 +323,12 @@ const Profile = () => {
         </div>
       </div>
 
-      <ConfirmBlogDelete
+      <ConfirmReviewDelete
         isOpen={isDeleteOpen}
-        blogTitle={selectedBlog?.company || selectedBlog?.title || ""}
+        reviewTitle={selectedReview?.company || selectedReview?.title || ""}
         onClose={() => {
           setIsDeleteOpen(false);
-          setSelectedBlog(null);
+          setSelectedReview(null);
         }}
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}

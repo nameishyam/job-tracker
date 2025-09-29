@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Plus, Minus } from "lucide-react";
 
-const NewBlog = ({ onSuccess, onCancel }) => {
+const Newreview = ({ onSuccess, onCancel }) => {
   const { user, token } = useAuth();
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -67,7 +67,7 @@ const NewBlog = ({ onSuccess, onCancel }) => {
     setError("");
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/blogs`,
+        `${import.meta.env.VITE_API_URL}/reviews`,
         {
           userId: user.id,
           company: formData.company,
@@ -81,10 +81,15 @@ const NewBlog = ({ onSuccess, onCancel }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      onSuccess();
+      if (response.status === 200) {
+        onSuccess();
+      } else {
+        console.log(response);
+        setError("Failed to submit review. Please try again.");
+      }
     } catch (error) {
       console.log(error);
-      setError("Failed to submit blog. Please try again.");
+      setError("Failed to submit review. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -339,4 +344,4 @@ const NewBlog = ({ onSuccess, onCancel }) => {
   );
 };
 
-export default NewBlog;
+export default Newreview;

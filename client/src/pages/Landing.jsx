@@ -29,9 +29,8 @@ const Landing = () => {
     },
     {
       icon: NewspaperIcon,
-      title: "Company Reviews & Blogs",
-      description:
-        "Read verified reviews and blog posts to make informed decisions.",
+      title: "Company Reviews",
+      description: "Read verified reviews to make informed decisions.",
       accentBg: "bg-amber-500/20",
       accentColor: "text-amber-300",
     },

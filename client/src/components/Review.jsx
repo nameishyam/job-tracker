@@ -15,7 +15,7 @@ const ratingColorMap = {
   low: "text-rose-300",
 };
 
-const Blog = ({ data, onDeleteRequest }) => {
+const Review = ({ data, onDeleteRequest }) => {
   const [user, setUser] = useState(null);
   const userId = data.userId;
 
@@ -89,7 +89,7 @@ const Blog = ({ data, onDeleteRequest }) => {
               onClick={() => onDeleteRequest(data)}
               className="ml-1 p-2 rounded-lg hover:bg-rose-500/10 transition focus:outline-none focus:ring-2 focus:ring-rose-400/20"
               title="Delete"
-              aria-label="Delete blog"
+              aria-label="Delete review"
             >
               <TrashIcon className="w-5 h-5 text-rose-400" />
             </button>
@@ -167,4 +167,4 @@ const Blog = ({ data, onDeleteRequest }) => {
   );
 };
 
-export default Blog;
+export default Review;

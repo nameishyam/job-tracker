@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const userRoutes = require("./routes/users");
 const jobRoutes = require("./routes/jobs");
-const blogRoutes = require("./routes/blogs");
+const reviewRoutes = require("./routes/reviews");
 const openrouterRoutes = require("./routes/openrouter");
 
 const app = express();
@@ -39,7 +39,7 @@ app.get("/api", (req, res) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/blogs", blogRoutes);
+app.use("/api/reviews", reviewRoutes);
 app.use("/api/openrouter", openrouterRoutes);
 
 module.exports = app;

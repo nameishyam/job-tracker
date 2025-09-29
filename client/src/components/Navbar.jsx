@@ -53,11 +53,11 @@ const Navbar = () => {
             <HomeIcon className="w-6 h-6 mb-1 mr-1" />
           </Link>
           <Link
-            to="/blog"
+            to="/reviews"
             className="text-sm font-semibold text-gray-300 hover:text-white transition-colors"
           >
             <QueueListIcon className="w-4 h-4 inline mb-1 mr-1" />
-            Blogs
+            Public Reviews
           </Link>
           {isAuthenticated() ? (
             <div className="text-sm font-semibold text-gray-300 hover:text-white transition-colors">
