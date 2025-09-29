@@ -9,6 +9,8 @@ const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
 const saltRounds = 10;
 
+const otpStore = {};
+
 router.post(`/signup`, async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
   try {
@@ -71,30 +73,64 @@ router.post(`/login`, async (req, res) => {
   }
 });
 
-router.post(`/generate-otp`, async (req, res) => {
-  const { email, otp } = req.body;
+// In-memory store for OTPs (for demo, replace with Redis/db in production)
+
+// Generate OTP
+router.post("/generate-otp", async (req, res) => {
+  const { email } = req.body;
   try {
-    const info = await sendMailServices(
-      email,
-      "Your OTP Code",
-      `Your OTP is: ${otp}`
-    );
-    return res.status(200).json({ message: "OTP sent successfully", info });
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // Hash OTP before storing
+    const hashedOTP = await bcrypt.hash(otp, saltRounds);
+    otpStore[email] = { hashedOTP, expires: Date.now() + 5 * 60 * 1000 }; // 5 min expiry
+
+    // Send OTP via email
+    await sendMailServices(email, "Your OTP Code", `Your OTP is: ${otp}`);
+
+    return res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.error(error);
+    return res.status(500).json({ message: "Failed to send OTP" });
   }
 });
 
-router.patch(`/reset-password`, async (req, res) => {
+// Validate OTP
+router.post("/validate-otp", async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const record = otpStore[email];
+    if (!record)
+      return res.status(400).json({ message: "No OTP found for this email" });
+    if (Date.now() > record.expires) {
+      delete otpStore[email];
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    const isMatch = await bcrypt.compare(otp, record.hashedOTP);
+    if (!isMatch) return res.status(400).json({ message: "Invalid OTP" });
+
+    delete otpStore[email]; // remove OTP once validated
+    return res.status(200).json({ message: "OTP validated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "OTP validation failed" });
+  }
+});
+
+// Reset Password
+router.patch("/reset-password", async (req, res) => {
   const { email, newPassword } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) return res.status(404).json({ message: "User not found" });
+
     user.password = await bcrypt.hash(newPassword, saltRounds);
     await user.save();
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.error(error);
+    return res.status(500).json({ message: "Password reset failed" });
   }
 });
 
