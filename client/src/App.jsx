@@ -10,6 +10,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { ModalProvider } from "./context/ModalContext";
 import PublicRoute from "./routes/PublicRoute";
+import Forgotpass from "./pages/Forgotpass";
 
 const App = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
                 <Route element={<PublicRoute />}>
                   <Route path="login" element={<Login />} />
                   <Route path="signup" element={<Signup />} />
+                  <Route path="forgot-password" element={<Forgotpass />} />
                 </Route>
                 <Route path="reviews" element={<Reviewpage />} />
                 <Route element={<ProtectedRoute />}>

@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { User, Job, Blogs } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
+const { sendMailServices } = require("../email/sendMail");
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
@@ -59,6 +60,33 @@ router.post(`/login`, async (req, res) => {
       },
       token,
     });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+router.post(`/generate-otp`, async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const info = await sendMailServices(
+      email,
+      "Your OTP Code",
+      `Your OTP is: ${otp}`
+    );
+    return res.status(200).json({ message: "OTP sent successfully", info });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+});
+
+router.patch(`/reset-password`, async (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const user = await User.findOne({ where: { email } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+    user.password = await bcrypt.hash(newPassword, saltRounds);
+    await user.save();
+    return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     return res.status(500).send(error.message);
   }

@@ -122,6 +122,15 @@ const Login = () => {
                   )}
                 </button>
               </div>
+              <p className="text-sm text-slate-400">
+                Forgot Password?{" "}
+                <Link
+                  to="/forgot-password"
+                  className="font-semibold text-emerald-300 hover:text-emerald-200 transition-colors"
+                >
+                  Click Here
+                </Link>
+              </p>
             </div>
 
             <motion.button

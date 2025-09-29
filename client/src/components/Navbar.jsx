@@ -75,6 +75,10 @@ const Navbar = () => {
         <div className="flex items-center gap-6 space-x-2 sm:space-x-3">
           {isAuthenticated() ? (
             <>
+              {/* <button>
+                resume
+                <ArrowUpOnSquareIcon className="w-4 h-4 inline mb-1 ml-1" />
+              </button> */}
               <div className="relative user-menu">
                 <motion.button
                   onClick={toggleDropdown}
