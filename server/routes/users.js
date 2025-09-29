@@ -24,10 +24,16 @@ router.post(`/signup`, async (req, res) => {
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "24h",
     });
+    const info = await sendMailServices(
+      email,
+      "Welcome to Job Tracker!",
+      `Hello ${firstName},\n\nThank you for signing up for Job Tracker! We're excited to have you on board.\n\nBest regards,\nSyam Gowtham 😊`
+    );
     return res.status(201).json({
       message: "User created successfully",
       user,
       token,
+      info,
     });
   } catch (error) {
     return res.status(500).send(error.message);
