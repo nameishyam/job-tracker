@@ -128,7 +128,7 @@ const Reviewpage = () => {
               <XMarkIcon className="w-4 h-4" />
             </button>
 
-            <NewReview
+            <Newreview
               onSuccess={handleSuccess}
               onCancel={() => setShowNewReview(false)}
             />

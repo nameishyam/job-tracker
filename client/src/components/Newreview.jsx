@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { Plus, Minus } from "lucide-react";
+import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
 const Newreview = ({ onSuccess, onCancel }) => {
   const { user, token } = useAuth();
@@ -222,7 +222,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                 onClick={addRoundEnd}
                 className="inline-flex items-center gap-2 rounded-md bg-emerald-500 hover:bg-emerald-400 px-4 py-2 text-sm text-slate-900 font-semibold transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
               >
-                <Plus className="w-4 h-4" />
+                <PlusIcon className="w-4 h-4" />
                 Add Round
               </button>
             </div>
@@ -245,7 +245,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                           title="Add round after this one"
                           className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-slate-700/40 hover:bg-slate-700/60 focus:outline-none"
                         >
-                          <Plus className="w-3 h-3" />
+                          <PlusIcon className="w-3 h-3" />
                         </button>
                         <button
                           type="button"
@@ -253,7 +253,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                           title="Remove this round"
                           className="inline-flex items-center justify-center w-7 h-7 rounded-md bg-rose-600/80 hover:bg-rose-600 focus:outline-none"
                         >
-                          <Minus className="w-3 h-3 text-white" />
+                          <MinusIcon className="w-3 h-3 text-white" />
                         </button>
                       </div>
                     </div>
@@ -274,7 +274,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                       title="Add after"
                       className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-slate-700/40 hover:bg-slate-700/60 focus:outline-none sm:hidden"
                     >
-                      <Plus className="w-4 h-4" />
+                      <PlusIcon className="w-4 h-4" />
                     </button>
                     <button
                       type="button"
@@ -282,7 +282,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                       title="Remove"
                       className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-rose-600/80 hover:bg-rose-600 focus:outline-none sm:hidden"
                     >
-                      <Minus className="w-4 h-4 text-white" />
+                      <MinusIcon className="w-4 h-4 text-white" />
                     </button>
                   </div>
                 </div>
@@ -294,7 +294,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
                   onClick={addRoundEnd}
                   className="inline-flex items-center gap-2 rounded-md bg-emerald-500 hover:bg-emerald-400 px-4 py-2 text-sm text-slate-900 font-semibold transition focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 >
-                  <Plus className="w-4 h-4" />
+                  <PlusIcon className="w-4 h-4" />
                   Add Another Round
                 </button>
               </div>

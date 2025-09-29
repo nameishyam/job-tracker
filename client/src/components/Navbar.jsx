@@ -10,6 +10,7 @@ import {
   TrashIcon,
   QueueListIcon,
   ArrowUpRightIcon,
+  ArrowUpOnSquareIcon,
 } from "@heroicons/react/24/outline";
 import { HomeIcon } from "@heroicons/react/24/solid";
 
@@ -73,58 +74,67 @@ const Navbar = () => {
 
         <div className="flex items-center gap-6 space-x-2 sm:space-x-3">
           {isAuthenticated() ? (
-            <div className="relative user-menu">
-              <motion.button
-                onClick={toggleDropdown}
-                className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white h-11 px-4 rounded-full focus:outline-none"
-                whileTap={{ scale: 0.95 }}
-              >
-                <UserCircleIcon className="w-5 h-5 text-white" />
-                <span className="text-sm font-medium hidden sm:block">
-                  {user?.firstName}
-                </span>
-              </motion.button>
+            <>
+              <button>
+                resume
+                <ArrowUpOnSquareIcon className="w-4 h-4 inline mb-1 ml-1" />
+              </button>
+              <div className="relative user-menu">
+                <motion.button
+                  onClick={toggleDropdown}
+                  className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white h-11 px-4 rounded-full focus:outline-none"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <UserCircleIcon className="w-5 h-5 text-white" />
+                  <span className="text-sm font-medium hidden sm:block">
+                    {user?.firstName}
+                  </span>
+                </motion.button>
 
-              <AnimatePresence>
-                {dropdownOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -12 }}
-                    transition={{ duration: 0.18, ease: "easeOut" }}
-                    className="absolute right-0 mt-3 w-60 px-1 py-1 bg-white/10 backdrop-blur-3xl border border-white/20 shadow-lg rounded-2xl overflow-hidden"
-                  >
-                    <Link to="/profile" onClick={() => setDropdownOpen(false)}>
-                      <div className="px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors rounded-t-2xl">
-                        <p className="text-sm font-semibold text-white truncate">
-                          Profile
-                          <ArrowUpRightIcon className="w-4 h-4 inline mb-1 ml-1" />
-                        </p>
-                        <p className="text-xs text-white/70 truncate">
-                          {user?.firstName} {user?.lastName}
-                        </p>
+                <AnimatePresence>
+                  {dropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
+                      className="absolute right-0 mt-3 w-60 px-1 py-1 bg-white/10 backdrop-blur-3xl border border-white/20 shadow-lg rounded-2xl overflow-hidden"
+                    >
+                      <Link
+                        to="/profile"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        <div className="px-4 py-3 border-b border-white/10 hover:bg-white/5 transition-colors rounded-t-2xl">
+                          <p className="text-sm font-semibold text-white truncate">
+                            Profile
+                            <ArrowUpRightIcon className="w-4 h-4 inline mb-1 ml-1" />
+                          </p>
+                          <p className="text-xs text-white/70 truncate">
+                            {user?.firstName} {user?.lastName}
+                          </p>
+                        </div>
+                      </Link>
+
+                      <div className="py-1 mt-1 space-y-1">
+                        <button
+                          onClick={handleLogout}
+                          className="flex items-center font-semibold gap-3 w-full px-4 py-2 text-sm text-white/90 hover:bg-white/5 rounded-xl transition-colors"
+                        >
+                          <ArrowRightStartOnRectangleIcon className="w-4 h-4" />{" "}
+                          Logout
+                        </button>
+                        <button
+                          onClick={handleDeleteAccount}
+                          className="flex items-center gap-3 w-full px-4 py-2 font-semibold text-sm text-red-400 hover:bg-red-500/15 rounded-xl transition-colors"
+                        >
+                          <TrashIcon className="w-4 h-4" /> Delete Account
+                        </button>
                       </div>
-                    </Link>
-
-                    <div className="py-1 mt-1 space-y-1">
-                      <button
-                        onClick={handleLogout}
-                        className="flex items-center font-semibold gap-3 w-full px-4 py-2 text-sm text-white/90 hover:bg-white/5 rounded-xl transition-colors"
-                      >
-                        <ArrowRightStartOnRectangleIcon className="w-4 h-4" />{" "}
-                        Logout
-                      </button>
-                      <button
-                        onClick={handleDeleteAccount}
-                        className="flex items-center gap-3 w-full px-4 py-2 font-semibold text-sm text-red-400 hover:bg-red-500/15 rounded-xl transition-colors"
-                      >
-                        <TrashIcon className="w-4 h-4" /> Delete Account
-                      </button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </>
           ) : (
             <div className="flex items-center space-x-2">
               <Link
