@@ -1,6 +1,7 @@
 const express = require("express");
 const { Job, User } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
+const { sendMailServices } = require("../email/sendMail");
 
 const router = express.Router();
 
@@ -51,6 +52,12 @@ router.post(`/`, authenticateToken, async (req, res) => {
       review,
       roundStatus,
     });
+    const userMail = await User.findOne({ where: { id: userId } }).email;
+    await sendMailServices(
+      userMail,
+      "Job Added",
+      `You added a job at ${company} as ${jobtitle} \n\n The furthur details of the job you added are: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${date}`
+    );
     return res
       .status(201)
       .json({ message: "Job created successfully", job: createdJob });

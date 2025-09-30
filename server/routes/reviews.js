@@ -1,6 +1,7 @@
 const express = require("express");
 const { Blogs } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
+const { sendMailServices } = require("../email/sendMail");
 
 const router = express.Router();
 
@@ -38,6 +39,12 @@ router.post(`/`, authenticateToken, async (req, res) => {
       rounds,
       role,
     });
+    const userMail = await User.findOne({ where: { id: userId } }).email;
+    await sendMailServices(
+      userMail,
+      "New Review Added",
+      `You added a review for ${company} \n\n The furthur details of the review you added are: \n\n Role: ${role} \n\n Salary: ${salary} \n\n Rating: ${rating} \n\n Review: ${review} \n\n Rounds: ${rounds}`
+    );
     return res
       .status(201)
       .json({ message: "Review created successfully", blog });

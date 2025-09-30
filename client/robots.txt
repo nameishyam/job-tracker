@@ -1,9 +1,0 @@
-User-agent: *
-Allow: /
-
-Disallow: /api/
-Disallow: /login
-Disallow: /signup
-Disallow: /dashboard
-
-Sitemap: https://career-dock.vercel.app/sitemap.xml
