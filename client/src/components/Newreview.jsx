@@ -81,7 +81,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (response.status === 200) {
+      if (response.status === 201) {
         onSuccess();
       } else {
         console.log(response);
@@ -89,7 +89,7 @@ const Newreview = ({ onSuccess, onCancel }) => {
       }
     } catch (error) {
       console.log(error);
-      setError("Failed to submit review. Please try again.");
+      setError("Failed to submit review. Please try again.", error);
     } finally {
       setIsSubmitting(false);
     }

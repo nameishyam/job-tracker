@@ -1,5 +1,5 @@
 const express = require("express");
-const { Blogs } = require("../models");
+const { Blogs, User } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
 const { sendMailServices } = require("../email/sendMail");
 
@@ -30,26 +30,40 @@ router.post(`/`, authenticateToken, async (req, res) => {
   const { company, review, rating, salary, rounds, role } = req.body;
   const userId = req.user.userId;
   try {
-    const blog = await Blogs.create({
+    const safeRounds = rounds ?? [];
+    const createdBlog = await Blogs.create({
       userId,
       company,
       review,
       rating,
       salary,
-      rounds,
+      rounds: safeRounds,
       role,
     });
-    const userMail = await User.findOne({ where: { id: userId } }).email;
-    await sendMailServices(
-      userMail,
-      "New Review Added",
-      `You added a review for ${company} \n\n The furthur details of the review you added are: \n\n Role: ${role} \n\n Salary: ${salary} \n\n Rating: ${rating} \n\n Review: ${review} \n\n Rounds: ${rounds}`
-    );
-    return res
+    const blogObj = createdBlog.toJSON ? createdBlog.toJSON() : createdBlog;
+    res
       .status(201)
-      .json({ message: "Review created successfully", blog });
+      .json({ message: "Review created successfully", blog: blogObj });
+    (async () => {
+      try {
+        const user = await User.findOne({ where: { id: userId } });
+        if (user?.email) {
+          await sendMailServices(
+            user.email,
+            "New Review Added",
+            `You added a review for ${company} \n\n The further details of the review you added are: \n\n Role: ${role} \n\n Salary: ${salary} \n\n Rating: ${rating} \n\n Review: ${review} \n\n Rounds: ${
+              Array.isArray(safeRounds) ? safeRounds.join(", ") : safeRounds
+            }`
+          );
+        } else {
+          console.warn(`No email found for user id ${userId}; skipping mail.`);
+        }
+      } catch (mailErr) {
+        console.error("sendMailServices failed (non-fatal):", mailErr);
+      }
+    })();
   } catch (error) {
-    console.log(error);
+    console.error("Create blog failed:", error);
     return res.status(500).json({ message: error.message });
   }
 });

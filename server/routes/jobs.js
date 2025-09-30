@@ -36,7 +36,7 @@ router.post(`/`, authenticateToken, async (req, res) => {
   } = req.body;
   const userId = req.user.userId;
   try {
-    const roundStatus = rounds.reduce((acc, round) => {
+    const roundStatus = (rounds || []).reduce((acc, round) => {
       acc[round] = "0";
       return acc;
     }, {});
@@ -52,16 +52,27 @@ router.post(`/`, authenticateToken, async (req, res) => {
       review,
       roundStatus,
     });
-    const userMail = await User.findOne({ where: { id: userId } }).email;
-    await sendMailServices(
-      userMail,
-      "Job Added",
-      `You added a job at ${company} as ${jobtitle} \n\n The furthur details of the job you added are: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${date}`
-    );
-    return res
-      .status(201)
-      .json({ message: "Job created successfully", job: createdJob });
+    const jobObj = createdJob.toJSON ? createdJob.toJSON() : createdJob;
+    res.status(201).json({ message: "Job created successfully", job: jobObj });
+    (async () => {
+      try {
+        const user = await User.findOne({ where: { id: userId } });
+        if (user?.email) {
+          const info = await sendMailServices(
+            user.email,
+            "Job Added",
+            `You added a job at ${company} as ${jobtitle} \n\n The further details: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${date}`
+          );
+          console.log(info);
+        } else {
+          console.warn(`No email found for user id ${userId}; skipping mail.`);
+        }
+      } catch (mailErr) {
+        console.error("sendMailServices failed (non-fatal):", mailErr);
+      }
+    })();
   } catch (error) {
+    console.error("Create job failed:", error);
     return res.status(500).json({ message: error.message });
   }
 });
