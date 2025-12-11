@@ -38,22 +38,22 @@ const Landing = () => {
 
   const socialLinks = [
     {
-      href: "mailto:nstchaitanya648@gmail.com",
+      href: "mailto:geddamgowtham4@gmail.com",
       label: "Email",
       icon: <HiOutlineMail className="w-5 h-5" />,
     },
     {
-      href: "https://github.com/nstchaitanya",
+      href: "https://github.com/nameishyam",
       label: "GitHub",
       icon: <FaGithub className="w-5 h-5" />,
     },
     {
-      href: "http://www.linkedin.com/in/siva-thirumala-chaitanya-n-3774081b7",
+      href: "https://www.linkedin.com/in/nameishyam",
       label: "LinkedIn",
       icon: <FaLinkedin className="w-5 h-5" />,
     },
     {
-      href: "https://leetcode.com/u/siva_thirumala_chaitanya",
+      href: "https://leetcode.com/nameishyam",
       label: "LeetCode",
       icon: <SiLeetcode className="w-5 h-5" />,
     },
@@ -157,12 +157,12 @@ const Landing = () => {
               <p className="mt-1">
                 Developed by{" "}
                 <a
-                  href="https://github.com/nstchaitanya"
+                  href="https://portfolio-syam.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-medium text-slate-300 hover:text-white transition-colors duration-150"
                 >
-                  N. Chaitanya <LinkIcon className="inline w-4 h-4 mb-0.5" />
+                  Syam Gowtham <LinkIcon className="inline w-4 h-4 mb-0.5" />
                 </a>
                 .
               </p>
