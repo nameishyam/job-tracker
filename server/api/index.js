@@ -19,7 +19,9 @@ const connectDatabase = async () => {
 };
 
 app.get("/", (req, res) => {
-  res.send("<h1>Job Tracker Server</h1><p>Server is running successfully!</p>");
+  res.send(
+    "<h1>Career Dock Server</h1><p>Server is running successfully on the cloud!</p>"
+  );
 });
 
 module.exports = async (req, res) => {

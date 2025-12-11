@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000;
   try {
     await setupDatabase();
     app.get("/", (_, res) =>
-      res.send("<h1>Job Tracker Server</h1><p>Server is running locally!</p>")
+      res.send("<h1>Career Dock Server</h1><p>Server is running locally!</p>")
     );
 
     app.listen(PORT, () => console.log(`Local server up at port: ${PORT}`));
