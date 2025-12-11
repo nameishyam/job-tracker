@@ -9,7 +9,7 @@ const openai = new OpenAI({
 
 async function main({ query }) {
   const completion = await openai.chat.completions.create({
-    model: "x-ai/grok-4-fast:free",
+    model: "mistralai/devstral-2512:free",
     messages: [
       {
         role: "user",
