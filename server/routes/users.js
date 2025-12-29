@@ -11,26 +11,94 @@ const saltRounds = 10;
 
 const otpStore = {};
 
-router.post(`/signup`, async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+router.post("/signup", async (req, res) => {
   try {
-    const existingUser = await User.findUser({ email });
-    if (existingUser) return res.status(400).send("User already Exists");
-    const hashedPwd = await bcrypt.hash(password, saltRounds);
-    const user = await User.createUser({
-      firstName,
-      lastName,
-      email,
-      password: hashedPwd,
-    });
-    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-      expiresIn: "24h",
-    });
-    const info = await sendMailServices(
-      email,
-      "Welcome to Job Tracker!",
-      `Hello ${firstName},\n\nThank you for signing up for Job Tracker! We're excited to have you on board.\n\nBest regards,\nSyam Gowtham 😊`
-    );
+    console.log("[POST] /signup - body:", req.body);
+    const { firstName, lastName, email, password } = req.body || {};
+    if (!firstName || !lastName || !email || !password) {
+      console.warn("Missing required fields", {
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+    let existingUser;
+    try {
+      existingUser = await User.findUser({ email });
+    } catch (dbErr) {
+      console.error("DB findUser error:", dbErr);
+      return res
+        .status(500)
+        .json({ error: "Database error (findUser)", detail: dbErr.message });
+    }
+    if (existingUser) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+    if (typeof saltRounds === "undefined") {
+      console.error("saltRounds is undefined");
+      return res
+        .status(500)
+        .json({ error: "Server config error: saltRounds not set" });
+    }
+    let hashedPwd;
+    try {
+      hashedPwd = await bcrypt.hash(password, saltRounds);
+    } catch (hashErr) {
+      console.error("bcrypt.hash error:", hashErr);
+      return res
+        .status(500)
+        .json({ error: "Password hashing failed", detail: hashErr.message });
+    }
+    let user;
+    try {
+      user = await User.createUser({
+        firstName,
+        lastName,
+        email,
+        password: hashedPwd,
+      });
+    } catch (createErr) {
+      console.error("User.createUser error:", createErr);
+      return res.status(500).json({
+        error: "Database error (createUser)",
+        detail: createErr.message,
+      });
+    }
+    if (!JWT_SECRET) {
+      console.error("JWT_SECRET is not set");
+      return res
+        .status(500)
+        .json({ error: "Server config error: JWT_SECRET not set" });
+    }
+    let token;
+    try {
+      token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
+        expiresIn: "24h",
+      });
+    } catch (jwtErr) {
+      console.error("jwt.sign error:", jwtErr);
+      return res
+        .status(500)
+        .json({ error: "Token creation failed", detail: jwtErr.message });
+    }
+    let info = null;
+    try {
+      info = await sendMailServices(
+        email,
+        "Welcome to Job Tracker!",
+        `Hello ${firstName},\n\nThank you for signing up for Job Tracker! We're excited to have you on board.\n\nBest regards,\nSyam Gowtham 😊`
+      );
+    } catch (mailErr) {
+      console.error("sendMailServices error:", mailErr);
+      return res.status(201).json({
+        message: "User created but email failed",
+        user,
+        token,
+        mailError: mailErr.message,
+      });
+    }
     return res.status(201).json({
       message: "User created successfully",
       user,
@@ -38,7 +106,11 @@ router.post(`/signup`, async (req, res) => {
       info,
     });
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.error("Unexpected server error in /signup:", error);
+    console.error(error.stack);
+    return res
+      .status(500)
+      .json({ error: "Internal server error", detail: error.message });
   }
 });
 
