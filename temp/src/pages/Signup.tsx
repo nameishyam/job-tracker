@@ -58,29 +58,38 @@ export default function Signup() {
         toast.error("Passwords do not match");
         return;
       }
+
       const dataToSend = {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
         password: values.password,
       };
-      const res = await axios.post(
+
+      await axios.post(
         `${import.meta.env.VITE_API_URL}/users/signup`,
-        dataToSend
+        dataToSend,
+        {
+          withCredentials: true,
+        }
       );
-      const data = res.data;
-      if (res.status === 400) {
-        toast.error(data.error || "Username or Email already exists");
-        return;
-      }
-      login(data.user, data.token);
+
+      const meRes = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      login(meRes.data.user);
+
       toast.success("User created successfully!");
       navigate("/dashboard");
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        toast.error(err.message);
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        toast.error(err.response.data.error);
       } else {
-        toast.error("An unknown error occurred");
+        toast.error("Signup failed");
       }
     }
   };
@@ -94,8 +103,12 @@ export default function Signup() {
             Enter your details below to create a new account
           </CardDescription>
           <CardAction>
-            <Button variant="link" className="hover:cursor-pointer">
-              <a href="/login">Log in</a>
+            <Button
+              variant="link"
+              className="hover:cursor-pointer"
+              onClick={() => navigate("/login")}
+            >
+              Log in
             </Button>
           </CardAction>
         </CardHeader>

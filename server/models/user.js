@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
 
+    static async findById({ id }) {
+      const user = await User.findOne({ where: { id } });
+      return user;
+    }
+
     static async findId({ email }) {
       const user = User.findOne({
         where: {

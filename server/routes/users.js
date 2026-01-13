@@ -13,122 +13,93 @@ const otpStore = {};
 
 router.post("/signup", async (req, res) => {
   try {
-    console.log("[POST] /signup - body:", req.body);
     const { firstName, lastName, email, password } = req.body || {};
-    if (!firstName || !lastName || !email || !password) {
-      console.warn("Missing required fields", {
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-    let existingUser;
-    try {
-      existingUser = await User.findUser({ email });
-    } catch (dbErr) {
-      console.error("DB findUser error:", dbErr);
-      return res
-        .status(500)
-        .json({ error: "Database error (findUser)", detail: dbErr.message });
-    }
-    if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
-    }
-    if (typeof saltRounds === "undefined") {
-      console.error("saltRounds is undefined");
-      return res
-        .status(500)
-        .json({ error: "Server config error: saltRounds not set" });
-    }
-    let hashedPwd;
-    try {
-      hashedPwd = await bcrypt.hash(password, saltRounds);
-    } catch (hashErr) {
-      console.error("bcrypt.hash error:", hashErr);
-      return res
-        .status(500)
-        .json({ error: "Password hashing failed", detail: hashErr.message });
-    }
-    let user;
-    try {
-      user = await User.createUser({
-        firstName,
-        lastName,
-        email,
-        password: hashedPwd,
-      });
-    } catch (createErr) {
-      console.error("User.createUser error:", createErr);
-      return res.status(500).json({
-        error: "Database error (createUser)",
-        detail: createErr.message,
-      });
-    }
-    if (!JWT_SECRET) {
-      console.error("JWT_SECRET is not set");
-      return res
-        .status(500)
-        .json({ error: "Server config error: JWT_SECRET not set" });
-    }
-    let token;
-    try {
-      token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
-        expiresIn: "24h",
-      });
-    } catch (jwtErr) {
-      console.error("jwt.sign error:", jwtErr);
-      return res
-        .status(500)
-        .json({ error: "Token creation failed", detail: jwtErr.message });
-    }
-    let info = null;
-    try {
-      info = await sendMailServices(
-        email,
-        "Welcome to Job Tracker!",
-        `Hello ${firstName},\n\nThank you for signing up for Job Tracker! We're excited to have you on board.\n\nBest regards,\nSyam Gowtham 😊`
-      );
-    } catch (mailErr) {
-      console.error("sendMailServices error:", mailErr);
-      return res.status(201).json({
-        message: "User created but email failed",
-        user,
-        token,
-        mailError: mailErr.message,
-      });
-    }
-    return res.status(201).json({
-      message: "User created successfully",
-      user,
-      token,
-      info,
-    });
-  } catch (error) {
-    console.error("Unexpected server error in /signup:", error);
-    console.error(error.stack);
-    return res
-      .status(500)
-      .json({ error: "Internal server error", detail: error.message });
-  }
-});
 
-router.post(`/login`, async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await User.findUser({ email });
-    if (!user) {
-      return res.status(400).send("User not found");
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ error: "All fields are required" });
     }
-    if (!(await bcrypt.compare(password, user.password))) {
-      return res.status(400).send("Invalid password");
+
+    const existingUser = await User.findUser({ email });
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists" });
     }
+
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    const user = await User.createUser({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+    });
+
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "24h",
     });
-    return res.status(200).json({
-      message: "User logged in successfully",
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    sendMailServices(
+      email,
+      "Welcome to Career Dock!",
+      `Hello ${firstName},\n\nWelcome to Career Dock.\nWe're excited to have you onboard!\n\n— Syam Gowtham`
+    ).catch((err) => {
+      console.error("Email failed:", err.message);
+    });
+
+    return res.status(201).json({
+      message: "Signup successful",
+      user: {
+        id: user.id,
+        firstName,
+        lastName,
+        email,
+      },
+    });
+  } catch (err) {
+    console.error("Signup error:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const user = await User.findUser({ email });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+      path: "/",
+    });
+
+    res.status(200).json({
+      message: "Login successful",
       user: {
         id: user.id,
         firstName: user.firstName,
@@ -138,10 +109,52 @@ router.post(`/login`, async (req, res) => {
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
-      token,
     });
   } catch (error) {
-    return res.status(500).send(error.message);
+    console.error("Login error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/me", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findById({ id: req.user.userId });
+
+    if (!user) {
+      return res.status(401).json({ error: "User not found" });
+    }
+
+    res.json({
+      user: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        bio: user.bio,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+    });
+  } catch (err) {
+    console.error("GET /me error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/logout", (req, res) => {
+  try {
+    res.cookie("access_token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(0),
+      path: "/",
+    });
+
+    res.json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error("Logout error:", err);
+    res.status(500).json({ error: "Logout failed" });
   }
 });
 
@@ -245,25 +258,33 @@ router.get(`/:id`, async (req, res) => {
   }
 });
 
-router.delete(`/`, authenticateToken, async (req, res) => {
-  const { userId } = req.body;
-  if (req.user.userId !== userId) {
-    return res
-      .status(403)
-      .json({ message: "Forbidden: You can only delete your own account." });
-  }
+router.delete("/", authenticateToken, async (req, res) => {
   try {
+    const userId = req.user.userId;
+
     const user = await User.findOne({ where: { id: userId } });
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     await Job.destroy({ where: { userId } });
     await Blogs.destroy({ where: { userId } });
     await user.destroy();
-    return res
-      .status(200)
-      .json({ message: "User and associated data deleted successfully" });
+
+    res.cookie("access_token", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      expires: new Date(0),
+      path: "/",
+    });
+
+    return res.status(200).json({
+      message: "Account and all associated data deleted successfully",
+    });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    console.error("Delete account error:", error);
+    return res.status(500).json({ message: "Failed to delete account" });
   }
 });
 

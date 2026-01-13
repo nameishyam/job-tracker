@@ -95,21 +95,29 @@ export default function Login() {
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
+
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/login`,
-        values
+      await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, values, {
+        withCredentials: true,
+      });
+
+      const meRes = await axios.get(
+        `${import.meta.env.VITE_API_URL}/users/me`,
+        {
+          withCredentials: true,
+        }
       );
-      const data = res.data;
-      if (res.status !== 200) {
-        toast.error(data.error || "Invalid email or password");
-        return;
-      }
-      login(data.user, data.token);
+
+      login(meRes.data.user);
+
       toast.success("Login successful!");
       navigate("/dashboard");
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Unknown error");
+    } catch (err: any) {
+      if (err.response?.data?.error) {
+        toast.error(err.response.data.error);
+      } else {
+        toast.error("Invalid email or password");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -125,9 +133,8 @@ export default function Login() {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/users/generate-otp`,
-        {
-          email,
-        }
+        { email },
+        { withCredentials: true }
       );
       const data = await res.data;
       if (res.status !== 200) {
@@ -160,7 +167,8 @@ export default function Login() {
         {
           email: passwordForm.getValues("email"),
           otp: enteredOtp,
-        }
+        },
+        { withCredentials: true }
       );
       if (res.status === 200) {
         toast.success("OTP verified");
@@ -191,7 +199,8 @@ export default function Login() {
         {
           email: values.email,
           newPassword: values.newPassword,
-        }
+        },
+        { withCredentials: true }
       );
       if (res.status === 400) {
         toast.error("No user found with this email");
@@ -426,8 +435,12 @@ export default function Login() {
             <CardTitle>Login</CardTitle>
             <CardDescription>Enter your Email and password</CardDescription>
             <CardAction>
-              <Button variant="link" className="hover:cursor-pointer">
-                <a href="/signup">Sign Up</a>
+              <Button
+                variant="link"
+                className="hover:cursor-pointer"
+                onClick={() => navigate("/signup")}
+              >
+                Sign Up
               </Button>
             </CardAction>
           </CardHeader>
