@@ -4,11 +4,7 @@ const jwt = require("jsonwebtoken");
 const { User, Job, Blogs } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
 const { sendMailServices } = require("../email/sendMail");
-const {
-  uploadAvatar,
-  getAvatarUrl,
-  cleanupOldAvatars,
-} = require("../uploads/profiles");
+const { uploadAvatar, cleanupOldAvatars } = require("../uploads/profiles");
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";

@@ -35,7 +35,6 @@ function Profile() {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     const localPreview = URL.createObjectURL(file);
     setAvatarUrl(localPreview);
     await uploadProfileImage(file);
@@ -44,14 +43,12 @@ function Profile() {
   const uploadProfileImage = async (file: File) => {
     const formData = new FormData();
     formData.append("avatar", file);
-
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/users/avatar`,
         formData,
         { withCredentials: true }
       );
-
       if (res.data.avatarUrl) {
         setAvatarUrl(res.data.avatarUrl);
       }
@@ -73,11 +70,9 @@ function Profile() {
 
   const formatDate = (value: Date | string) => {
     const date = value instanceof Date ? value : new Date(value);
-
     const day = date.getDate();
     const month = date.toLocaleString("en-US", { month: "long" });
     const year = date.getFullYear();
-
     const suffix =
       day % 10 === 1 && day !== 11
         ? "st"
@@ -86,7 +81,6 @@ function Profile() {
         : day % 10 === 3 && day !== 13
         ? "rd"
         : "th";
-
     return `${day}${suffix} ${month}, ${year}`;
   };
 
@@ -105,7 +99,6 @@ function Profile() {
                       {user?.lastName?.[0]}
                     </AvatarFallback>
                   </Avatar>
-
                   <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition">
                     <Pencil className="w-4 h-4 text-white" />
                   </div>
