@@ -269,6 +269,21 @@ router.post("/avatar", authenticateToken, async (req, res) => {
   }
 });
 
+router.delete("/avatar", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.profile_url = null;
+    await user.save();
+    return res.status(200).json({ message: "Avatar deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to delete avatar" });
+  }
+});
+
 router.delete("/", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.userId;

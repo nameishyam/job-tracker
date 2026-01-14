@@ -60,7 +60,7 @@ function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
                       <AvatarImage src={user?.profile_url || ""} />
-                      <AvatarFallback>
+                      <AvatarFallback className="text-xs">
                         {user?.firstName?.[0]}
                         {user?.lastName?.[0]}
                       </AvatarFallback>
@@ -105,7 +105,10 @@ function Navbar() {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleDelete}>
+                    <AlertDialogAction
+                      className="bg-destructive"
+                      onClick={handleDelete}
+                    >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>
