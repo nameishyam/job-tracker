@@ -4,6 +4,8 @@ export interface User {
   lastName?: string;
   email?: string;
   bio?: string;
+  profile_url?: string;
+  createdAt?: string;
   [key: string]: any;
 }
 

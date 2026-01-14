@@ -9,6 +9,7 @@ import Signup from "./pages/Signup";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
                 </Route>
                 <Route element={<ProtectedRoute />}>
                   <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="profile" element={<Profile />} />
                 </Route>
               </Routes>
             </div>

@@ -4,6 +4,11 @@ const jwt = require("jsonwebtoken");
 const { User, Job, Blogs } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
 const { sendMailServices } = require("../email/sendMail");
+const {
+  uploadAvatar,
+  getAvatarUrl,
+  cleanupOldAvatars,
+} = require("../uploads/profiles");
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
@@ -55,12 +60,6 @@ router.post("/signup", async (req, res) => {
 
     return res.status(201).json({
       message: "Signup successful",
-      user: {
-        id: user.id,
-        firstName,
-        lastName,
-        email,
-      },
     });
   } catch (err) {
     console.error("Signup error:", err);
@@ -100,15 +99,6 @@ router.post("/login", async (req, res) => {
 
     res.status(200).json({
       message: "Login successful",
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        bio: user.bio,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
     });
   } catch (error) {
     console.error("Login error:", error);
@@ -131,6 +121,7 @@ router.get("/me", authenticateToken, async (req, res) => {
         lastName: user.lastName,
         email: user.email,
         bio: user.bio,
+        profile_url: user.profile_url,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -255,6 +246,26 @@ router.get(`/:id`, async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+});
+
+router.post("/avatar", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    if (!req.files || !req.files.avatar) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const avatarFile = req.files.avatar;
+    const url = await uploadAvatar(avatarFile, userId);
+    await cleanupOldAvatars(userId, 5);
+    const user = await User.findOne({ where: { id: userId } });
+    user.profile_url = url;
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Avatar uploaded successfully", avatarUrl: url });
+  } catch (error) {
+    return res.status(500).json({ message: "Avatar upload failed" });
   }
 });
 

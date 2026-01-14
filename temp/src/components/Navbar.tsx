@@ -26,7 +26,7 @@ import { toast } from "sonner";
 import axios from "axios";
 
 function Navbar() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, user } = useAuth();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const navigate = useNavigate();
 
@@ -41,11 +41,6 @@ function Navbar() {
       console.error("Error deleting account:", error);
       alert("Error deleting account. Please try again later.");
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    toast.success("Logged out successfully");
   };
 
   return (
@@ -64,19 +59,26 @@ function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Avatar className="cursor-pointer">
-                      <AvatarImage
-                        src="https://github.com/shadcn.png"
-                        alt="@shadcn"
-                      />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarImage src={user?.profile_url || ""} />
+                      <AvatarFallback>
+                        {user?.firstName?.[0]}
+                        {user?.lastName?.[0]}
+                      </AvatarFallback>
                     </Avatar>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="start">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem>Profile</DropdownMenuItem>
-                      <DropdownMenuItem onSelect={handleLogout}>
+                      <DropdownMenuItem onSelect={() => navigate("/profile")}>
+                        Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        onSelect={() => {
+                          logout();
+                          toast.success("Logged out successfully");
+                        }}
+                      >
                         Log out
                       </DropdownMenuItem>
                       <DropdownMenuItem

@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
+const fileUpload = require("express-fileupload");
 
 const userRoutes = require("./routes/users");
 const jobRoutes = require("./routes/jobs");
@@ -28,6 +29,13 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+app.use(
+  fileUpload({
+    limits: { fileSize: 5 * 1024 * 1024 },
+    useTempFiles: false,
   })
 );
 
