@@ -42,6 +42,8 @@ export interface Review {
 export interface AuthContextType {
   user: User | null;
   jobs: Job[];
+  reviews: Review[];
+  setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
   login: (user: User) => void;
   logout: () => Promise<void>;

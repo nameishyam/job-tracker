@@ -7,16 +7,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/AuthContext";
+import { Card, CardContent } from "@/components/ui/card";
+import { Briefcase, Star, Calendar, Pencil } from "lucide-react";
 import axios from "axios";
 
 function Profile() {
-  const { user } = useAuth();
+  const { user, reviews, jobs } = useAuth();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     setAvatarUrl(user?.profile_url ?? undefined);
   }, [user]);
+
+  useEffect(() => {
+    return () => {
+      if (avatarUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+    };
+  }, [avatarUrl]);
 
   const openFilePicker = () => {
     fileInputRef.current?.click();
@@ -61,6 +71,25 @@ function Profile() {
     }
   };
 
+  const formatDate = (value: Date | string) => {
+    const date = value instanceof Date ? value : new Date(value);
+
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "long" });
+    const year = date.getFullYear();
+
+    const suffix =
+      day % 10 === 1 && day !== 11
+        ? "st"
+        : day % 10 === 2 && day !== 12
+        ? "nd"
+        : day % 10 === 3 && day !== 13
+        ? "rd"
+        : "th";
+
+    return `${day}${suffix} ${month}, ${year}`;
+  };
+
   return (
     <div className="min-h-[80vh] p-4 flex overflow-hidden">
       <div className="w-1/2 h-full bg-background p-6 flex flex-col">
@@ -68,13 +97,19 @@ function Profile() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="cursor-pointer hover:opacity-80 transition">
-                <Avatar className="w-14 h-14">
-                  <AvatarImage src={avatarUrl} />
-                  <AvatarFallback>
-                    {user?.firstName?.[0]}
-                    {user?.lastName?.[0]}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="relative group">
+                  <Avatar className="w-14 h-14">
+                    <AvatarImage src={avatarUrl} />
+                    <AvatarFallback>
+                      {user?.firstName?.[0]}
+                      {user?.lastName?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+
+                  <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40 opacity-0 group-hover:opacity-100 transition">
+                    <Pencil className="w-4 h-4 text-white" />
+                  </div>
+                </div>
               </div>
             </DropdownMenuTrigger>
 
@@ -112,8 +147,32 @@ function Profile() {
           <p className="text-gray-700">{user?.bio || "No bio available."}</p>
         </div>
 
-        <div className="flex-1 border-t pt-4 mt-6">
+        <div className="mt-6 border-t pt-4">
           <h2 className="text-xl font-semibold mb-4">Account Details</h2>
+
+          <Card>
+            <CardContent className="p-4 space-y-4">
+              <div className="flex items-center gap-3 text-sm">
+                <Star className="w-4 h-4 text-muted-foreground" />
+                <span className="text-muted-foreground">Reviews</span>
+                <span className="ml-auto font-medium">{reviews.length}</span>
+              </div>
+
+              <div className="flex items-center gap-3 text-sm">
+                <Briefcase className="w-4 h-4 text-muted-foreground" />
+                <span className="text-muted-foreground">Jobs Applied</span>
+                <span className="ml-auto font-medium">{jobs.length}</span>
+              </div>
+
+              <div className="flex items-center gap-3 text-sm">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <span className="text-muted-foreground">Member since</span>
+                <span className="ml-auto font-medium">
+                  {user?.createdAt ? formatDate(user.createdAt) : "N/A"}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
 

@@ -73,6 +73,9 @@ function Navbar() {
                       <DropdownMenuItem onSelect={() => navigate("/profile")}>
                         Profile
                       </DropdownMenuItem>
+                      <DropdownMenuItem onSelect={() => navigate("/dashboard")}>
+                        Dashboard
+                      </DropdownMenuItem>
                       <DropdownMenuItem
                         onSelect={() => {
                           logout();
@@ -81,6 +84,7 @@ function Navbar() {
                       >
                         Log out
                       </DropdownMenuItem>
+                      <DropdownMenuSeparator />
                       <DropdownMenuItem
                         className="text-red-400 focus:text-red-500"
                         onSelect={(e) => {
@@ -88,7 +92,7 @@ function Navbar() {
                           setIsOpen(true);
                         }}
                       >
-                        Delete
+                        Delete Account
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
