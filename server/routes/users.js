@@ -108,11 +108,41 @@ router.post("/login", async (req, res) => {
 
 router.get("/me", authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById({ id: req.user.userId });
-
+    const user = await User.findByPk(req.user.userId);
     if (!user) {
       return res.status(401).json({ error: "User not found" });
     }
+
+    const jobsRaw = await Job.findAll({ where: { userId: user.id } });
+    const reviewsRaw = await Blogs.findAll({ where: { userId: user.id } });
+
+    const jobs = jobsRaw.map((job) => ({
+      id: job.id,
+      userId: job.userId,
+      jobtitle: job.jobtitle,
+      company: job.company,
+      location: job.location,
+      jobtype: job.jobtype,
+      salary: job.salary,
+      description: job.description,
+      dateApplied: job.date,
+      review: job.review,
+      roundStatus: job.roundStatus,
+      updatedAt: job.updatedAt,
+      status: job.status,
+    }));
+
+    const reviews = reviewsRaw.map((review) => ({
+      id: review.id,
+      userId: review.userId,
+      company: review.company,
+      review: review.review,
+      rating: review.rating,
+      salary: review.salary,
+      rounds: review.rounds,
+      role: review.role,
+      updatedAt: review.updatedAt,
+    }));
 
     res.json({
       user: {
@@ -123,8 +153,9 @@ router.get("/me", authenticateToken, async (req, res) => {
         bio: user.bio,
         profile_url: user.profile_url,
         createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
       },
+      jobs,
+      reviews,
     });
   } catch (err) {
     console.error("GET /me error:", err);

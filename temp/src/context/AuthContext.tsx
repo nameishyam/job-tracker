@@ -8,13 +8,14 @@ import {
   type ReactNode,
 } from "react";
 import { api } from "@/lib/api";
-import type { User, Job, AuthContextType } from "@/lib/types";
+import type { User, Job, AuthContextType, Review } from "@/lib/types";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [jobs, setJobs] = useState<Job[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +23,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .get("/users/me")
       .then((res) => {
         setUser(res.data.user);
+        setJobs(res.data.jobs);
+        setReviews(res.data.reviews);
       })
       .catch((err) => {
         if (err.response?.status === 401) {
           setUser(null);
+          setJobs([]);
+          setReviews([]);
         } else {
           console.error("Unexpected /me error:", err);
         }
@@ -47,6 +52,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
     setUser(null);
     setJobs([]);
+    setReviews([]);
   }, []);
 
   const isAuthenticated = useCallback(() => !!user, [user]);
@@ -55,6 +61,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     () => ({
       user,
       jobs,
+      reviews,
+      setReviews,
       setJobs,
       login,
       logout,

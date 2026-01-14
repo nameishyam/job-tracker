@@ -107,7 +107,14 @@ function Profile() {
           </div>
         </div>
 
-        <div className="flex-1" />
+        <div className="flex-1 border-t pt-4 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Bio</h2>
+          <p className="text-gray-700">{user?.bio || "No bio available."}</p>
+        </div>
+
+        <div className="flex-1 border-t pt-4 mt-6">
+          <h2 className="text-xl font-semibold mb-4">Account Details</h2>
+        </div>
       </div>
 
       <div className="w-1/2 h-full bg-background overflow-y-auto p-6">bye</div>

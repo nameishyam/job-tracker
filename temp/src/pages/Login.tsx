@@ -109,6 +109,9 @@ export default function Login() {
       );
 
       login(meRes.data.user);
+      console.log(meRes.data.user);
+      console.log(meRes.data.jobs);
+      console.log(meRes.data.reviews);
 
       toast.success("Login successful!");
       navigate("/dashboard");
