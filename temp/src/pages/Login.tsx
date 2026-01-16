@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -107,12 +105,7 @@ export default function Login() {
           withCredentials: true,
         }
       );
-
       login(meRes.data.user);
-      console.log(meRes.data.user);
-      console.log(meRes.data.jobs);
-      console.log(meRes.data.reviews);
-
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err: any) {
