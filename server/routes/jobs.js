@@ -31,15 +31,11 @@ router.post(`/`, authenticateToken, async (req, res) => {
     salary,
     description,
     dateApplied,
-    rounds,
+    roundStatus,
     review,
   } = req.body;
   const userId = req.user.userId;
   try {
-    const roundStatus = (rounds || []).reduce((acc, round) => {
-      acc[round] = "0";
-      return acc;
-    }, {});
     const createdJob = await Job.create({
       userId,
       jobtitle,
@@ -61,9 +57,8 @@ router.post(`/`, authenticateToken, async (req, res) => {
           const info = await sendMailServices(
             user.email,
             "Job Added",
-            `You added a job at ${company} as ${jobtitle} \n\n The further details: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${dateApplied}`
+            `You added a job at ${company} as ${jobtitle} \n\n The further details: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${dateApplied}`,
           );
-          console.log(info);
         } else {
           console.warn(`No email found for user id ${userId}; skipping mail.`);
         }
@@ -78,41 +73,38 @@ router.post(`/`, authenticateToken, async (req, res) => {
 });
 
 router.patch("/", authenticateToken, async (req, res) => {
-  const { jobId, round, status, ...otherFields } = req.body;
+  const { jobId, ...updates } = req.body;
   try {
     const job = await Job.findOne({
       where: { id: jobId, userId: req.user.userId },
     });
     if (!job) {
       return res.status(404).json({
-        message: "Job not found or you don't have permission to edit it.",
+        message: "Job not found or permission denied.",
       });
     }
-    if (round !== undefined && status !== undefined) {
-      let roundStatus = job.roundStatus || {};
-      roundStatus = {
-        ...roundStatus,
-        [round]: status === "1" || status === 1 ? 1 : 0,
-      };
-      job.roundStatus = roundStatus;
-    }
-    const editableFields = [
-      "review",
+    const allowedFields = [
       "jobtitle",
       "company",
-      "salary",
       "location",
+      "salary",
       "description",
+      "review",
+      "roundStatus",
+      "status",
     ];
-    editableFields.forEach((field) => {
-      if (otherFields[field] !== undefined) {
-        job[field] = otherFields[field];
+    allowedFields.forEach((field) => {
+      if (updates[field] !== undefined) {
+        job[field] = updates[field];
       }
     });
     await job.save();
-    return res.status(200).json({ message: "Job updated successfully", job });
+    return res.status(200).json({
+      message: "Job updated successfully",
+      job,
+    });
   } catch (error) {
-    console.error(error);
+    console.error("Update Error:", error);
     return res.status(500).json({ message: error.message });
   }
 });

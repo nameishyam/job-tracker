@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { format } from "date-fns";
-import { Briefcase, MapPin, DollarSign, CalendarIcon } from "lucide-react";
-
+import {
+  Briefcase,
+  MapPin,
+  DollarSign,
+  CalendarIcon,
+  Pencil,
+  Save,
+  X,
+} from "lucide-react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -10,10 +18,13 @@ import {
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
 import { Checkbox } from "./ui/checkbox";
+import { Textarea } from "./ui/textarea";
 import type { JobInfoProps } from "@/lib/props";
-import { useState } from "react";
 import InfoBlock from "./InfoBlock";
 import InfoTextBlock from "./InfoTextBlock";
+import type { Job } from "@/lib/types";
+import { api } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 function safeDate(value?: Date | string) {
   if (!value) return null;
@@ -22,29 +33,96 @@ function safeDate(value?: Date | string) {
 }
 
 export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedJob, setEditedJob] = useState<Job>(job);
+  const { setJobs } = useAuth();
+
   const appliedDate = safeDate(job.dateApplied);
 
-  const [roundStates, setRoundStates] = useState<Record<string, string>>(
-    job.roundStatus || {}
-  );
-
-  function updateRound(round: string, state: string) {
-    setRoundStates((prev) => ({
+  const handleUpdateRound = (round: string, state: string) => {
+    setEditedJob((prev) => ({
       ...prev,
-      [round]: state,
+      roundStatus: {
+        ...prev.roundStatus,
+        [round]: state,
+      },
     }));
-  }
+  };
+
+  const handleSave = async () => {
+    try {
+      const updates: Partial<Job> = { jobId: job.id };
+      const fieldsToSync: (keyof Job)[] = [
+        "description",
+        "review",
+        "roundStatus",
+      ];
+      let hasChanges = false;
+      fieldsToSync.forEach((field) => {
+        const isObject = typeof editedJob[field] === "object";
+        const changed = isObject
+          ? JSON.stringify(editedJob[field]) !== JSON.stringify(job[field])
+          : editedJob[field] !== job[field];
+        if (changed) {
+          updates[field] = editedJob[field];
+          hasChanges = true;
+        }
+      });
+      if (!hasChanges) {
+        setIsEditing(false);
+        return;
+      }
+      const response = await api.patch("/jobs", updates);
+      if (response.status === 200) {
+        const result = await response.data;
+        setIsEditing(false);
+        setJobs((prevJobs) =>
+          prevJobs.map((j) => (j.id === result.job.id ? result.job : j)),
+        );
+        console.log("Update success:", result.job);
+      } else {
+        const err = await response.data;
+        throw new Error(err.message || "Failed to save");
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  const toggleEdit = () => {
+    if (isEditing) {
+      setEditedJob(job);
+    }
+    setIsEditing(!isEditing);
+  };
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="fixed top-1/2 left-1/2 max-h-[90vh] w-[90vw] max-w-3xl -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-2xl bg-background p-6 shadow-lg focus:outline-none scrollbar-hide">
-        <AlertDialogTitle className="flex items-center gap-2 text-2xl font-bold mb-2">
-          <Briefcase className="h-6 w-6 text-primary" />
-          Job Application Details
-        </AlertDialogTitle>
+        <div className="flex items-center justify-between mb-2">
+          <AlertDialogTitle className="flex items-center gap-2 text-2xl font-bold">
+            <Briefcase className="h-6 w-6 text-primary" />
+            Job Application Details
+          </AlertDialogTitle>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={toggleEdit}
+            className={isEditing ? "text-destructive" : "text-muted-foreground"}
+          >
+            {isEditing ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Pencil className="h-5 w-5" />
+            )}
+          </Button>
+        </div>
 
         <p className="text-sm text-muted-foreground mb-6">
-          View your saved job application and interview progress.
+          {isEditing
+            ? "Editing your application details..."
+            : "View your saved job application and interview progress."}
         </p>
 
         <div className="space-y-6">
@@ -95,9 +173,10 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
             <p className="text-base font-medium mb-3">Interview Rounds</p>
 
             <div className="space-y-3">
-              {job.roundStatus && Object.keys(job.roundStatus).length > 0 ? (
-                Object.keys(job.roundStatus).map((round) => {
-                  const state = roundStates[round] || "pending";
+              {editedJob.roundStatus &&
+              Object.keys(editedJob.roundStatus).length > 0 ? (
+                Object.keys(editedJob.roundStatus).map((round) => {
+                  const state = editedJob.roundStatus?.[round] || "pending";
 
                   return (
                     <div
@@ -107,21 +186,33 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
                       <div className="font-medium text-sm">{round}</div>
 
                       <div className="flex items-center gap-6 text-sm">
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label
+                          className={`flex items-center gap-2 ${isEditing ? "cursor-pointer" : "cursor-default opacity-70"}`}
+                        >
                           <Checkbox
+                            disabled={!isEditing}
                             checked={state === "passed"}
                             onCheckedChange={(checked) =>
-                              updateRound(round, checked ? "passed" : "pending")
+                              handleUpdateRound(
+                                round,
+                                checked ? "passed" : "pending",
+                              )
                             }
                           />
                           Passed
                         </label>
 
-                        <label className="flex items-center gap-2 cursor-pointer">
+                        <label
+                          className={`flex items-center gap-2 ${isEditing ? "cursor-pointer" : "cursor-default opacity-70"}`}
+                        >
                           <Checkbox
+                            disabled={!isEditing}
                             checked={state === "failed"}
                             onCheckedChange={(checked) =>
-                              updateRound(round, checked ? "failed" : "pending")
+                              handleUpdateRound(
+                                round,
+                                checked ? "failed" : "pending",
+                              )
                             }
                           />
                           Failed
@@ -137,23 +228,63 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
               )}
             </div>
           </div>
+          <div>
+            <p className="text-sm font-medium text-muted-foreground mb-2">
+              Description / Job URL
+            </p>
+            {isEditing ? (
+              <Textarea
+                value={editedJob.description}
+                onChange={(e) =>
+                  setEditedJob({ ...editedJob, description: e.target.value })
+                }
+                placeholder="Enter job description or URL..."
+                className="min-h-25"
+              />
+            ) : (
+              <InfoTextBlock value={job.description} />
+            )}
+          </div>
 
-          <InfoTextBlock
-            label="Description / Job URL"
-            value={job.description}
-          />
+          <div>
+            <p className="text-sm font-medium text-muted-foreground mb-2">
+              Application Review & Notes
+            </p>
+            {isEditing ? (
+              <Textarea
+                value={editedJob.review}
+                onChange={(e) =>
+                  setEditedJob({ ...editedJob, review: e.target.value })
+                }
+                placeholder="Add your notes here..."
+                className="min-h-25"
+              />
+            ) : (
+              <InfoTextBlock value={job.review} />
+            )}
+          </div>
 
-          <InfoTextBlock
-            label="Application Review & Notes"
-            value={job.review}
-          />
-
-          <div className="pt-4">
-            <AlertDialogCancel asChild>
-              <Button variant="outline" className="w-full">
-                Close
-              </Button>
-            </AlertDialogCancel>
+          <div className="pt-4 flex gap-3">
+            {isEditing ? (
+              <>
+                <Button onClick={handleSave} className="flex-1 gap-2">
+                  <Save className="h-4 w-4" /> Save Changes
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditing(false)}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </>
+            ) : (
+              <AlertDialogCancel asChild>
+                <Button variant="outline" className="w-full">
+                  Close
+                </Button>
+              </AlertDialogCancel>
+            )}
           </div>
         </div>
       </AlertDialogContent>

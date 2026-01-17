@@ -62,7 +62,7 @@ const passwordResetSchema = z
     {
       message: "Passwords don't match",
       path: ["confirmNewPassword"],
-    }
+    },
   );
 
 export default function Login() {
@@ -160,7 +160,7 @@ export default function Login() {
   };
 
   const handleResetPassword = async (
-    values: z.infer<typeof passwordResetSchema>
+    values: z.infer<typeof passwordResetSchema>,
   ) => {
     if (!values.newPassword || !values.confirmNewPassword) {
       toast.error("Please enter both password fields");

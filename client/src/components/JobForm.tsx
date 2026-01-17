@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { format } from "date-fns";
 import { Briefcase, MapPin, CalendarIcon, IndianRupee } from "lucide-react";
-
 import {
   AlertDialog,
   AlertDialogCancel,
