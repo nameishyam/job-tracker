@@ -3,15 +3,9 @@ import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { Plus, X } from "lucide-react";
 import { Badge } from "./ui/badge";
+import type { RoundStatusEditorProps } from "@/lib/props";
 
-export default function RoundStatusEditor({
-  field,
-}: {
-  field: {
-    value: Record<string, string>;
-    onChange: (val: Record<string, string>) => void;
-  };
-}) {
+export default function RoundStatusEditor({ field }: RoundStatusEditorProps) {
   const [newRoundName, setNewRoundName] = useState("");
 
   const addRound = () => {

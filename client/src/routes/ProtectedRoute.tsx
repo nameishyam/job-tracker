@@ -1,13 +1,14 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, loading } = useAuth();
 
   if (loading) {
     return (
-      <div className="w-8 h-8 border-4 border-emerald-500 text-slate-900 font-semibold border-dashed rounded-full animate-spin">
-        Loading...
+      <div className="flex min-h-[80vh] items-center justify-center">
+        <SpinnerCustom />
       </div>
     );
   }

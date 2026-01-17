@@ -33,6 +33,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 const loginSchema = z.object({
   email: z.email("Invalid email"),
@@ -82,7 +83,7 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loading } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -225,6 +226,10 @@ export default function Login() {
     setEmailVerified(false);
     setOtpVerified(false);
   };
+
+  if (loading) {
+    return <SpinnerCustom />;
+  }
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">

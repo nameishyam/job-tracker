@@ -117,11 +117,14 @@ router.patch("/", authenticateToken, async (req, res) => {
   }
 });
 
-router.delete(`/`, authenticateToken, async (req, res) => {
-  const { jobId } = req.body;
+router.delete("/:jobId", authenticateToken, async (req, res) => {
+  const { jobId } = req.params;
   try {
     const job = await Job.findOne({
-      where: { id: jobId, userId: req.user.userId },
+      where: {
+        id: jobId,
+        userId: req.user.userId,
+      },
     });
     if (!job) {
       return res.status(404).json({
@@ -129,10 +132,12 @@ router.delete(`/`, authenticateToken, async (req, res) => {
       });
     }
     await job.destroy();
-    return res.status(200).json({ message: "Job deleted successfully" });
+    return res.status(204).send();
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
+    console.error("Delete job error:", error);
+    return res.status(500).json({
+      message: "Failed to delete job",
+    });
   }
 });
 

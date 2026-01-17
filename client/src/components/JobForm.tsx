@@ -2,7 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { format } from "date-fns";
-import { Briefcase, MapPin, CalendarIcon, DollarSign } from "lucide-react";
+import {
+  Briefcase,
+  MapPin,
+  CalendarIcon,
+  DollarSign,
+  ChevronDownIcon,
+} from "lucide-react";
 
 import {
   AlertDialog,
@@ -35,6 +41,8 @@ import RoundStatusEditor from "@/components/RoundStatusEditor";
 import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import { toast } from "sonner";
+import { useState } from "react";
+import type { JobFormProps } from "@/lib/props";
 
 const jobformSchema = z.object({
   jobtitle: z.string().min(1, "Job title is required"),
@@ -47,11 +55,6 @@ const jobformSchema = z.object({
   review: z.string().optional(),
   roundStatus: z.record(z.string(), z.string()),
 });
-
-interface JobFormProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 export default function JobForm({ open, onOpenChange }: JobFormProps) {
   const form = useForm<z.infer<typeof jobformSchema>>({
@@ -69,7 +72,8 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
     },
   });
 
-  const { user } = useAuth();
+  const [dateOpen, setDateOpen] = useState(false);
+  const { user, setJobs } = useAuth();
 
   const handleSubmit = async (values: z.infer<typeof jobformSchema>) => {
     try {
@@ -85,6 +89,7 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
       console.log("API Response:", res.data);
       if (res.status === 201) {
         toast.success("Job application added successfully!");
+        setJobs((prevJobs) => [...prevJobs, res.data.job]);
         form.reset();
         onOpenChange(false);
         return;
@@ -225,27 +230,28 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
                     <FormLabel className="mb-2">Date Applied</FormLabel>
-                    <Popover>
+                    <Popover open={dateOpen} onOpenChange={setDateOpen}>
                       <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant="outline"
-                            className="w-full justify-between text-left font-normal"
-                          >
-                            {field.value
-                              ? format(field.value, "PPP")
-                              : "Select date"}
-                            <CalendarIcon className="h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
+                        <Button
+                          variant="outline"
+                          id="date"
+                          className="w-48 justify-between font-normal"
+                        >
+                          {field.value
+                            ? format(field.value, "PPP")
+                            : "Select date"}
+                          <ChevronDownIcon />
+                        </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
+                      <PopoverContent
+                        className="w-auto overflow-hidden p-0"
+                        align="start"
+                      >
                         <Calendar
                           mode="single"
                           selected={field.value}
+                          captionLayout="dropdown"
                           onSelect={field.onChange}
-                          disabled={(date) => date > new Date()}
-                          initialFocus
                         />
                       </PopoverContent>
                     </Popover>
