@@ -2,13 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { format } from "date-fns";
-import {
-  Briefcase,
-  MapPin,
-  CalendarIcon,
-  DollarSign,
-  ChevronDownIcon,
-} from "lucide-react";
+import { Briefcase, MapPin, CalendarIcon, DollarSign } from "lucide-react";
 
 import {
   AlertDialog,
@@ -240,7 +234,7 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
                           {field.value
                             ? format(field.value, "PPP")
                             : "Select date"}
-                          <ChevronDownIcon />
+                          <CalendarIcon />
                         </Button>
                       </PopoverTrigger>
                       <PopoverContent
