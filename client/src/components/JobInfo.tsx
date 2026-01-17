@@ -9,7 +9,11 @@ import {
 } from "./ui/alert-dialog";
 import { Button } from "./ui/button";
 import { Separator } from "./ui/separator";
+import { Checkbox } from "./ui/checkbox";
 import type { JobInfoProps } from "@/lib/props";
+import { useState } from "react";
+import InfoBlock from "./InfoBlock";
+import InfoTextBlock from "./InfoTextBlock";
 
 function safeDate(value?: Date | string) {
   if (!value) return null;
@@ -19,6 +23,17 @@ function safeDate(value?: Date | string) {
 
 export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
   const appliedDate = safeDate(job.dateApplied);
+
+  const [roundStates, setRoundStates] = useState<Record<string, string>>(
+    job.roundStatus || {}
+  );
+
+  function updateRound(round: string, state: string) {
+    setRoundStates((prev) => ({
+      ...prev,
+      [round]: state,
+    }));
+  }
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -33,11 +48,13 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
         </p>
 
         <div className="space-y-6">
+          {/* Job title + company */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InfoBlock label="Job Title" value={job.jobtitle} />
             <InfoBlock label="Company" value={job.company} />
           </div>
 
+          {/* Location + salary */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InfoBlock
               label={
@@ -60,6 +77,7 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
             />
           </div>
 
+          {/* Job type + date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InfoBlock
               label="Employment Type"
@@ -79,19 +97,42 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
           <div>
             <p className="text-base font-medium mb-3">Interview Rounds</p>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               {job.roundStatus && Object.keys(job.roundStatus).length > 0 ? (
-                Object.entries(job.roundStatus).map(([round, status]) => (
-                  <div
-                    key={round}
-                    className="flex justify-between rounded-md border px-3 py-2 text-sm bg-muted/30"
-                  >
-                    <span className="font-medium">{round}</span>
-                    <span className="text-muted-foreground">
-                      {status || "—"}
-                    </span>
-                  </div>
-                ))
+                Object.keys(job.roundStatus).map((round) => {
+                  const state = roundStates[round] || "pending";
+
+                  return (
+                    <div
+                      key={round}
+                      className="flex items-center justify-between rounded-md border px-3 py-3 bg-muted/30 space-y-2"
+                    >
+                      <div className="font-medium text-sm">{round}</div>
+
+                      <div className="flex items-center gap-6 text-sm">
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Checkbox
+                            checked={state === "passed"}
+                            onCheckedChange={(checked) =>
+                              updateRound(round, checked ? "passed" : "pending")
+                            }
+                          />
+                          Passed
+                        </label>
+
+                        <label className="flex items-center gap-2 cursor-pointer">
+                          <Checkbox
+                            checked={state === "failed"}
+                            onCheckedChange={(checked) =>
+                              updateRound(round, checked ? "failed" : "pending")
+                            }
+                          />
+                          Failed
+                        </label>
+                      </div>
+                    </div>
+                  );
+                })
               ) : (
                 <p className="text-sm text-muted-foreground">
                   No interview rounds added.
@@ -120,38 +161,5 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
         </div>
       </AlertDialogContent>
     </AlertDialog>
-  );
-}
-
-function InfoBlock({
-  label,
-  value,
-  icon,
-  capitalize,
-}: {
-  label: React.ReactNode;
-  value?: string;
-  icon?: React.ReactNode;
-  capitalize?: boolean;
-}) {
-  return (
-    <div className="space-y-1.5">
-      <div className="text-sm font-medium">{label}</div>
-      <div className="flex items-center justify-between rounded-md border px-3 py-2 text-sm bg-muted/30">
-        <span className={capitalize ? "capitalize" : ""}>{value || "—"}</span>
-        {icon}
-      </div>
-    </div>
-  );
-}
-
-function InfoTextBlock({ label, value }: { label: string; value?: string }) {
-  return (
-    <div className="space-y-1.5">
-      <p className="text-sm font-medium">{label}</p>
-      <div className="min-h-20 rounded-md border px-3 py-2 text-sm bg-muted/30 whitespace-pre-wrap">
-        {value || "—"}
-      </div>
-    </div>
   );
 }
