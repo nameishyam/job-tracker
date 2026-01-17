@@ -1,11 +1,11 @@
 import {
   createContext,
   useContext,
-  useEffect,
   useState,
   useCallback,
   useMemo,
   type ReactNode,
+  useEffect,
 } from "react";
 import { api } from "@/lib/api";
 import type { User, Job, AuthContextType, Review } from "@/lib/types";
@@ -18,31 +18,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    api
-      .get("/users/me")
-      .then((res) => {
-        setUser(res.data.user);
-        setJobs(res.data.jobs);
-        setReviews(res.data.reviews);
-      })
-      .catch((err) => {
-        if (err.response?.status === 401) {
-          setUser(null);
-          setJobs([]);
-          setReviews([]);
-        } else {
-          console.error("Unexpected /me error:", err);
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+  const fetchMe = useCallback(async () => {
+    try {
+      const res = await api.get("/users/me");
+      setUser(res.data.user);
+      setJobs(res.data.jobs);
+      setReviews(res.data.reviews);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        setUser(null);
+        setJobs([]);
+        setReviews([]);
+      } else {
+        console.error("Unexpected /me error:", err);
+      }
+    }
   }, []);
 
-  const login = useCallback((userData: User) => {
-    setUser(userData);
-  }, []);
+  useEffect(() => {
+    fetchMe().finally(() => setLoading(false));
+  }, [fetchMe]);
+
+  const login = useCallback(async () => {
+    await fetchMe();
+  }, [fetchMe]);
 
   const logout = useCallback(async () => {
     try {

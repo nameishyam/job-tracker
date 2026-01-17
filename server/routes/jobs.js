@@ -30,7 +30,7 @@ router.post(`/`, authenticateToken, async (req, res) => {
     jobtype,
     salary,
     description,
-    date,
+    dateApplied,
     rounds,
     review,
   } = req.body;
@@ -48,7 +48,7 @@ router.post(`/`, authenticateToken, async (req, res) => {
       jobtype,
       salary,
       description,
-      date,
+      date: dateApplied,
       review,
       roundStatus,
     });
@@ -61,7 +61,7 @@ router.post(`/`, authenticateToken, async (req, res) => {
           const info = await sendMailServices(
             user.email,
             "Job Added",
-            `You added a job at ${company} as ${jobtitle} \n\n The further details: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${date}`
+            `You added a job at ${company} as ${jobtitle} \n\n The further details: \n\n Location: ${location} \n\n Job Type: ${jobtype} \n\n Salary: ${salary} \n\n Description: ${description} \n\n Date of Application: ${dateApplied}`
           );
           console.log(info);
         } else {

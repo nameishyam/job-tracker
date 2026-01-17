@@ -18,8 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/context/AuthContext";
+import { api } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -30,7 +30,9 @@ import { z } from "zod";
 const signupSchema = z.object({
   firstName: z.string().min(1, "First name is required"),
   lastName: z.string().min(1, "Last name is required"),
-  email: z.email("Invalid email address"),
+  email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+    message: "Invalid email address",
+  }),
   password: z.string().min(6, "Password must be at least 6 characters long"),
   confirmPassword: z.string().min(1, "Please confirm your password"),
 });
@@ -51,38 +53,23 @@ export default function Signup() {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (values: z.infer<typeof signupSchema>) => {
+    if (values.password !== values.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+    setIsLoading(true);
     try {
-      if (values.password !== values.confirmPassword) {
-        toast.error("Passwords do not match");
-        return;
-      }
-
       const dataToSend = {
         firstName: values.firstName,
         lastName: values.lastName,
         email: values.email,
         password: values.password,
       };
-
-      await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/signup`,
-        dataToSend,
-        {
-          withCredentials: true,
-        }
-      );
-
-      const meRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users/me`,
-        {
-          withCredentials: true,
-        }
-      );
-
-      login(meRes.data.user);
-
+      await api.post(`/users/signup`, dataToSend);
+      await login();
       toast.success("User created successfully!");
       navigate("/dashboard");
     } catch (err: any) {
@@ -91,6 +78,8 @@ export default function Signup() {
       } else {
         toast.error("Signup failed");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -241,7 +230,11 @@ export default function Signup() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full hover:cursor-pointer">
+              <Button
+                type="submit"
+                className="w-full hover:cursor-pointer"
+                disabled={isLoading}
+              >
                 Sign Up
               </Button>
             </CardFooter>

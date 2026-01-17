@@ -5,6 +5,12 @@ export interface JobFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
+export interface AiResponseProps {
+  responseOpen: boolean;
+  onOpenChange: (responseOpen: boolean) => void;
+  job: Job;
+}
+
 export interface JobInfoProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;

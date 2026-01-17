@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { format } from "date-fns";
-import { Briefcase, MapPin, CalendarIcon, DollarSign } from "lucide-react";
+import { Briefcase, MapPin, CalendarIcon, IndianRupee } from "lucide-react";
 
 import {
   AlertDialog,
@@ -33,10 +33,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import RoundStatusEditor from "@/components/RoundStatusEditor";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import type { JobFormProps } from "@/lib/props";
+import { api } from "@/lib/api";
 
 const jobformSchema = z.object({
   jobtitle: z.string().min(1, "Job title is required"),
@@ -45,7 +45,9 @@ const jobformSchema = z.object({
   jobtype: z.string().min(1, "Select a job type"),
   salary: z.string().optional(),
   description: z.string().optional(),
-  dateApplied: z.date(),
+  dateApplied: z.date({
+    message: "Date applied is required",
+  }),
   review: z.string().optional(),
   roundStatus: z.record(z.string(), z.string()),
 });
@@ -60,7 +62,7 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
       jobtype: "",
       salary: "",
       description: "",
-      dateApplied: new Date(),
+      dateApplied: new Date() || undefined,
       review: "",
       roundStatus: {},
     },
@@ -70,16 +72,11 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
   const { user, setJobs } = useAuth();
 
   const handleSubmit = async (values: z.infer<typeof jobformSchema>) => {
+    console.log(values);
     try {
       const userId = user?.id;
       const payload = { ...values, userId };
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/jobs`,
-        payload,
-        {
-          withCredentials: true,
-        }
-      );
+      const res = await api.post(`/jobs`, payload);
       console.log("API Response:", res.data);
       if (res.status === 201) {
         toast.success("Job application added successfully!");
@@ -169,11 +166,11 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="flex items-center gap-1.5">
-                      <DollarSign className="h-3.5 w-3.5" />
+                      <IndianRupee className="h-3.5 w-3.5" />
                       Salary
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="e.g. £80,000" {...field} />
+                      <Input placeholder="e.g. ₹80,000" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -223,32 +220,39 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
                 name="dateApplied"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel className="mb-2">Date Applied</FormLabel>
+                    <FormLabel>Date Applied</FormLabel>
+
                     <Popover open={dateOpen} onOpenChange={setDateOpen}>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          id="date"
-                          className="w-48 justify-between font-normal"
-                        >
-                          {field.value
-                            ? format(field.value, "PPP")
-                            : "Select date"}
-                          <CalendarIcon />
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto overflow-hidden p-0"
-                        align="start"
-                      >
+                      <FormControl>
+                        <PopoverTrigger asChild>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            className="w-48 justify-between font-normal"
+                          >
+                            {field.value
+                              ? format(field.value, "PPP")
+                              : "Select date"}
+                            <CalendarIcon className="ml-2 h-4 w-4" />
+                          </Button>
+                        </PopoverTrigger>
+                      </FormControl>
+
+                      <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          captionLayout="dropdown"
-                          onSelect={field.onChange}
+                          onSelect={(date) => {
+                            if (!date) return;
+                            field.onChange(date);
+                            setDateOpen(false);
+                          }}
+                          initialFocus
                         />
                       </PopoverContent>
                     </Popover>
+
+                    <FormMessage />
                   </FormItem>
                 )}
               />

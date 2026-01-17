@@ -19,10 +19,12 @@ import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useState } from "react";
 import JobInfo from "./JobInfo";
+import AiResponse from "./AiResponse";
 
 export default function JobCard({ job }: Job) {
   const { setJobs } = useAuth();
   const [open, setOpen] = useState(false);
+  const [responseOpen, setResponseOpen] = useState(false);
 
   const formatDate = (date?: string) => {
     if (!date) return "N/A";
@@ -84,6 +86,14 @@ export default function JobCard({ job }: Job) {
                 </div>
               </div>
             </div>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                setResponseOpen(true);
+              }}
+            >
+              AI Analysis
+            </Button>
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
@@ -121,6 +131,11 @@ export default function JobCard({ job }: Job) {
         </CardContent>
       </Card>
       <JobInfo open={open} onOpenChange={setOpen} job={job} />
+      <AiResponse
+        responseOpen={responseOpen}
+        onOpenChange={setResponseOpen}
+        job={job}
+      />
     </>
   );
 }

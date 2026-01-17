@@ -31,27 +31,26 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useAuth } from "@/context/AuthContext";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { SpinnerCustom } from "@/components/ui/spinner";
+import { api } from "@/lib/api";
 
 const loginSchema = z.object({
-  email: z.email("Invalid email"),
+  email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+    message: "Invalid email address",
+  }),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 const passwordResetSchema = z
   .object({
-    email: z.email("Invalid email"),
+    email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
+      message: "Invalid email address",
+    }),
     otp: z.string().length(6, "OTP must be 6 digits").optional(),
-    newPassword: z
-      .string()
-      .min(6, "Password must be at least 6 characters")
-      .optional(),
+    newPassword: z.string().min(6, "Password must be at least 6 characters"),
     confirmNewPassword: z
       .string()
-      .min(6, "Password must be at least 6 characters")
-      .optional(),
+      .min(6, "Password must be at least 6 characters"),
   })
   .refine(
     (data) => {
@@ -83,7 +82,7 @@ export default function Login() {
   });
 
   const navigate = useNavigate();
-  const { login, loading } = useAuth();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -94,19 +93,9 @@ export default function Login() {
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
-
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/users/login`, values, {
-        withCredentials: true,
-      });
-
-      const meRes = await axios.get(
-        `${import.meta.env.VITE_API_URL}/users/me`,
-        {
-          withCredentials: true,
-        }
-      );
-      login(meRes.data.user);
+      await api.post(`/users/login`, values);
+      await login();
       toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err: any) {
@@ -128,11 +117,7 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/generate-otp`,
-        { email },
-        { withCredentials: true }
-      );
+      const res = await api.post(`/users/generate-otp`, { email });
       const data = await res.data;
       if (res.status !== 200) {
         toast.error(data.error || "Failed to send OTP");
@@ -159,14 +144,10 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/users/validate-otp`,
-        {
-          email: passwordForm.getValues("email"),
-          otp: enteredOtp,
-        },
-        { withCredentials: true }
-      );
+      const res = await api.post(`/users/validate-otp`, {
+        email: passwordForm.getValues("email"),
+        otp: enteredOtp,
+      });
       if (res.status === 200) {
         toast.success("OTP verified");
         setOtpVerified(true);
@@ -191,14 +172,10 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await axios.patch(
-        `${import.meta.env.VITE_API_URL}/users/reset-password`,
-        {
-          email: values.email,
-          newPassword: values.newPassword,
-        },
-        { withCredentials: true }
-      );
+      const res = await api.patch(`/users/reset-password`, {
+        email: values.email,
+        newPassword: values.newPassword,
+      });
       if (res.status === 400) {
         toast.error("No user found with this email");
         return;
@@ -227,10 +204,6 @@ export default function Login() {
     setOtpVerified(false);
   };
 
-  if (loading) {
-    return <SpinnerCustom />;
-  }
-
   return (
     <div className="flex min-h-[80vh] items-center justify-center p-4">
       {forgotPassword ? (
@@ -241,8 +214,8 @@ export default function Login() {
               {!emailVerified
                 ? "Enter your email to receive an OTP"
                 : !otpVerified
-                ? "Enter the OTP sent to your email"
-                : "Create your new password"}
+                  ? "Enter the OTP sent to your email"
+                  : "Create your new password"}
             </CardDescription>
           </CardHeader>
           <Form {...passwordForm}>

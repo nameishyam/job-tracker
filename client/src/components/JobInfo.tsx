@@ -48,13 +48,11 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
         </p>
 
         <div className="space-y-6">
-          {/* Job title + company */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InfoBlock label="Job Title" value={job.jobtitle} />
             <InfoBlock label="Company" value={job.company} />
           </div>
 
-          {/* Location + salary */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InfoBlock
               label={
@@ -77,7 +75,6 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
             />
           </div>
 
-          {/* Job type + date */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <InfoBlock
               label="Employment Type"
