@@ -32,6 +32,5 @@ export interface InfoBlockProps {
 }
 
 export interface InfoTextBlockProps {
-  label: string;
   value?: string;
 }
