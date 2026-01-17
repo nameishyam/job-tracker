@@ -41,7 +41,7 @@ router.post("/signup", async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
       path: "/",
     });
@@ -49,7 +49,7 @@ router.post("/signup", async (req, res) => {
     sendMailServices(
       email,
       "Welcome to Career Dock!",
-      `Hello ${firstName},\n\nWelcome to Career Dock.\nWe're excited to have you onboard!\n\n— Syam Gowtham`
+      `Hello ${firstName},\n\nWelcome to Career Dock.\nWe're excited to have you onboard!\n\n— Syam Gowtham`,
     ).catch((err) => {
       console.error("Email failed:", err.message);
     });
@@ -88,7 +88,7 @@ router.post("/login", async (req, res) => {
     res.cookie("access_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
       path: "/",
     });
