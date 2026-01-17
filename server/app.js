@@ -13,6 +13,7 @@ const app = express();
 
 const allowedOrigins = [
   "https://career-dock.vercel.app",
+  "https://career-dock.onrender.com",
   "http://localhost:3000",
   "http://localhost:5173",
 ];
