@@ -5,6 +5,7 @@ export interface User {
   email?: string;
   bio?: string;
   profile_url?: string;
+  resume_url?: string;
   createdAt?: Date;
   [key: string]: any;
 }
@@ -45,6 +46,7 @@ export interface AuthContextType {
   reviews: Review[];
   setReviews: React.Dispatch<React.SetStateAction<Review[]>>;
   setJobs: React.Dispatch<React.SetStateAction<Job[]>>;
+  updateUser: (updates: Partial<User>) => void;
   login: () => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: () => boolean;

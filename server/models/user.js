@@ -62,11 +62,12 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       bio: DataTypes.STRING,
       profile_url: DataTypes.STRING,
+      resume_url: DataTypes.STRING,
     },
     {
       sequelize,
       modelName: "User",
-    }
+    },
   );
   return User;
 };

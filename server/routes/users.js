@@ -5,6 +5,11 @@ const { User, Job, Blogs } = require("../models");
 const { authenticateToken } = require("../middleware/auth");
 const { sendMailServices } = require("../email/sendMail");
 const { uploadAvatar, cleanupOldAvatars } = require("../uploads/profiles");
+const {
+  uploadResume,
+  cleanupOldResumes,
+  downloadResume,
+} = require("../uploads/resume");
 
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
@@ -148,6 +153,7 @@ router.get("/me", authenticateToken, async (req, res) => {
         email: user.email,
         bio: user.bio,
         profile_url: user.profile_url,
+        resume_url: user.resume_url,
         createdAt: user.createdAt,
       },
       jobs,
@@ -308,6 +314,41 @@ router.delete("/avatar", authenticateToken, async (req, res) => {
     return res.status(200).json({ message: "Avatar deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Failed to delete avatar" });
+  }
+});
+
+router.post("/resume", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    if (!req.files || !req.files.resume) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+    const resumeFile = req.files.resume;
+    const url = await uploadResume(resumeFile, userId);
+    await cleanupOldResumes(userId, 5);
+    const user = await User.findOne({ where: { id: userId } });
+    user.resume_url = url;
+    await user.save();
+    return res
+      .status(200)
+      .json({ message: "Resume uploaded successfully", resumeUrl: url });
+  } catch (error) {
+    return res.status(500).json({ message: "Resume upload failed" });
+  }
+});
+
+router.delete("/resume", authenticateToken, async (req, res) => {
+  const userId = req.user.userId;
+  try {
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.resume_url = null;
+    await user.save();
+    return res.status(200).json({ message: "Resume deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to delete resume" });
   }
 });
 

@@ -24,6 +24,7 @@ import {
 } from "./ui/alert-dialog";
 import { toast } from "sonner";
 import axios from "axios";
+import { Button } from "./ui/button";
 
 function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
@@ -45,11 +46,20 @@ function Navbar() {
 
   return (
     <div className="w-full h-16 flex items-center justify-between px-4 border-b fixed top-0 left-0 bg-background z-50">
-      <Link to="/">
-        <div className="text-xl flex flex-row font-bold hover:opacity-80 transition-opacity cursor-pointer bg-transparent border-none p-0 gap-1">
-          <div>Career </div> <div className="text-primary"> Dock</div>
-        </div>
-      </Link>
+      <div className="flex items-center gap-6 py-2">
+        <Link to="/">
+          <div className="text-xl flex flex-row font-bold hover:opacity-80 transition-opacity cursor-pointer items-center gap-1">
+            <span>Career</span>
+            <span className="text-primary">Dock</span>
+          </div>
+        </Link>
+
+        <Link to="/reviews">
+          <Button className="h-8 hover:cursor-pointer" variant="outline">
+            Public Reviews
+          </Button>
+        </Link>
+      </div>
 
       <div className="flex items-center gap-2">
         {isAuthenticated() ? (

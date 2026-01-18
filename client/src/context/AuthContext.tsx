@@ -54,6 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setReviews([]);
   }, []);
 
+  const updateUser = useCallback((updates: Partial<User>) => {
+    setUser((prev) => (prev ? { ...prev, ...updates } : null));
+  }, []);
+
   const isAuthenticated = useCallback(() => !!user, [user]);
 
   const value = useMemo(
@@ -63,12 +67,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       reviews,
       setReviews,
       setJobs,
+      updateUser,
       login,
       logout,
       isAuthenticated,
       loading,
     }),
-    [user, jobs, reviews, login, logout, isAuthenticated, loading]
+    [user, jobs, reviews, login, logout, isAuthenticated, loading],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

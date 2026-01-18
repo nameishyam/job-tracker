@@ -13,3 +13,8 @@ export const api: AxiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+export const fileApi: AxiosInstance = axios.create({
+  baseURL: BASE_URL,
+  withCredentials: true,
+});
