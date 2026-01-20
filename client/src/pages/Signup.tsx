@@ -17,6 +17,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { SpinnerCustom } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -235,7 +236,7 @@ export default function Signup() {
                 className="w-full hover:cursor-pointer"
                 disabled={isLoading}
               >
-                Sign Up
+                {isLoading ? <SpinnerCustom /> : "Sign Up"}
               </Button>
             </CardFooter>
           </form>

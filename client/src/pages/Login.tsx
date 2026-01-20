@@ -33,6 +33,7 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { api } from "@/lib/api";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 const loginSchema = z.object({
   email: z.string().refine((val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val), {
@@ -368,7 +369,7 @@ export default function Login() {
                     disabled={isLoading}
                     className="w-full hover:cursor-pointer"
                   >
-                    {isLoading ? "Sending..." : "Send OTP"}
+                    {isLoading ? <SpinnerCustom /> : "Send OTP"}
                   </Button>
                 )}
                 {emailVerified && !otpVerified && (
@@ -378,7 +379,7 @@ export default function Login() {
                     disabled={isLoading}
                     className="w-full hover:cursor-pointer"
                   >
-                    {isLoading ? "Verifying..." : "Verify OTP"}
+                    {isLoading ? <SpinnerCustom /> : "Verify OTP"}
                   </Button>
                 )}
                 {otpVerified && (
@@ -387,7 +388,7 @@ export default function Login() {
                     disabled={isLoading}
                     className="w-full hover:cursor-pointer"
                   >
-                    {isLoading ? "Resetting..." : "Reset Password"}
+                    {isLoading ? <SpinnerCustom /> : "Reset Password"}
                   </Button>
                 )}
                 <Button
@@ -498,12 +499,11 @@ export default function Login() {
                   className="w-full hover:cursor-pointer"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Logging in..." : "Login"}
+                  {isLoading ? <SpinnerCustom /> : "Login"}
                 </Button>
               </CardFooter>
             </form>
           </Form>
-          <div></div>
         </Card>
       )}
     </div>
