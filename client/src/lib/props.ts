@@ -1,4 +1,4 @@
-import type { Job } from "@/lib/types";
+import type { Job, Review } from "@/lib/types";
 
 export interface JobFormProps {
   open: boolean;
@@ -45,4 +45,8 @@ export interface InfoBlockProps {
 
 export interface InfoTextBlockProps {
   value?: string;
+}
+
+export interface ReviewCardProps {
+  review: Review;
 }
