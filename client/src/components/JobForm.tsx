@@ -71,23 +71,23 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
   const { user, setJobs } = useAuth();
 
   const handleSubmit = async (values: z.infer<typeof jobformSchema>) => {
-    console.log(values);
     try {
       const userId = user?.id;
       const payload = { ...values, userId };
       const res = await api.post(`/jobs`, payload);
-      console.log("API Response:", res.data);
       if (res.status === 201) {
         toast.success("Job application added successfully!");
         setJobs((prevJobs) => [...prevJobs, res.data.job]);
         form.reset();
-        onOpenChange(false);
         return;
       }
     } catch (error) {
       console.error("Error submitting job application:", error);
       toast.error("Failed to add job application. Please try again.");
       return;
+    } finally {
+      setDateOpen(false);
+      onOpenChange(false);
     }
   };
 
@@ -241,12 +241,13 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
                         <Calendar
                           mode="single"
                           selected={field.value}
+                          captionLayout="dropdown"
                           onSelect={(date) => {
                             if (!date) return;
                             field.onChange(date);
                             setDateOpen(false);
                           }}
-                          initialFocus
+                          autoFocus
                         />
                       </PopoverContent>
                     </Popover>

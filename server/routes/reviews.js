@@ -30,14 +30,13 @@ router.post(`/`, authenticateToken, async (req, res) => {
   const { company, review, rating, salary, rounds, role } = req.body;
   const userId = req.user.userId;
   try {
-    const safeRounds = rounds ?? [];
     const createdBlog = await Blogs.create({
       userId,
       company,
       review,
       rating,
       salary,
-      rounds: safeRounds,
+      rounds,
       role,
     });
     const blogObj = createdBlog.toJSON ? createdBlog.toJSON() : createdBlog;
@@ -53,7 +52,7 @@ router.post(`/`, authenticateToken, async (req, res) => {
             "New Review Added",
             `You added a review for ${company} \n\n The further details of the review you added are: \n\n Role: ${role} \n\n Salary: ${salary} \n\n Rating: ${rating} \n\n Review: ${review} \n\n Rounds: ${
               Array.isArray(safeRounds) ? safeRounds.join(", ") : safeRounds
-            }`
+            }`,
           );
         } else {
           console.warn(`No email found for user id ${userId}; skipping mail.`);

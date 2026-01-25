@@ -25,10 +25,10 @@ export default function Dashboard() {
 
           <Button
             variant="outline"
-            className="flex items-center gap-2 hover:cursor-pointer"
+            className="hover:cursor-pointer"
             onClick={() => setOpen(true)}
           >
-            <PlusIcon className="h-4 w-4" />
+            <PlusIcon />
             Add Application
           </Button>
 

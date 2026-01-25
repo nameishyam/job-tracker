@@ -18,15 +18,18 @@ import {
   Download,
   Trash2,
   ChevronDown,
+  PlusIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { fileApi } from "@/lib/api";
+import ReviewForm from "@/components/ReviewForm";
 
-function Profile() {
+export default function Profile() {
   const { user, reviews, jobs, updateUser } = useAuth();
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+  const [open, setOpen] = useState<boolean>(false);
 
   useEffect(() => {
     setAvatarUrl(user?.profile_url ?? undefined);
@@ -251,14 +254,23 @@ function Profile() {
         </div>
       </div>
 
-      <div className="w-1/2 h-full bg-background overflow-y-auto p-6 border-l">
-        <h2 className="text-xl font-semibold mb-4">Activity</h2>
+      <div className="w-1/2 h-full bg-background overflow-y-auto p-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold mb-4">Activity</h2>
+          <Button
+            variant="outline"
+            className="hover:cursor-pointer"
+            onClick={() => setOpen(true)}
+          >
+            <PlusIcon />
+            Add Review
+          </Button>
+        </div>
+        <ReviewForm open={open} onOpenChange={setOpen} />
         <p className="text-muted-foreground italic text-sm">
-          No recent activity to show.
+          Yet to implement this feature using cached memory and redis...
         </p>
       </div>
     </div>
   );
 }
-
-export default Profile;

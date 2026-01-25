@@ -5,6 +5,11 @@ export interface JobFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
+export interface ReviewFormProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export interface AiResponseProps {
   responseOpen: boolean;
   onOpenChange: (responseOpen: boolean) => void;
@@ -21,6 +26,13 @@ export interface RoundStatusEditorProps {
   field: {
     value: Record<string, string>;
     onChange: (val: Record<string, string>) => void;
+  };
+}
+
+export interface NewRoundProps {
+  field: {
+    value: string[];
+    onChange: (val: string[]) => void;
   };
 }
 
