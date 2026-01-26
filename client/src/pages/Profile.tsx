@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import { toast } from "sonner";
-
-import { fileApi } from "@/lib/api";
+import { api, fileApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import ReviewForm from "@/components/ReviewForm";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -12,13 +10,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
 import {
-  Briefcase,
-  Star,
-  Calendar,
   Pencil,
   FileText,
   Upload,
@@ -27,13 +20,27 @@ import {
   ChevronDown,
   PlusIcon,
 } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Profile() {
-  const { user, reviews, jobs, updateUser } = useAuth();
+  const { user, reviews, jobs, updateUser, setReviews } = useAuth();
   const avatarInputRef = useRef<HTMLInputElement>(null);
   const resumeInputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
   const [open, setOpen] = useState<boolean>(false);
+  const [showTopFade, setShowTopFade] = useState<boolean>(false);
+  const [showBottomFade, setShowBottomFade] = useState<boolean>(false);
 
   useEffect(() => {
     setAvatarUrl(user?.profile_url ?? undefined);
@@ -46,6 +53,14 @@ export default function Profile() {
       }
     };
   }, [avatarUrl]);
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const atTop = scrollTop === 0;
+    const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+    setShowTopFade(!atTop);
+    setShowBottomFade(!atBottom);
+  };
 
   const openAvatarPicker = () => avatarInputRef.current?.click();
 
@@ -129,7 +144,7 @@ export default function Profile() {
     }
   };
 
-  const formatDate = (value: Date | string) => {
+  const formatDate = (value: Date | string | number) => {
     const date = value instanceof Date ? value : new Date(value);
     const day = date.getDate();
     const month = date.toLocaleString("en-US", { month: "long" });
@@ -145,9 +160,20 @@ export default function Profile() {
     return `${day}${suffix} ${month}, ${year}`;
   };
 
+  const handleDelete = async (id: string | undefined) => {
+    try {
+      await api.delete(`/reviews/${id}`);
+      toast.success("Review deleted successfully.");
+      setReviews((prev) => prev.filter((j) => j.id !== id));
+    } catch (error) {
+      toast.error("Failed to delete review.");
+      console.error("Error deleting review:", error);
+    }
+  };
+
   return (
-    <div className="min-h-[80vh] p-4 flex overflow-hidden">
-      <div className="w-1/2 h-full bg-background p-6 flex flex-col">
+    <div className="h-[90vh] p-4 flex overflow-hidden">
+      <div className="w-1/2 h-full bg-background p-6 flex flex-col overflow-hidden">
         <div className="rounded-xl border bg-background p-6 shadow-sm">
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
@@ -167,16 +193,13 @@ export default function Profile() {
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
-                  <DropdownMenuItem
-                    onClick={openAvatarPicker}
-                    className="hover:cursor-pointer"
-                  >
+                  <DropdownMenuItem onClick={openAvatarPicker}>
                     <Upload className="w-4 h-4 mr-2" />
                     Upload new photo
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     onClick={deleteProfileImage}
-                    className="text-red-400 focus:text-red-500 hover:cursor-pointer"
+                    className="text-red-400 focus:text-red-500"
                   >
                     <Trash2 className="w-4 h-4 mr-2" />
                     Delete photo
@@ -199,86 +222,144 @@ export default function Profile() {
                 </span>
               </div>
             </div>
-            <div>
-              <input
-                ref={resumeInputRef}
-                type="file"
-                accept=".pdf,.doc,.docx"
-                className="hidden"
-                onChange={handleResumeChange}
-              />
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex items-center gap-2 hover:cursor-pointer"
-                  >
-                    <FileText className="w-4 h-4" />
-                    Resume
-                    <ChevronDown className="w-3 h-3 opacity-50" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem
-                    onClick={openResumePicker}
-                    className="hover:cursor-pointer"
-                  >
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload New
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleDownloadResume}
-                    className="hover:cursor-pointer"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Old
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    onClick={handleDeleteResume}
-                    className="text-red-400 focus:text-red-500 hover:cursor-pointer"
-                  >
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete Forever
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+            <input
+              ref={resumeInputRef}
+              type="file"
+              accept=".pdf,.doc,.docx"
+              className="hidden"
+              onChange={handleResumeChange}
+            />
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" size="sm" className="flex gap-2">
+                  <FileText className="w-4 h-4" />
+                  Resume
+                  <ChevronDown className="w-3 h-3 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={openResumePicker}>
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload New
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownloadResume}>
+                  <Download className="w-4 h-4 mr-2" />
+                  Download Old
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={handleDeleteResume}
+                  className="text-red-400 focus:text-red-500"
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Forever
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">
             {user?.bio || "No bio available."}
           </p>
           <div className="my-4 border-t" />
           <div className="grid grid-cols-3 gap-4 text-sm">
-            <div className="flex flex-col">
+            <div>
               <span className="text-muted-foreground">Reviews</span>
-              <span className="font-medium">{reviews?.length || 0}</span>
+              <div className="font-medium">{reviews?.length || 0}</div>
             </div>
-            <div className="flex flex-col">
+            <div>
               <span className="text-muted-foreground">Jobs Tracked</span>
-              <span className="font-medium">{jobs?.length || 0}</span>
+              <div className="font-medium">{jobs?.length || 0}</div>
             </div>
-            <div className="flex flex-col">
+            <div>
               <span className="text-muted-foreground">Member Since</span>
-              <span className="font-medium">
+              <div className="font-medium">
                 {user?.createdAt ? formatDate(user.createdAt) : "N/A"}
-              </span>
+              </div>
             </div>
           </div>
         </div>
-        <div className="mt-6 border-t pt-4">
-          <h2 className="text-xl font-semibold mb-4">Your Reviews:</h2>
+        <div className="mt-4 flex flex-col flex-1 min-h-0">
+          <h2 className="text-xl font-semibold mb-3">Your Reviews:</h2>
+          {reviews && reviews.length > 0 ? (
+            <div className="relative flex-1 min-h-0">
+              {showTopFade && (
+                <div
+                  className="pointer-events-none absolute top-0 left-0 right-0 h-6 z-10
+                        bg-linear-to-b from-background to-transparent"
+                />
+              )}
+              {showBottomFade && (
+                <div
+                  className="pointer-events-none absolute bottom-0 left-0 right-0 h-6 z-10
+                        bg-linear-to-t from-background to-transparent"
+                />
+              )}
+              <div
+                className="h-full overflow-y-auto scrollbar-hide"
+                onScroll={handleScroll}
+              >
+                {reviews.map((review) => (
+                  <Card key={review.id} className="mb-2">
+                    <div className="px-3 py-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">
+                          {review.company}
+                        </span>
+                        <span className="text-xs text-muted-foreground">
+                          {review?.updatedAt
+                            ? formatDate(review.updatedAt)
+                            : "N/A"}
+                        </span>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <Trash2 className="w-5 h-5" />
+                            </Button>
+                          </AlertDialogTrigger>
+
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you absolutely sure?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your job application.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel className="hover:cursor-pointer">
+                                Cancel
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                className="bg-destructive hover:bg-destructive/90 hover:cursor-pointer"
+                                onClick={() => handleDelete(review.id)}
+                              >
+                                Delete
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </div>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">
+              You have not submitted any reviews yet.
+            </p>
+          )}
         </div>
       </div>
       <div className="w-1/2 h-full bg-background p-6">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold">Activity</h2>
-          <Button
-            variant="outline"
-            size="sm"
-            className="hover:cursor-pointer"
-            onClick={() => setOpen(true)}
-          >
+          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
             <PlusIcon />
             Add Review
           </Button>

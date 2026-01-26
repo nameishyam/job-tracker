@@ -206,7 +206,7 @@ export default function Login() {
   };
 
   return (
-    <div className="flex min-h-[80vh] items-center justify-center p-4">
+    <div className="flex h-[90vh] items-center justify-center p-4">
       {forgotPassword ? (
         <Card className="w-full max-w-sm">
           <CardHeader>
