@@ -51,14 +51,14 @@ router.post(`/`, authenticateToken, async (req, res) => {
             user.email,
             "New Review Added",
             `You added a review for ${company} \n\n The further details of the review you added are: \n\n Role: ${role} \n\n Salary: ${salary} \n\n Rating: ${rating} \n\n Review: ${review} \n\n Rounds: ${
-              Array.isArray(safeRounds) ? safeRounds.join(", ") : safeRounds
+              Array.isArray(rounds) ? rounds.join(", ") : rounds
             }`,
           );
         } else {
           console.warn(`No email found for user id ${userId}; skipping mail.`);
         }
       } catch (mailErr) {
-        console.error("sendMailServices failed (non-fatal):", mailErr);
+        console.error("seinding mail services failed:", mailErr);
       }
     })();
   } catch (error) {
