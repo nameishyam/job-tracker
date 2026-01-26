@@ -51,7 +51,6 @@ export default function ReviewForm({ open, onOpenChange }: ReviewFormProps) {
   const { user, setReviews } = useAuth();
 
   const handleSubmit = async (values: z.infer<typeof reviewFormSchema>) => {
-    console.log(values);
     try {
       const userId = user?.id;
       const payload = { ...values, userId };
