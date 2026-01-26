@@ -46,11 +46,10 @@ Job Tracker is a full-stack web application designed to help users organize thei
 
 - React 19
 - React Router 7
-- Material UI 7
+- ShadCN UI
 - Tailwind CSS 4
-- Framer Motion
 - Axios
-- Google Generative AI (Gemini)
+- OpenRouter (With Different Models for different Tasks)
 
 ### Backend
 
@@ -66,7 +65,7 @@ Job Tracker is a full-stack web application designed to help users organize thei
 
 - Node.js (v18 or higher)
 - PostgreSQL database
-- Google Gemini API key (for AI features)
+- OpenRouter API Key
 
 ### Installation
 
