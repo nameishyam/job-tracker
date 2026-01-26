@@ -11,14 +11,14 @@ import {
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { SpinnerCustom } from "./ui/spinner";
+import { SpinnerCustom } from "@/components/ui/spinner";
 
 export default function AiResponse({
   responseOpen,
   onOpenChange,
   job,
 }: AiResponseProps) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<string>("");
 
   useEffect(() => {

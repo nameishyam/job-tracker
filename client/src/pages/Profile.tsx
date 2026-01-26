@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ChangeEvent } from "react";
+import { toast } from "sonner";
+
+import { fileApi } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
+import ReviewForm from "@/components/ReviewForm";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -6,8 +12,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAuth } from "@/context/AuthContext";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 import {
   Briefcase,
   Star,
@@ -20,9 +27,6 @@ import {
   ChevronDown,
   PlusIcon,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { fileApi } from "@/lib/api";
-import ReviewForm from "@/components/ReviewForm";
 
 export default function Profile() {
   const { user, reviews, jobs, updateUser } = useAuth();
@@ -45,7 +49,7 @@ export default function Profile() {
 
   const openAvatarPicker = () => avatarInputRef.current?.click();
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const localPreview = URL.createObjectURL(file);
@@ -60,9 +64,11 @@ export default function Profile() {
       const res = await fileApi.post(`/users/avatar`, formData);
       if (res.data.avatarUrl) {
         setAvatarUrl(res.data.avatarUrl);
+        toast.success("Profile image uploaded successfully.");
       }
       updateUser({ profile_url: res.data.avatarUrl });
     } catch (err) {
+      toast.error("Failed to upload profile image.");
       console.error("Avatar upload failed", err);
     }
   };
@@ -77,16 +83,18 @@ export default function Profile() {
     try {
       const res = await fileApi.post("/users/resume", formData);
       if (res.data.resumeUrl) {
-        console.log("Resume uploaded successfully:", res.data.resumeUrl);
         updateUser({ resume_url: res.data.resumeUrl });
+        toast.success("Resume uploaded successfully.");
       }
     } catch (err) {
-      console.log("Resume upload failed,", err);
+      toast.error("Failed to upload resume.");
+      console.error("Resume upload failed,", err);
     }
   };
 
   const handleDownloadResume = () => {
     if (!user?.resume_url) {
+      toast.warning("No resume available for download.");
       console.warn("No resume available for download");
       return;
     }
@@ -102,7 +110,9 @@ export default function Profile() {
     try {
       await fileApi.delete(`/users/resume`);
       updateUser({ resume_url: undefined });
+      toast.success("Resume deleted successfully.");
     } catch (err) {
+      toast.error("Failed to delete resume.");
       console.error("Resume delete failed", err);
     }
   };
@@ -112,7 +122,9 @@ export default function Profile() {
       await fileApi.delete(`/users/avatar`);
       setAvatarUrl(undefined);
       updateUser({ profile_url: undefined });
+      toast.success("Profile image deleted successfully.");
     } catch (err) {
+      toast.error("Failed to delete profile image.");
       console.error("Delete failed", err);
     }
   };
@@ -136,13 +148,13 @@ export default function Profile() {
   return (
     <div className="min-h-[80vh] p-4 flex overflow-hidden">
       <div className="w-1/2 h-full bg-background p-6 flex flex-col">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center justify-center gap-4 mb-8">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <div className="cursor-pointer hover:opacity-80 transition">
-                  <div className="relative group">
-                    <Avatar className="w-14 h-14">
+        <div className="rounded-xl border bg-background p-6 shadow-sm">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <div className="relative group cursor-pointer">
+                    <Avatar className="w-14 h-14 ring-1 ring-border">
                       <AvatarImage src={avatarUrl} />
                       <AvatarFallback>
                         {user?.firstName?.[0]}
@@ -153,112 +165,117 @@ export default function Profile() {
                       <Pencil className="w-4 h-4 text-white" />
                     </div>
                   </div>
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
-                <DropdownMenuItem onClick={openAvatarPicker}>
-                  Upload new photo
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={deleteProfileImage}
-                  className="text-red-400 focus:text-red-500"
-                >
-                  Delete photo
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            <input
-              ref={avatarInputRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleAvatarChange}
-            />
-
-            <div className="flex flex-col">
-              <span className="font-semibold text-lg">
-                {user?.firstName} {user?.lastName}
-              </span>
-              <span className="text-sm text-gray-500">{user?.email}</span>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem
+                    onClick={openAvatarPicker}
+                    className="hover:cursor-pointer"
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload new photo
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={deleteProfileImage}
+                    className="text-red-400 focus:text-red-500 hover:cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete photo
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <input
+                ref={avatarInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleAvatarChange}
+              />
+              <div className="flex flex-col">
+                <span className="text-lg font-semibold leading-tight">
+                  {user?.firstName} {user?.lastName}
+                </span>
+                <span className="text-sm text-muted-foreground">
+                  {user?.email}
+                </span>
+              </div>
+            </div>
+            <div>
+              <input
+                ref={resumeInputRef}
+                type="file"
+                accept=".pdf,.doc,.docx"
+                className="hidden"
+                onChange={handleResumeChange}
+              />
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex items-center gap-2 hover:cursor-pointer"
+                  >
+                    <FileText className="w-4 h-4" />
+                    Resume
+                    <ChevronDown className="w-3 h-3 opacity-50" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem
+                    onClick={openResumePicker}
+                    className="hover:cursor-pointer"
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload New
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleDownloadResume}
+                    className="hover:cursor-pointer"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download Old
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={handleDeleteResume}
+                    className="text-red-400 focus:text-red-500 hover:cursor-pointer"
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    Delete Forever
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
-
-          <div>
-            <input
-              ref={resumeInputRef}
-              type="file"
-              accept=".pdf,.doc,.docx"
-              className="hidden"
-              onChange={handleResumeChange}
-            />
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
-                  <FileText className="w-4 h-4" />
-                  Resume
-                  <ChevronDown className="w-3 h-3 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuItem onClick={openResumePicker}>
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload New
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleDownloadResume}>
-                  <Download className="w-4 h-4 mr-2" />
-                  Download Old
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={handleDeleteResume}
-                  className="text-red-500 focus:text-red-500 focus:bg-red-50"
-                >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  Delete Forever
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <p className="mt-4 text-sm text-muted-foreground">
+            {user?.bio || "No bio available."}
+          </p>
+          <div className="my-4 border-t" />
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div className="flex flex-col">
+              <span className="text-muted-foreground">Reviews</span>
+              <span className="font-medium">{reviews?.length || 0}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-muted-foreground">Jobs Tracked</span>
+              <span className="font-medium">{jobs?.length || 0}</span>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-muted-foreground">Member Since</span>
+              <span className="font-medium">
+                {user?.createdAt ? formatDate(user.createdAt) : "N/A"}
+              </span>
+            </div>
           </div>
         </div>
-
-        <div className="flex-1 border-t pt-4 mt-6">
-          <h2 className="text-xl font-semibold mb-4">Bio</h2>
-          <p className="text-gray-700">{user?.bio || "No bio available."}</p>
-        </div>
-
         <div className="mt-6 border-t pt-4">
-          <h2 className="text-xl font-semibold mb-4">Account Details</h2>
-          <Card>
-            <CardContent className="p-4 space-y-4">
-              <div className="flex items-center gap-3 text-sm">
-                <Star className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Reviews</span>
-                <span className="ml-auto font-medium">
-                  {reviews?.length || 0}
-                </span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Briefcase className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Jobs Applied</span>
-                <span className="ml-auto font-medium">{jobs?.length || 0}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <Calendar className="w-4 h-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Member since</span>
-                <span className="ml-auto font-medium">
-                  {user?.createdAt ? formatDate(user.createdAt) : "N/A"}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
+          <h2 className="text-xl font-semibold mb-4">Your Reviews:</h2>
         </div>
       </div>
-
-      <div className="w-1/2 h-full bg-background overflow-y-auto p-6">
+      <div className="w-1/2 h-full bg-background p-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold mb-4">Activity</h2>
+          <h2 className="text-3xl font-bold">Activity</h2>
           <Button
             variant="outline"
+            size="sm"
             className="hover:cursor-pointer"
             onClick={() => setOpen(true)}
           >
@@ -267,8 +284,8 @@ export default function Profile() {
           </Button>
         </div>
         <ReviewForm open={open} onOpenChange={setOpen} />
-        <p className="text-muted-foreground italic text-sm">
-          Yet to implement this feature using cached memory and redis...
+        <p className="text-muted-foreground italic text-sm mt-3">
+          Yet to implement this feature...
         </p>
       </div>
     </div>

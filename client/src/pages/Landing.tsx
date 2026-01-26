@@ -67,10 +67,10 @@ function Landing() {
                 <Button
                   className="hover: cursor-pointer"
                   onClick={() => {
-                    navigate("/reviews");
+                    navigate("/profile");
                   }}
                 >
-                  Public Reviews
+                  Profile
                 </Button>
               </div>
             </>

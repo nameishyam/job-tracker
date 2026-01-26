@@ -49,6 +49,11 @@ export default function Dashboard() {
           )}
         </div>
       </div>
+      <div>
+        <div className="h-full bg-background overflow-y-auto p-6">
+          <p>AI Chat option with redis as cache will be coming soon...</p>
+        </div>
+      </div>
     </div>
   );
 }

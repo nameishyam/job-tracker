@@ -25,13 +25,12 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         toast.error("Failed to load user data");
       }
     };
-
-    if (review.userId) fetchUser();
-  }, [review.userId]);
+    fetchUser();
+  }, []);
 
   return (
     <Card className="w-1/2 min-w-75">
-      <CardHeader className="flex flex-row items-start gap-4 pb-2">
+      <CardHeader className="flex flex-row items-start gap-4">
         <Avatar className="h-14 w-14">
           {avatarUrl && <AvatarImage src={avatarUrl} />}
           <AvatarFallback>
@@ -53,6 +52,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
               {review.salary}
             </span>
           </div>
+          <Badge variant="secondary">{review.company}</Badge>
         </div>
         <div className="flex items-center gap-1 text-sm font-medium">
           <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -60,21 +60,29 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <Badge variant="secondary">{review.company}</Badge>
         <div className="flex gap-2 text-sm">
           <MessageSquareText className="h-4 w-4 mt-0.5 text-muted-foreground" />
           <p className="leading-relaxed">{review.review}</p>
         </div>
         <Separator />
-        {review.rounds && review.rounds.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {review.rounds.map((round, index) => (
-              <Badge key={index} variant="outline">
-                {round}
-              </Badge>
-            ))}
+        <div className="flex items-center justify-between">
+          <div>
+            {review.rounds && review.rounds.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {review.rounds.map((round, index) => (
+                  <Badge key={index} variant="outline">
+                    {round}
+                  </Badge>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+          <div>
+            <span className="text-xs text-muted-foreground">
+              Reviewed on {new Date(review.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
