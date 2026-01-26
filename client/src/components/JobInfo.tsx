@@ -3,11 +3,11 @@ import { format } from "date-fns";
 import {
   Briefcase,
   MapPin,
-  DollarSign,
   CalendarIcon,
   Pencil,
   Save,
   X,
+  IndianRupee,
 } from "lucide-react";
 import {
   AlertDialog,
@@ -145,7 +145,7 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
             <InfoBlock
               label={
                 <span className="flex items-center gap-1.5">
-                  <DollarSign className="h-3.5 w-3.5" />
+                  <IndianRupee className="h-3.5 w-3.5" />
                   Salary
                 </span>
               }

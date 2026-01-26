@@ -91,6 +91,7 @@ export default function JobCard({ job }: Job) {
                 e.stopPropagation();
                 setResponseOpen(true);
               }}
+              className="hover:cursor-pointer"
             >
               AI Analysis
             </Button>
@@ -101,6 +102,7 @@ export default function JobCard({ job }: Job) {
                   variant="ghost"
                   size="icon"
                   onClick={(e) => e.stopPropagation()}
+                  className="hover:cursor-pointer"
                 >
                   <TrashIcon className="w-5 h-5" />
                 </Button>

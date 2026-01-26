@@ -80,10 +80,16 @@ function Navbar() {
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuGroup>
-                      <DropdownMenuItem onSelect={() => navigate("/profile")}>
+                      <DropdownMenuItem
+                        onSelect={() => navigate("/profile")}
+                        className="hover:cursor-pointer"
+                      >
                         Profile
                       </DropdownMenuItem>
-                      <DropdownMenuItem onSelect={() => navigate("/dashboard")}>
+                      <DropdownMenuItem
+                        onSelect={() => navigate("/dashboard")}
+                        className="hover:cursor-pointer"
+                      >
                         Dashboard
                       </DropdownMenuItem>
                       <DropdownMenuItem
@@ -91,12 +97,13 @@ function Navbar() {
                           logout();
                           toast.success("Logged out successfully");
                         }}
+                        className="hover:cursor-pointer"
                       >
                         Log out
                       </DropdownMenuItem>
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
-                        className="text-red-400 focus:text-red-500"
+                        className="text-red-400 focus:text-red-500 hover:cursor-pointer"
                         onSelect={(e) => {
                           e.preventDefault();
                           setIsOpen(true);

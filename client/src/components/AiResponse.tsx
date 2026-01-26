@@ -62,7 +62,9 @@ export default function AiResponse({
           {isLoading ? <SpinnerCustom /> : response}
         </div>
         <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
+          <AlertDialogCancel className="hover:cursor-pointer">
+            Close
+          </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

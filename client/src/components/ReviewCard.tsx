@@ -1,13 +1,13 @@
 import type { ReviewCardProps } from "@/lib/props";
 import { useEffect, useState } from "react";
-import { type User } from "@/lib/types";
+import type { User } from "@/lib/types";
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Star, Briefcase, IndianRupee, MessageSquareText } from "lucide-react";
+import { Star, Briefcase, IndianRupee } from "lucide-react";
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   const [user, setUser] = useState<Partial<User> | null>(null);
@@ -60,10 +60,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
         </div>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className="flex gap-2 text-sm">
-          <MessageSquareText className="h-4 w-4 mt-0.5 text-muted-foreground" />
-          <p className="leading-relaxed">{review.review}</p>
-        </div>
+        <p className="mb-3 leading-relaxed">{review.review}</p>
         <Separator />
         <div className="flex items-center justify-between">
           <div>
