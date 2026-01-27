@@ -23,8 +23,8 @@ import {
   AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { toast } from "sonner";
-import axios from "axios";
 import { Button } from "./ui/button";
+import { api } from "@/lib/api";
 
 function Navbar() {
   const { isAuthenticated, logout, user } = useAuth();
@@ -33,9 +33,7 @@ function Navbar() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_API_URL}/users`, {
-        withCredentials: true,
-      });
+      await api.delete("/users");
       logout();
       navigate("/");
     } catch (error) {

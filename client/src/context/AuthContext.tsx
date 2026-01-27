@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchMe = useCallback(async () => {
     try {
-      const res = await api.get("/users/me");
+      const res = await api.get("/me/me");
       setUser(res.data.user);
       setJobs(res.data.jobs);
       setReviews(res.data.reviews);
@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = useCallback(async () => {
     try {
-      await api.post("/users/logout");
+      await api.post("/auth/logout");
     } catch (err) {
       console.log(err);
     }

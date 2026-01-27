@@ -68,7 +68,7 @@ export default function Signup() {
         email: values.email,
         password: values.password,
       };
-      await api.post(`/users/signup`, dataToSend);
+      await api.post(`/auth/signup`, dataToSend);
       await login();
       toast.success("User created successfully!");
       navigate("/dashboard");

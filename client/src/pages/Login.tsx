@@ -96,7 +96,7 @@ export default function Login() {
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);
     try {
-      await api.post(`/users/login`, values);
+      await api.post(`/auth/login`, values);
       await login();
       toast.success("Login successful!");
       navigate("/dashboard");
@@ -119,7 +119,7 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await api.post(`/users/generate-otp`, { email });
+      const res = await api.post(`/forgot-password/generate-otp`, { email });
       const data = await res.data;
       if (res.status !== 200) {
         toast.error(data.error || "Failed to send OTP");
@@ -127,8 +127,9 @@ export default function Login() {
       }
       toast.success("OTP sent to your email");
       setEmailVerified(true);
-    } catch (err: unknown) {
-      toast.error(err instanceof Error ? err.message : "Unknown error");
+    } catch (err) {
+      toast.error("Failed to send OTP");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -146,7 +147,7 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await api.post(`/users/validate-otp`, {
+      const res = await api.post(`/forgot-password/validate-otp`, {
         email: passwordForm.getValues("email"),
         otp: enteredOtp,
       });
@@ -174,7 +175,7 @@ export default function Login() {
     }
     setIsLoading(true);
     try {
-      const res = await api.patch(`/users/reset-password`, {
+      const res = await api.patch(`/forgot-password/reset-password`, {
         email: values.email,
         newPassword: values.newPassword,
       });

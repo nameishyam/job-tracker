@@ -9,16 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.associate = function (models) {
-        User.hasMany(models.Job, {
-          foreignKey: "userId",
-          as: "jobs",
-        });
-        User.hasMany(models.Blogs, {
-          foreignKey: "userId",
-          as: "blogs",
-        });
-      };
+      User.hasMany(models.Job, {
+        foreignKey: "userId",
+        as: "jobs",
+      });
+      User.hasMany(models.Blogs, {
+        foreignKey: "userId",
+        as: "blogs",
+      });
     }
 
     static async createUser({ firstName, lastName, password, email }) {
