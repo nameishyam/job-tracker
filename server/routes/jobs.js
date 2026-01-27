@@ -5,23 +5,6 @@ const { sendMailServices } = require("../email/sendMail");
 
 const router = express.Router();
 
-router.get("/", authenticateToken, async (req, res) => {
-  const userEmail = req.user.email;
-  try {
-    const user = await User.findOne({ where: { email: userEmail } });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const jobs = await Job.findAll({ where: { userId: user.id } });
-    return res.status(200).json({ jobs });
-  } catch (error) {
-    console.error("GET /users/jobs error:", error);
-    return res
-      .status(500)
-      .json({ message: error.message || "Internal server error" });
-  }
-});
-
 router.post(`/`, authenticateToken, async (req, res) => {
   const {
     jobtitle,

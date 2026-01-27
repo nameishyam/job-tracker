@@ -15,17 +15,6 @@ router.get(`/`, async (req, res) => {
   }
 });
 
-router.get(`/user`, authenticateToken, async (req, res) => {
-  try {
-    const userId = req.user.userId;
-    const blogs = await Blogs.findAll({ where: { userId } });
-    return res.status(200).json({ blogs });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ message: error.message });
-  }
-});
-
 router.post(`/`, authenticateToken, async (req, res) => {
   const { company, review, rating, salary, rounds, role } = req.body;
   const userId = req.user.userId;
@@ -63,16 +52,6 @@ router.post(`/`, authenticateToken, async (req, res) => {
     })();
   } catch (error) {
     console.error("Create blog failed:", error);
-    return res.status(500).json({ message: error.message });
-  }
-});
-
-router.get(`/:id`, authenticateToken, async (req, res) => {
-  try {
-    const userId = req.params.id;
-    const blogs = await Blogs.findAll({ where: { userId } });
-    return res.status(200).json({ blogs });
-  } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 });
