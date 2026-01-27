@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import { ModeToggle } from "./mode-toggle";
+import ModeToggle from "@/components/mode-toggle";
 import { useAuth } from "@/context/AuthContext";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,

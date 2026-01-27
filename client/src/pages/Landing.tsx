@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-function Landing() {
+export default function Landing() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
@@ -105,5 +105,3 @@ function Landing() {
     </div>
   );
 }
-
-export default Landing;

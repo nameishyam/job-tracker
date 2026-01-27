@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { ReviewFormProps } from "@/lib/props";
-import NewRounds from "./NewRounds";
+import NewRounds from "@/components/NewRounds";
 import { toast } from "sonner";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";

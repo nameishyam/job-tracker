@@ -14,14 +14,14 @@ import {
   AlertDialogContent,
   AlertDialogTitle,
   AlertDialogCancel,
-} from "./ui/alert-dialog";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { Checkbox } from "./ui/checkbox";
-import { Textarea } from "./ui/textarea";
+} from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import type { JobInfoProps } from "@/lib/props";
-import InfoBlock from "./InfoBlock";
-import InfoTextBlock from "./InfoTextBlock";
+import InfoBlock from "@/components/InfoBlock";
+import InfoTextBlock from "@/components/InfoTextBlock";
 import type { Job } from "@/lib/types";
 import { api } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";

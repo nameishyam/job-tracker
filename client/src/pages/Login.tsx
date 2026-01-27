@@ -67,6 +67,17 @@ const passwordResetSchema = z
   );
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
+  const [forgotPassword, setForgotPassword] = useState<boolean>(false);
+  const [emailVerified, setEmailVerified] = useState<boolean>(false);
+  const [otpVerified, setOtpVerified] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
@@ -81,16 +92,6 @@ export default function Login() {
       confirmNewPassword: "",
     },
   });
-
-  const navigate = useNavigate();
-  const { login } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [showNewPassword, setShowNewPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [forgotPassword, setForgotPassword] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [otpVerified, setOtpVerified] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (values: z.infer<typeof loginSchema>) => {
     setIsLoading(true);

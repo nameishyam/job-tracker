@@ -11,7 +11,7 @@ import { Star, Briefcase, IndianRupee } from "lucide-react";
 
 export default function ReviewCard({ review }: ReviewCardProps) {
   const [user, setUser] = useState<Partial<User> | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [avatarUrl, setAvatarUrl] = useState<string>("");
 
   useEffect(() => {
     const fetchUser = async () => {

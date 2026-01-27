@@ -6,7 +6,7 @@ import { PlusIcon } from "lucide-react";
 import { useState } from "react";
 
 export default function Dashboard() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   const { jobs } = useAuth();
 
   return (

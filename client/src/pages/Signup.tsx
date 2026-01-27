@@ -41,6 +41,8 @@ const signupSchema = z.object({
 export default function Signup() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
@@ -52,9 +54,6 @@ export default function Signup() {
       confirmPassword: ``,
     },
   });
-
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (values: z.infer<typeof signupSchema>) => {
     if (values.password !== values.confirmPassword) {

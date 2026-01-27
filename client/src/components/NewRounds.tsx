@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 import type { NewRoundProps } from "@/lib/props";
 
 export default function NewRounds({ field }: NewRoundProps) {
-  const [newRound, setNewRound] = useState("");
+  const [newRound, setNewRound] = useState<string>("");
 
   const addRound = () => {
     const value = newRound.trim();

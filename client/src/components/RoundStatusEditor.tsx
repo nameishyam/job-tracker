@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Plus, X } from "lucide-react";
-import { Badge } from "./ui/badge";
+import { Badge } from "@/components/ui/badge";
 import type { RoundStatusEditorProps } from "@/lib/props";
 
 export default function RoundStatusEditor({ field }: RoundStatusEditorProps) {
-  const [newRoundName, setNewRoundName] = useState("");
+  const [newRoundName, setNewRoundName] = useState<string>("");
 
   const addRound = () => {
     if (newRoundName.trim() && !field.value[newRoundName]) {

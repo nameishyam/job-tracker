@@ -67,7 +67,7 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
     },
   });
 
-  const [dateOpen, setDateOpen] = useState(false);
+  const [dateOpen, setDateOpen] = useState<boolean>(false);
   const { user, setJobs } = useAuth();
 
   const handleSubmit = async (values: z.infer<typeof jobformSchema>) => {

@@ -1,8 +1,8 @@
 import { useAuth } from "@/context/AuthContext";
 import type { Job } from "@/lib/types";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { TrashIcon } from "lucide-react";
 import {
   AlertDialog,
@@ -18,13 +18,13 @@ import {
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useState } from "react";
-import JobInfo from "./JobInfo";
-import AiResponse from "./AiResponse";
+import JobInfo from "@/components/JobInfo";
+import AiResponse from "@/components/AiResponse";
 
 export default function JobCard({ job }: Job) {
   const { setJobs } = useAuth();
-  const [open, setOpen] = useState(false);
-  const [responseOpen, setResponseOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [responseOpen, setResponseOpen] = useState<boolean>(false);
 
   const formatDate = (date?: string) => {
     if (!date) return "N/A";
