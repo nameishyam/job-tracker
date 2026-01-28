@@ -277,8 +277,17 @@ export default function Profile() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="w-1/2 h-full bg-background p-6 flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between">
+          <h2 className="text-3xl font-bold">Your Reviews</h2>
+          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+            <PlusIcon />
+            Add Review
+          </Button>
+        </div>
+        <ReviewForm open={open} onOpenChange={setOpen} />
         <div className="mt-4 flex flex-col flex-1 min-h-0">
-          <h2 className="text-xl font-semibold mb-3">Your Reviews:</h2>
           {reviews && reviews.length > 0 ? (
             <div className="relative flex-1 min-h-0">
               {showTopFade && (
@@ -315,6 +324,7 @@ export default function Profile() {
                               variant="ghost"
                               size="icon"
                               onClick={(e) => e.stopPropagation()}
+                              className="text-red-500 hover:text-red-600"
                             >
                               <Trash2 className="w-5 h-5" />
                             </Button>
@@ -327,7 +337,8 @@ export default function Profile() {
                               </AlertDialogTitle>
                               <AlertDialogDescription>
                                 This action cannot be undone. This will
-                                permanently delete your job application.
+                                permanently delete your review on{" "}
+                                {review.company}.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -355,19 +366,6 @@ export default function Profile() {
             </p>
           )}
         </div>
-      </div>
-      <div className="w-1/2 h-full bg-background p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Activity</h2>
-          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
-            <PlusIcon />
-            Add Review
-          </Button>
-        </div>
-        <ReviewForm open={open} onOpenChange={setOpen} />
-        <p className="text-muted-foreground italic text-sm mt-3">
-          Yet to implement this feature...
-        </p>
       </div>
     </div>
   );

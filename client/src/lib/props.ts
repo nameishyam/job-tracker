@@ -1,8 +1,12 @@
-import type { Job, Review } from "@/lib/types";
+import type { Job, Review, User } from "@/lib/types";
 
 export interface JobFormProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+}
+
+export interface AIChatProps {
+  user: User | null;
 }
 
 export interface ReviewFormProps {

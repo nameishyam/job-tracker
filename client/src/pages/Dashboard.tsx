@@ -1,3 +1,4 @@
+import AIChat from "@/components/AIChat";
 import JobCard from "@/components/JobCard";
 import JobForm from "@/components/JobForm";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { useState } from "react";
 
 export default function Dashboard() {
   const [open, setOpen] = useState<boolean>(false);
-  const { jobs } = useAuth();
+  const { jobs, user } = useAuth();
 
   return (
     <div className="min-h-[80vh] p-4 flex overflow-hidden">
@@ -51,7 +52,8 @@ export default function Dashboard() {
       </div>
       <div>
         <div className="h-full bg-background overflow-y-auto p-6">
-          <p>AI Chat option with redis as cache will be coming soon...</p>
+          <h2 className="text-3xl font-bold">Personal Assistant</h2>
+          <AIChat user={user} />
         </div>
       </div>
     </div>
