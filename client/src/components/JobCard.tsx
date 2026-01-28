@@ -19,7 +19,7 @@ import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useState } from "react";
 import JobInfo from "@/components/JobInfo";
-import AiResponse from "@/components/AiResponse";
+import AIResponse from "@/components/AIResponse";
 
 export default function JobCard({ job }: Job) {
   const { setJobs } = useAuth();
@@ -133,7 +133,7 @@ export default function JobCard({ job }: Job) {
         </CardContent>
       </Card>
       <JobInfo open={open} onOpenChange={setOpen} job={job} />
-      <AiResponse
+      <AIResponse
         responseOpen={responseOpen}
         onOpenChange={setResponseOpen}
         job={job}

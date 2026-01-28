@@ -1,4 +1,4 @@
-import type { AiResponseProps } from "@/lib/props";
+import type { AIResponseProps } from "@/lib/props";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -13,11 +13,11 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { SpinnerCustom } from "@/components/ui/spinner";
 
-export default function AiResponse({
+export default function AIResponse({
   responseOpen,
   onOpenChange,
   job,
-}: AiResponseProps) {
+}: AIResponseProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [response, setResponse] = useState<string>("");
 

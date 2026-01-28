@@ -10,7 +10,7 @@ export interface ReviewFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export interface AiResponseProps {
+export interface AIResponseProps {
   responseOpen: boolean;
   onOpenChange: (responseOpen: boolean) => void;
   job: Job;
