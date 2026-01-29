@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { SpinnerCustom } from "@/components/ui/spinner";
 
-export default function AIResponse({
+export default function AiResponse({
   responseOpen,
   onOpenChange,
   job,
