@@ -1,5 +1,5 @@
-require("dotenv").config();
-const { URL } = require("url");
+import "dotenv/config";
+import { URL } from "url";
 
 const dbUrl = process.env.DATABASE_URL;
 const FORCE_CREATE = process.env.FORCE_CREATE_DB === "true";
@@ -43,7 +43,7 @@ const ensureDatabaseExists = async () => {
 
   if (!FORCE_CREATE && isManagedHost(dbConfig.host)) {
     console.log(
-      `Detected managed DB host (${dbConfig.host}). Skipping creation. Set FORCE_CREATE_DB=true to override (use with caution).`
+      `Detected managed DB host (${dbConfig.host}). Skipping creation. Set FORCE_CREATE_DB=true to override (use with caution).`,
     );
     return false;
   }
@@ -54,7 +54,7 @@ const ensureDatabaseExists = async () => {
     !isManagedHost(dbConfig.host)
   ) {
     console.log(
-      `Non-local host detected (${dbConfig.host}). Skipping automatic DB creation. Set FORCE_CREATE_DB=true to override.`
+      `Non-local host detected (${dbConfig.host}). Skipping automatic DB creation. Set FORCE_CREATE_DB=true to override.`,
     );
     return false;
   }
@@ -64,7 +64,7 @@ const ensureDatabaseExists = async () => {
     pgtools = require("pgtools");
   } catch (err) {
     console.error(
-      "Missing dependency: pgtools. Install with `npm install pgtools --save-dev` or set FORCE_CREATE_DB=false to skip creation."
+      "Missing dependency: pgtools. Install with `npm install pgtools --save-dev` or set FORCE_CREATE_DB=false to skip creation.",
     );
     throw err;
   }
@@ -77,7 +77,7 @@ const ensureDatabaseExists = async () => {
         host: dbConfig.host,
         port: dbConfig.port,
       },
-      dbConfig.database
+      dbConfig.database,
     );
     console.log(`Database "${dbConfig.database}" created successfully.`);
     return true;
@@ -96,4 +96,4 @@ const ensureDatabaseExists = async () => {
   }
 };
 
-module.exports = ensureDatabaseExists;
+export default ensureDatabaseExists;

@@ -1,6 +1,6 @@
-const { OpenAI } = require("openai");
-const dotenv = require("dotenv");
-dotenv.config();
+import { OpenAI } from "openai";
+import { config } from "dotenv";
+config();
 
 const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
@@ -25,4 +25,4 @@ async function main({ query }) {
   return completion;
 }
 
-module.exports = main;
+export default main;

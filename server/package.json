@@ -1,6 +1,7 @@
 {
   "name": "career-dock-server",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start:prod": "node index.js",

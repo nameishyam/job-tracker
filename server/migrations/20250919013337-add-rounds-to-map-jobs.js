@@ -1,14 +1,13 @@
 "use strict";
 
-module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("Jobs", "roundStatus", {
-      type: Sequelize.JSONB,
-      allowNull: false,
-      defaultValue: {},
-    });
+export async function up(queryInterface, Sequelize) {
+  await queryInterface.addColumn("Jobs", "roundStatus", {
+    type: Sequelize.JSONB,
+    allowNull: false,
+    defaultValue: {},
+  });
 
-    await queryInterface.sequelize.query(`
+  await queryInterface.sequelize.query(`
       UPDATE "Jobs" AS j
       SET "roundStatus" = COALESCE(
         (
@@ -18,15 +17,14 @@ module.exports = {
         '{}'::jsonb
       )
     `);
-  },
+}
+export async function down(queryInterface, Sequelize) {
+  await queryInterface.addColumn("Jobs", "rounds", {
+    type: Sequelize.ARRAY(Sequelize.STRING),
+    allowNull: true,
+  });
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.addColumn("Jobs", "rounds", {
-      type: Sequelize.ARRAY(Sequelize.STRING),
-      allowNull: true,
-    });
-
-    await queryInterface.sequelize.query(`
+  await queryInterface.sequelize.query(`
       UPDATE "Jobs"
       SET "rounds" = (
         SELECT array_agg(key)
@@ -34,6 +32,5 @@ module.exports = {
       )
     `);
 
-    await queryInterface.removeColumn("Jobs", "roundStatus");
-  },
-};
+  await queryInterface.removeColumn("Jobs", "roundStatus");
+}

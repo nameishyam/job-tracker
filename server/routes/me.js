@@ -1,8 +1,9 @@
-const express = require("express");
-const { User, Job, Blogs } = require("../models");
-const { authenticateToken } = require("../middleware/auth");
+import { Router } from "express";
+import db from "../models/index.js";
+import { authenticateToken } from "../middleware/auth.js";
 
-const router = express.Router();
+const router = Router();
+const { User, Job, Blogs } = db;
 
 router.get("/me", authenticateToken, async (req, res) => {
   try {
@@ -58,4 +59,4 @@ router.get("/me", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

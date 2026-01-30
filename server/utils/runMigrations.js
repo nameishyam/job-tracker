@@ -1,6 +1,9 @@
-require("dotenv").config();
-const { Umzug, SequelizeStorage } = require("umzug");
-const { Sequelize } = require("sequelize");
+import "dotenv/config";
+import { Umzug, SequelizeStorage } from "umzug";
+import { Sequelize } from "sequelize";
+import { fileURLToPath } from "url";
+
+const isMain = process.argv[1] === fileURLToPath(import.meta.url);
 
 async function runMigrations(providedSequelize) {
   const createdSequelize = !providedSequelize;
@@ -10,7 +13,7 @@ async function runMigrations(providedSequelize) {
       const dbUrl = process.env.DATABASE_URL;
       if (!dbUrl) {
         throw new Error(
-          "DATABASE_URL not set. Set process.env.DATABASE_URL to your Supabase/Postgres connection string."
+          "DATABASE_URL not set. Set process.env.DATABASE_URL to your Supabase/Postgres connection string.",
         );
       }
 
@@ -52,7 +55,7 @@ async function runMigrations(providedSequelize) {
     } else {
       console.log(
         `Applied ${executed.length} migration(s):`,
-        executed.map((m) => m.name)
+        executed.map((m) => m.name),
       );
     }
 
@@ -72,9 +75,9 @@ async function runMigrations(providedSequelize) {
   }
 }
 
-module.exports = runMigrations;
+export default runMigrations;
 
-if (require.main === module) {
+if (isMain) {
   runMigrations()
     .then((executed) => {
       const count = executed ? executed.length : 0;

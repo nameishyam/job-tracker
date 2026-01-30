@@ -1,9 +1,10 @@
-const express = require("express");
-const { Blogs, User } = require("../models");
-const { authenticateToken } = require("../middleware/auth");
-const { sendMailServices } = require("../email/sendMail");
+import { Router } from "express";
+import db from "../models/index.js";
+import { authenticateToken } from "../middleware/auth.js";
+import { sendMailServices } from "../email/sendMail.js";
 
-const router = express.Router();
+const router = Router();
+const { Blogs, User } = db;
 
 router.get(`/`, async (req, res) => {
   try {
@@ -66,4 +67,4 @@ router.delete(`/:id`, authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

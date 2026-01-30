@@ -1,7 +1,11 @@
-require("dotenv").config();
-const { sequelize } = require("../models");
-const ensureDatabaseExists = require("../utils/ensureDatabase");
-const runMigrations = require("../utils/runMigrations");
+import "dotenv/config";
+import db from "../models/index.js";
+import ensureDatabaseExists from "../utils/ensureDatabase.js";
+import runMigrations from "../utils/runMigrations.js";
+import { fileURLToPath } from "url";
+
+const isMain = process.argv[1] === fileURLToPath(import.meta.url);
+const { sequelize } = db;
 
 const setupDatabase = async () => {
   await ensureDatabaseExists();
@@ -12,9 +16,9 @@ const setupDatabase = async () => {
   console.log("Migrations completed.");
 };
 
-module.exports = setupDatabase;
+export default setupDatabase;
 
-if (require.main === module) {
+if (isMain) {
   setupDatabase()
     .then(() => process.exit(0))
     .catch((err) => {

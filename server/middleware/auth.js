@@ -1,7 +1,9 @@
-const jwt = require("jsonwebtoken");
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
+import jwt from "jsonwebtoken";
 
-const authenticateToken = (req, res, next) => {
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key-for-development";
+const { verify } = jwt;
+
+export const authenticateToken = (req, res, next) => {
   const token = req.cookies.access_token;
 
   if (!token) {
@@ -9,7 +11,7 @@ const authenticateToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = verify(token, JWT_SECRET);
     req.user = { userId: decoded.userId };
     next();
   } catch (err) {
@@ -19,5 +21,3 @@ const authenticateToken = (req, res, next) => {
     return res.status(403).json({ message: "Invalid session" });
   }
 };
-
-module.exports = { authenticateToken };

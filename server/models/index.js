@@ -1,65 +1,69 @@
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const Sequelize = require("sequelize");
-const process = require("process");
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const configModule = require(__dirname + "/../config/config.js");
+import { readdirSync } from "fs";
+import { basename, dirname, join } from "path";
+import { fileURLToPath, pathToFileURL } from "url";
+import Sequelize, { DataTypes } from "sequelize";
+import { env as _env } from "process";
+import * as configModule from "../config/config.js";
+
+// ESM replacements for __filename and __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const env = _env.NODE_ENV || "development";
 const config = configModule[env] || configModule;
 
 const db = {};
 
 let sequelize;
+
 const buildOptions = (cfg) => {
-  const opts = Object.assign({}, cfg);
+  const opts = { ...cfg };
   delete opts.use_env_variable;
   delete opts.url;
   return opts;
 };
 
-if (config.use_env_variable && process.env[config.use_env_variable]) {
-  const connectionString = process.env[config.use_env_variable];
-  const options = buildOptions(config);
-  sequelize = new Sequelize(connectionString, options);
+if (config.use_env_variable && _env[config.use_env_variable]) {
+  sequelize = new Sequelize(
+    _env[config.use_env_variable],
+    buildOptions(config),
+  );
 } else if (config.url) {
-  const connectionString = config.url;
-  const options = buildOptions(config);
-  sequelize = new Sequelize(connectionString, options);
+  sequelize = new Sequelize(config.url, buildOptions(config));
 } else {
   sequelize = new Sequelize(
     config.database,
     config.username,
     config.password,
-    buildOptions(config)
+    buildOptions(config),
   );
 }
 
-fs.readdirSync(__dirname)
-  .filter((file) => {
-    return (
-      file.indexOf(".") !== 0 &&
-      file !== basename &&
-      file.slice(-3) === ".js" &&
-      file.indexOf(".test.js") === -1
-    );
-  })
-  .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes
-    );
-    db[model.name] = model;
-  });
+// Load all model files dynamically (ESM way)
+const files = readdirSync(__dirname).filter(
+  (file) =>
+    file.endsWith(".js") &&
+    file !== basename(__filename) &&
+    !file.endsWith(".test.js"),
+);
 
-Object.keys(db).forEach((modelName) => {
+for (const file of files) {
+  const fileUrl = pathToFileURL(join(__dirname, file)).href;
+  const { default: modelFactory } = await import(fileUrl);
+  const model = modelFactory(sequelize, DataTypes);
+  db[model.name] = model;
+}
+
+// Run associations
+for (const modelName of Object.keys(db)) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
-});
+}
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+export default db;

@@ -1,16 +1,16 @@
-const express = require("express");
-const cors = require("cors");
-const cookieParser = require("cookie-parser");
-const fileUpload = require("express-fileupload");
-require("dotenv").config();
+import express, { json, urlencoded } from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import fileUpload from "express-fileupload";
+import "dotenv/config";
 
-const authRoutes = require("./routes/auth");
-const meRoutes = require("./routes/me");
-const forgotPassRoutes = require("./routes/forgotpass");
-const userRoutes = require("./routes/users");
-const jobRoutes = require("./routes/jobs");
-const reviewRoutes = require("./routes/reviews");
-const openrouterRoutes = require("./routes/openrouter");
+import authRoutes from "./routes/auth.js";
+import meRoutes from "./routes/me.js";
+import forgotPassRoutes from "./routes/forgotpass.js";
+import userRoutes from "./routes/users.js";
+import jobRoutes from "./routes/jobs.js";
+import reviewRoutes from "./routes/reviews.js";
+import openrouterRoutes from "./routes/openrouter.js";
 
 const app = express();
 
@@ -44,8 +44,8 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(json());
+app.use(urlencoded({ extended: true }));
 
 app.get("/api", (req, res) => {
   res.send("<h1>Job Tracker API</h1><p>API server is running.</p>");
@@ -59,4 +59,4 @@ app.use("/api/jobs", jobRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/openrouter", openrouterRoutes);
 
-module.exports = app;
+export default app;

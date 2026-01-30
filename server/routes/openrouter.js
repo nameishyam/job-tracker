@@ -1,8 +1,8 @@
-const express = require("express");
-const { authenticateToken } = require("../middleware/auth");
-const main = require("../utils/openrouter");
+import { Router } from "express";
+import { authenticateToken } from "../middleware/auth.js";
+import main from "../utils/openrouter.js";
 
-const router = express.Router();
+const router = Router();
 
 router.post("/ask", authenticateToken, async (req, res) => {
   const { job } = req.body;
@@ -45,4 +45,4 @@ Provide actionable advice, next steps, and if applicable, congratulations or mot
   }
 });
 
-module.exports = router;
+export default router;

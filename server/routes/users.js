@@ -1,10 +1,11 @@
-const express = require("express");
-const { User, Job, Blogs } = require("../models");
-const { authenticateToken } = require("../middleware/auth");
-const { uploadAvatar, cleanupOldAvatars } = require("../uploads/profiles");
-const { uploadResume, cleanupOldResumes } = require("../uploads/resume");
+import { Router } from "express";
+import db from "../models/index.js";
+import { authenticateToken } from "../middleware/auth.js";
+import { uploadAvatar, cleanupOldAvatars } from "../uploads/profiles.js";
+import { uploadResume, cleanupOldResumes } from "../uploads/resume.js";
 
-const router = express.Router();
+const router = Router();
+const { User, Job, Blogs } = db;
 
 router.put(`/bio`, authenticateToken, async (req, res) => {
   const { bio } = req.body;
@@ -140,4 +141,4 @@ router.delete("/", authenticateToken, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
