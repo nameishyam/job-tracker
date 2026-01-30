@@ -7,7 +7,8 @@ const { uploadResume, cleanupOldResumes } = require("../uploads/resume");
 const router = express.Router();
 
 router.put(`/bio`, authenticateToken, async (req, res) => {
-  const { userId, bio } = req.body;
+  const { bio } = req.body;
+  const userId = req.user.userId;
   if (req.user.userId !== userId) {
     return res
       .status(403)
@@ -18,7 +19,7 @@ router.put(`/bio`, authenticateToken, async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
     user.bio = bio;
     await user.save();
-    return res.status(200).json({ message: "Bio updated successfully", user });
+    return res.status(200).json({ message: "Bio updated successfully", bio });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

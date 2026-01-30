@@ -32,6 +32,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Input } from "@/components/ui/input";
 
 export default function Profile() {
   const { user, reviews, jobs, updateUser, setReviews } = useAuth();
@@ -41,6 +42,8 @@ export default function Profile() {
   const [open, setOpen] = useState<boolean>(false);
   const [showTopFade, setShowTopFade] = useState<boolean>(false);
   const [showBottomFade, setShowBottomFade] = useState<boolean>(false);
+  const [isEditingBio, setIsEditingBio] = useState<boolean>(false);
+  const [bioDraft, setBioDraft] = useState<string>(user?.bio || "");
 
   useEffect(() => {
     setAvatarUrl(user?.profile_url ?? undefined);
@@ -53,6 +56,22 @@ export default function Profile() {
       }
     };
   }, [avatarUrl]);
+
+  useEffect(() => {
+    setBioDraft(user?.bio || "");
+  }, [user?.bio]);
+
+  const handleSaveBio = async () => {
+    try {
+      const res = await api.put("/users/bio", { bio: bioDraft });
+      updateUser({ bio: res.data.bio });
+      toast.success("Bio updated successfully.");
+      setIsEditingBio(false);
+    } catch (err) {
+      toast.error("Failed to update bio.");
+      console.error("Bio update failed", err);
+    }
+  };
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
@@ -256,9 +275,47 @@ export default function Profile() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">
-            {user?.bio || "No bio available."}
-          </p>
+          <div className="mt-4">
+            {!isEditingBio ? (
+              <div className="group relative">
+                <p className="text-sm text-muted-foreground">
+                  {(user?.bio ?? bioDraft) || "No bio"}
+                </p>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 hover:cursor-pointer transition"
+                  onClick={() => setIsEditingBio(true)}
+                >
+                  <Pencil className="w-4 h-4" />
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Input
+                  value={bioDraft}
+                  onChange={(e) => setBioDraft(e.target.value)}
+                  placeholder="Write something about yourself..."
+                />
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={handleSaveBio}>
+                    Save
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => {
+                      setBioDraft(user?.bio || "");
+                      setIsEditingBio(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
+
           <div className="my-4 border-t" />
           <div className="grid grid-cols-3 gap-4 text-sm">
             <div>

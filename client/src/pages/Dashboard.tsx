@@ -51,8 +51,8 @@ export default function Dashboard() {
         </div>
       </div>
       <div>
-        <div className="h-full bg-background overflow-y-auto p-6">
-          <h2 className="text-3xl font-bold">Personal Assistant</h2>
+        <div className="h-full bg-background overflow-y-auto  p-6">
+          <h2 className="text-2xl font-bold">Personal Assistant</h2>
           <AIChat user={user} />
         </div>
       </div>
