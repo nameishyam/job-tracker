@@ -1,8 +1,9 @@
-require("dotenv").config();
+import "dotenv/config";
 import "pg";
-import app, { get } from "../app.js";
-import { sequelize } from "../models";
+import app from "../app.js";
+import db from "../models/index.js";
 
+const { sequelize } = db;
 let dbConnected = false;
 
 const connectDatabase = async () => {
@@ -18,7 +19,7 @@ const connectDatabase = async () => {
   }
 };
 
-get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.send(
     "<h1>Career Dock Server</h1><p>Server is running successfully on the cloud!</p>",
   );
