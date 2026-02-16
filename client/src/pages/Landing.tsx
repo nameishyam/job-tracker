@@ -7,7 +7,7 @@ export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-background">
+    <div className="bg-background relative min-h-screen">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-foreground">
@@ -48,6 +48,7 @@ export default function Landing() {
             </p>
           </div>
         </div>
+
         <div className="text-center">
           {isAuthenticated() ? (
             <>
@@ -56,7 +57,7 @@ export default function Landing() {
               </p>
               <div className="flex gap-4 justify-center">
                 <Button
-                  className="hover: cursor-pointer"
+                  className="hover:cursor-pointer"
                   variant="outline"
                   onClick={() => {
                     navigate("/dashboard");
@@ -65,7 +66,7 @@ export default function Landing() {
                   Dashboard
                 </Button>
                 <Button
-                  className="hover: cursor-pointer"
+                  className="hover:cursor-pointer"
                   onClick={() => {
                     navigate("/profile");
                   }}
@@ -81,7 +82,7 @@ export default function Landing() {
               </p>
               <div className="flex gap-4 justify-center">
                 <Button
-                  className="hover: cursor-pointer"
+                  className="hover:cursor-pointer"
                   variant="outline"
                   onClick={() => {
                     navigate("/login");
@@ -90,7 +91,7 @@ export default function Landing() {
                   Login
                 </Button>
                 <Button
-                  className="hover: cursor-pointer"
+                  className="hover:cursor-pointer"
                   onClick={() => {
                     navigate("/signup");
                   }}
@@ -101,6 +102,11 @@ export default function Landing() {
             </>
           )}
         </div>
+      </div>
+
+      {/* Bottom Right Attribution */}
+      <div className="absolute bottom-4 right-4 text-sm text-muted-foreground">
+        Developed by Syam Gowtham
       </div>
     </div>
   );
