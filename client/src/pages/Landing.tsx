@@ -103,11 +103,6 @@ export default function Landing() {
           )}
         </div>
       </div>
-
-      {/* Bottom Right Attribution */}
-      <div className="absolute bottom-4 right-4 text-sm text-muted-foreground">
-        Developed by Syam Gowtham
-      </div>
     </div>
   );
 }
