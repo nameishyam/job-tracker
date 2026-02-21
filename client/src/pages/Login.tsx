@@ -100,12 +100,9 @@ export default function Login() {
       await login();
       toast.success("Login successful!");
       navigate("/dashboard");
-    } catch (err: any) {
-      if (err.response?.data?.error) {
-        toast.error(err.response.data.error);
-      } else {
-        toast.error("Invalid email or password");
-      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Invalid email or password");
     } finally {
       setIsLoading(false);
     }
