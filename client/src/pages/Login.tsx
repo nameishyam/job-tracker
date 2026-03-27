@@ -100,7 +100,11 @@ export default function Login() {
       await login();
       toast.success("Login successful!");
       navigate("/dashboard");
-    } catch (err) {
+    } catch (err: any) {
+      if (err.name === "AxiosError") {
+        toast.error(`Server issue`);
+        return;
+      }
       console.log(err);
       toast.error("Invalid email or password");
     } finally {
