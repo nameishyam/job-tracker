@@ -454,6 +454,7 @@ export default function Login() {
                     <div className="flex items-center justify-between">
                       <FormLabel>Password</FormLabel>
                       <Button
+                        type="button"
                         variant="link"
                         onClick={() => setForgotPassword(true)}
                         className="hover:cursor-pointer"
