@@ -250,7 +250,11 @@ export default function Profile() {
             />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex gap-2 hover:cursor-pointer"
+                >
                   <FileText className="w-4 h-4" />
                   Resume
                   <ChevronDown className="w-3 h-3 opacity-50" />
@@ -277,17 +281,15 @@ export default function Profile() {
           </div>
           <div className="mt-4">
             {!isEditingBio ? (
-              <div className="group relative">
-                <p className="text-sm text-muted-foreground">
+              <div className="group flex items-center gap-1">
+                <p className="text-[16px] text-muted-foreground">
                   {(user?.bio ?? bioDraft) || "No bio"}
                 </p>
                 <Button
-                  variant="ghost"
-                  size="icon"
-                  className="absolute -right-2 -top-2 opacity-0 group-hover:opacity-100 hover:cursor-pointer transition"
+                  className="p-0 h-auto w-auto bg-transparent hover:bg-transparent active:bg-transparent focus:bg-transparent shadow-none opacity-0 group-hover:opacity-100 hover:cursor-pointer"
                   onClick={() => setIsEditingBio(true)}
                 >
-                  <Pencil className="w-4 h-4" />
+                  <Pencil className="w-4.5 h-4.5" />
                 </Button>
               </div>
             ) : (
@@ -298,12 +300,17 @@ export default function Profile() {
                   placeholder="Write something about yourself..."
                 />
                 <div className="flex gap-2">
-                  <Button size="sm" onClick={handleSaveBio}>
+                  <Button
+                    size="sm"
+                    onClick={handleSaveBio}
+                    className="hover:cursor-pointer"
+                  >
                     Save
                   </Button>
                   <Button
                     size="sm"
                     variant="ghost"
+                    className="hover:cursor-pointer"
                     onClick={() => {
                       setBioDraft(user?.bio || "");
                       setIsEditingBio(false);
@@ -338,7 +345,12 @@ export default function Profile() {
       <div className="w-1/2 h-full bg-background p-6 flex flex-col overflow-hidden">
         <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold">Your Reviews</h2>
-          <Button variant="outline" size="sm" onClick={() => setOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setOpen(true)}
+            className="hover: cursor-pointer"
+          >
             <PlusIcon />
             Add Review
           </Button>
@@ -381,7 +393,7 @@ export default function Profile() {
                               variant="ghost"
                               size="icon"
                               onClick={(e) => e.stopPropagation()}
-                              className="text-red-500 hover:text-red-600"
+                              className="text-red-500 hover:text-red-600 hover:cursor-pointer"
                             >
                               <Trash2 className="w-5 h-5" />
                             </Button>
