@@ -7,7 +7,6 @@ import Sequelize, { DataTypes } from "sequelize";
 import { env as _env } from "process";
 import * as configModule from "../config/config.js";
 
-// ESM replacements for __filename and __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -41,7 +40,6 @@ if (config.use_env_variable && _env[config.use_env_variable]) {
   );
 }
 
-// Load all model files dynamically (ESM way)
 const files = readdirSync(__dirname).filter(
   (file) =>
     file.endsWith(".js") &&
@@ -56,7 +54,6 @@ for (const file of files) {
   db[model.name] = model;
 }
 
-// Run associations
 for (const modelName of Object.keys(db)) {
   if (db[modelName].associate) {
     db[modelName].associate(db);

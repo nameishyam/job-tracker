@@ -12,38 +12,6 @@ export default (sequelize, DataTypes) => {
         as: "blogs",
       });
     }
-
-    static async createUser({ firstName, lastName, password, email }) {
-      return await User.create({
-        firstName,
-        lastName,
-        password,
-        email,
-      });
-    }
-
-    static async findUser({ email }) {
-      return await User.findOne({
-        where: {
-          email,
-        },
-      });
-    }
-
-    static async findById({ id }) {
-      const user = await User.findOne({ where: { id } });
-      return user;
-    }
-
-    static async findId({ email }) {
-      const user = User.findOne({
-        where: {
-          email,
-        },
-      });
-      const userId = user.Id;
-      return userId;
-    }
   }
 
   User.init(
