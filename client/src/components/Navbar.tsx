@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import ModeToggle from "@/components/mode-toggle";
+import ModeToggle from "@/components/ModeToggle";
 import { useAuth } from "@/context/AuthContext";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {

@@ -157,7 +157,11 @@ export default function ProfileCard({
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="flex gap-2">
+            <Button
+              variant="default"
+              size="sm"
+              className="flex gap-2 hover:cursor-pointer"
+            >
               <FileText className="w-4 h-4" />
               Resume
               <ChevronDown className="w-3 h-3 opacity-50" />
@@ -165,19 +169,25 @@ export default function ProfileCard({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={openResumePicker}>
+            <DropdownMenuItem
+              onClick={openResumePicker}
+              className="hover:cursor-pointer"
+            >
               <Upload className="w-4 h-4 mr-2" />
               Upload New
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={handleDownloadResume}>
+            <DropdownMenuItem
+              onClick={handleDownloadResume}
+              className="hover:cursor-pointer"
+            >
               <Download className="w-4 h-4 mr-2" />
               Download Old
             </DropdownMenuItem>
 
             <DropdownMenuItem
               onClick={handleDeleteResume}
-              className="text-red-400 focus:text-red-500"
+              className="text-red-400 focus:text-red-500 hover:cursor-pointer"
             >
               <Trash2 className="w-4 h-4 mr-2" />
               Delete Forever
@@ -194,7 +204,7 @@ export default function ProfileCard({
             </p>
 
             <Button
-              className="p-0 h-auto w-auto bg-transparent hover:bg-transparent shadow-none opacity-0 group-hover:opacity-100"
+              className="p-0 h-auto w-auto bg-transparent hover:bg-transparent shadow-none opacity-0 group-hover:opacity-100 hover:cursor-pointer"
               onClick={() => setIsEditingBio(true)}
             >
               <Pencil className="w-4.5 h-4.5" />
@@ -209,13 +219,18 @@ export default function ProfileCard({
             />
 
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSaveBio}>
+              <Button
+                size="sm"
+                onClick={handleSaveBio}
+                className="hover:cursor-pointer"
+              >
                 Save
               </Button>
 
               <Button
                 size="sm"
                 variant="ghost"
+                className="hover:cursor-pointer"
                 onClick={() => {
                   setBioDraft(user?.bio || "");
                   setIsEditingBio(false);

@@ -72,7 +72,12 @@ export default function ReviewsSection({
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold">Your Reviews</h2>
 
-        <Button variant="outline" size="sm" onClick={onAddReview}>
+        <Button
+          variant="default"
+          size="sm"
+          onClick={onAddReview}
+          className="hover:cursor-pointer"
+        >
           <PlusIcon />
           Add Review
         </Button>
@@ -113,7 +118,7 @@ export default function ReviewsSection({
                             variant="ghost"
                             size="icon"
                             onClick={(e) => e.stopPropagation()}
-                            className="text-red-500 hover:text-red-600"
+                            className="text-red-500 hover:text-red-600 hover:cursor-pointer"
                           >
                             <Trash2 className="w-5 h-5" />
                           </Button>
@@ -133,10 +138,12 @@ export default function ReviewsSection({
                           </AlertDialogHeader>
 
                           <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogCancel className="hover:cursor-pointer">
+                              Cancel
+                            </AlertDialogCancel>
 
                             <AlertDialogAction
-                              className="bg-destructive hover:bg-destructive/90"
+                              className="bg-destructive hover:bg-destructive/90 hover:cursor-pointer"
                               onClick={() => handleDelete(review.id)}
                             >
                               Delete

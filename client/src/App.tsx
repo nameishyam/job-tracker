@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Landing from "@/pages/Landing";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/Navbar";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { AuthProvider } from "@/context/AuthContext";
 import PublicRoute from "@/routes/PublicRoute";
 import Signup from "@/pages/Signup";

@@ -1,6 +1,6 @@
-import AIChat from "@/components/AIChat";
-import JobCard from "@/components/JobCard";
-import JobForm from "@/components/JobForm";
+import AIChat from "@/components/Ai/AIChat";
+import JobCard from "@/components/Job/JobCard";
+import JobForm from "@/components/Job/JobForm";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { PlusIcon } from "lucide-react";

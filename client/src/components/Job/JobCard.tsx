@@ -18,8 +18,8 @@ import {
 import { api } from "@/lib/api";
 import { toast } from "sonner";
 import { useState } from "react";
-import JobInfo from "@/components/JobInfo";
-import AiResponse from "@/components/AiResponse";
+import JobInfo from "@/components/Job/JobInfo";
+import AiResponse from "@/components/Ai/AiResponse";
 
 export default function JobCard({ job }: Job) {
   const { setJobs } = useAuth();
