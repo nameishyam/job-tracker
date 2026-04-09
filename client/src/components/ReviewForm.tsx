@@ -195,11 +195,15 @@ export default function ReviewForm({ open, onOpenChange }: ReviewFormProps) {
             />
 
             <div className="grid grid-cols-2 gap-3 pt-4">
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full hover:cursor-pointer">
                 Save Review
               </Button>
               <AlertDialogCancel asChild>
-                <Button type="button" variant="outline" className="w-full">
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full hover:cursor-pointer"
+                >
                   Cancel
                 </Button>
               </AlertDialogCancel>

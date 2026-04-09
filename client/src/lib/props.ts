@@ -14,6 +14,19 @@ export interface ReviewFormProps {
   onOpenChange: (open: boolean) => void;
 }
 
+export interface ProfileCardProps {
+  user: any;
+  jobs: any[];
+  reviews: any[];
+  updateUser: (data: any) => void;
+}
+
+export interface ReviewsSectionProps {
+  reviews: any[];
+  setReviews: React.Dispatch<React.SetStateAction<any[]>>;
+  onAddReview: () => void;
+}
+
 export interface AIResponseProps {
   responseOpen: boolean;
   onOpenChange: (responseOpen: boolean) => void;
