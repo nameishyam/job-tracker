@@ -61,7 +61,7 @@ export default function JobForm({ open, onOpenChange }: JobFormProps) {
       jobtype: "",
       salary: "",
       description: "",
-      dateApplied: new Date() || undefined,
+      dateApplied: new Date(),
       review: "",
       roundStatus: {},
     },

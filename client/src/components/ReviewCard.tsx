@@ -26,7 +26,7 @@ export default function ReviewCard({ review }: ReviewCardProps) {
       }
     };
     fetchUser();
-  }, []);
+  });
 
   return (
     <Card className="w-1/2 min-w-75">

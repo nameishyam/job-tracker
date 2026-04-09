@@ -20,8 +20,8 @@ import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import type { JobInfoProps } from "@/lib/props";
-import InfoBlock from "@/components/Job/InfoBlock";
-import InfoTextBlock from "@/components/Job/InfoTextBlock";
+import InfoBlock from "@/components/job/InfoBlock";
+import InfoTextBlock from "@/components/job/InfoTextBlock";
 import type { Job } from "@/lib/types";
 import { api } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
@@ -59,12 +59,14 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
       ];
       let hasChanges = false;
       fieldsToSync.forEach((field) => {
-        const isObject = typeof editedJob[field] === "object";
+        const newVal = editedJob[field];
+        const oldVal = job[field];
+        const isObject = newVal !== null && typeof newVal === "object";
         const changed = isObject
-          ? JSON.stringify(editedJob[field]) !== JSON.stringify(job[field])
-          : editedJob[field] !== job[field];
+          ? JSON.stringify(newVal) !== JSON.stringify(oldVal)
+          : newVal !== oldVal;
         if (changed) {
-          updates[field] = editedJob[field];
+          updates[field] = newVal;
           hasChanges = true;
         }
       });
@@ -73,19 +75,20 @@ export default function JobInfo({ open, onOpenChange, job }: JobInfoProps) {
         return;
       }
       const response = await api.patch("/jobs", updates);
-      if (response.status === 200) {
-        const result = await response.data;
+      if (response?.status === 200) {
+        const result = response.data;
         setIsEditing(false);
         setJobs((prevJobs) =>
           prevJobs.map((j) => (j.id === result.job.id ? result.job : j)),
         );
         console.log("Update success:", result.job);
       } else {
-        const err = await response.data;
-        throw new Error(err.message || "Failed to save");
+        const err = response?.data;
+        throw new Error(err?.message ?? "Failed to save");
       }
-    } catch (error: any) {
-      alert(error.message);
+    } catch (error: unknown) {
+      const msg = error instanceof Error ? error.message : String(error);
+      alert(msg);
     }
   };
 

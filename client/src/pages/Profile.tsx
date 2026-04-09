@@ -19,6 +19,7 @@ export default function Profile() {
           reviews={reviews}
           updateUser={updateUser}
         />
+        <h2 className="text-3xl font-bold">Recent Activity</h2>
       </div>
 
       <div className="w-1/2 h-full bg-background p-6 flex flex-col overflow-hidden">
