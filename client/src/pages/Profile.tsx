@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
-import ReviewForm from "@/components/ReviewForm";
+import ReviewForm from "@/components/review/ReviewForm";
 import ProfileCard from "@/components/profile/ProfileCard";
 import ReviewsSection from "@/components/profile/ReviewsSection";
 

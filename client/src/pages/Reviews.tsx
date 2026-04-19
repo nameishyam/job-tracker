@@ -1,4 +1,4 @@
-import ReviewCard from "@/components/ReviewCard";
+import ReviewCard from "@/components/review/ReviewCard";
 import { SpinnerCustom } from "@/components/ui/spinner";
 import { useAuth } from "@/context/AuthContext";
 import { api } from "@/lib/api";
