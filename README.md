@@ -165,5 +165,5 @@ This project is licensed under the Apache 2.0 License - see the LICENSE file for
 
 - The React team for their amazing frontend library
 - The Sequelize team for their powerful ORM
-- Google for their Generative AI API
+- OpenRouter for their extensive set of free APIs
 - All contributors who have helped improve this project
