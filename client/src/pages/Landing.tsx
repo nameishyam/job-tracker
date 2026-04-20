@@ -7,7 +7,7 @@ export default function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-background relative min-h-screen">
+    <div className="bg-background relative h-[90vh]">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-foreground">
